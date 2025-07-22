@@ -1,7 +1,6 @@
 
 "use client";
 
-import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,48 +24,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow, Sparkles } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { generateHealthTemplate } from "@/ai/flows/health-template-generator";
-
 
 export default function AplikasiPage() {
   const pathname = usePathname();
-  const { toast } = useToast();
-  const [topic, setTopic] = useState("");
-  const [generatedTemplate, setGeneratedTemplate] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleGenerate = async () => {
-    if (!topic) {
-      toast({
-        title: "Error",
-        description: "Please enter a topic for the template.",
-        variant: "destructive",
-      });
-      return;
-    }
-    setIsLoading(true);
-    setGeneratedTemplate("");
-    try {
-      const result = await generateHealthTemplate({ topic });
-      setGeneratedTemplate(result.template);
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "Generation Failed",
-        description: "An error occurred while generating the template.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <SidebarProvider>
@@ -171,46 +134,16 @@ export default function AplikasiPage() {
           </div>
         </header>
         <main className="flex flex-1 flex-col p-4 md:p-6">
-            <Card className="w-full max-w-2xl mx-auto">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Sparkles className="text-primary" />
-                  AI Template Kesehatan Generator
-                </CardTitle>
-                <CardDescription>
-                  Masukkan topik untuk membuat template konten kesehatan secara otomatis.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Input
-                    id="topic"
-                    placeholder="Contoh: Manfaat Imunisasi Anak"
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    disabled={isLoading}
-                  />
+            <div className="flex flex-1 items-center justify-center rounded-lg border-2 border-dashed bg-card/50 shadow-sm">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold tracking-tight">
+                        Halaman Aplikasi
+                    </h2>
+                    <p className="text-muted-foreground">
+                        Konten untuk aplikasi akan ditampilkan di sini.
+                    </p>
                 </div>
-                <Button onClick={handleGenerate} disabled={isLoading} className="w-full">
-                  {isLoading ? "Menghasilkan..." : "Hasilkan Template"}
-                </Button>
-                {generatedTemplate && (
-                  <div className="space-y-2 pt-4">
-                    <h3 className="text-lg font-semibold">Template yang Dihasilkan:</h3>
-                    <Textarea
-                      readOnly
-                      value={generatedTemplate}
-                      className="h-64"
-                    />
-                  </div>
-                )}
-              </CardContent>
-              <CardFooter>
-                 <p className="text-xs text-muted-foreground">
-                    Didukung oleh AI Generatif. Harap tinjau keakuratan konten sebelum digunakan.
-                  </p>
-              </CardFooter>
-            </Card>
+            </div>
         </main>
       </SidebarInset>
     </SidebarProvider>
