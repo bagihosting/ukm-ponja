@@ -11,13 +11,13 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
-export const GenerateThumbnailInputSchema = z.object({
+const GenerateThumbnailInputSchema = z.object({
   prompt: z.string().describe('The informational text to be included in the thumbnail.'),
   character: z.string().describe("The character to feature in the thumbnail (e.g., 'doctor', 'nurse', 'midwife')."),
 });
 export type GenerateThumbnailInput = z.infer<typeof GenerateThumbnailInputSchema>;
 
-export const GenerateThumbnailOutputSchema = z.object({
+const GenerateThumbnailOutputSchema = z.object({
   imageUrl: z.string().describe('The data URI of the generated thumbnail image.'),
 });
 export type GenerateThumbnailOutput = z.infer<typeof GenerateThumbnailOutputSchema>;
