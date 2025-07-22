@@ -24,7 +24,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -79,6 +79,14 @@ export default function DashboardPage() {
                 <SidebarMenuButton isActive={pathname === "/galeri"} tooltip="Galeri">
                   <Image className="size-4" />
                   <span className="truncate">Galeri</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <Link href="/aplikasi">
+                <SidebarMenuButton isActive={pathname === "/aplikasi"} tooltip="Aplikasi">
+                  <AppWindow className="size-4" />
+                  <span className="truncate">Aplikasi</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>

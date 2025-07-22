@@ -30,7 +30,7 @@ import {
   HeartPulse, Baby, Stethoscope, School, Users, Venus, PersonStanding, 
   Utensils, Recycle, Shield, Bug, Syringe, Biohazard, Droplets, 
   BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack, TrendingUp,
-  Briefcase, Smile, Leaf, Ship, Route, ClipboardList, Newspaper, Image
+  Briefcase, Smile, Leaf, Ship, Route, ClipboardList, Newspaper, Image, AppWindow
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -121,6 +121,14 @@ export default function KegiatanUkmPage() {
                 <SidebarMenuButton isActive={pathname === "/galeri"} tooltip="Galeri">
                   <Image className="size-4" />
                   <span className="truncate">Galeri</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <Link href="/aplikasi">
+                <SidebarMenuButton isActive={pathname === "/aplikasi"} tooltip="Aplikasi">
+                  <AppWindow className="size-4" />
+                  <span className="truncate">Aplikasi</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
