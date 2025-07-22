@@ -40,7 +40,7 @@ const generateThumbnailFlow = ai.defineFlow(
       The image must prominently display the following text in an attractive, modern, and easy-to-read font: "${input.prompt}".
       The overall tone should be friendly and informative. The aspect ratio should be 16:9.`,
       config: {
-        responseModalities: ['IMAGE'],
+        responseModalities: ['TEXT', 'IMAGE'],
       },
     });
 
