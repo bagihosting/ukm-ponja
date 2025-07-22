@@ -25,7 +25,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, FileText, BarChart2, BookOpen, FolderKanban } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, FileText, BarChart2, BookOpen, FolderKanban, Newspaper } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -71,6 +71,14 @@ export default function LaporanPage() {
                 <SidebarMenuButton isActive={pathname === "/laporan"} tooltip="Laporan">
                   <ClipboardList className="size-4" />
                   <span className="truncate">Laporan</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <Link href="/artikel">
+                <SidebarMenuButton isActive={pathname === "/artikel"} tooltip="Artikel">
+                  <Newspaper className="size-4" />
+                  <span className="truncate">Artikel</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
