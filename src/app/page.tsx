@@ -38,9 +38,9 @@ export default function DashboardPage() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton isActive tooltip="Dashboard">
+              <SidebarMenuButton isActive tooltip="Dasbor">
                 <Home className="size-4" />
-                <span className="truncate">Dashboard</span>
+                <span className="truncate">Dasbor</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -50,30 +50,30 @@ export default function DashboardPage() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-auto w-full justify-start gap-2 p-2">
                 <Avatar className="size-8">
-                  <AvatarImage data-ai-hint="profile avatar" src="https://placehold.co/100x100.png" alt="User" />
-                  <AvatarFallback>U</AvatarFallback>
+                  <AvatarImage data-ai-hint="profile avatar" src="https://placehold.co/100x100.png" alt="Pengguna" />
+                  <AvatarFallback>P</AvatarFallback>
                 </Avatar>
                 <div className="text-left group-data-[collapsible=icon]:hidden">
-                  <p className="truncate text-sm font-medium">User</p>
-                  <p className="truncate text-xs text-muted-foreground">user@example.com</p>
+                  <p className="truncate text-sm font-medium">Pengguna</p>
+                  <p className="truncate text-xs text-muted-foreground">pengguna@contoh.com</p>
                 </div>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" side="top" align="start">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+                <span>Pengaturan</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <LifeBuoy className="mr-2 h-4 w-4" />
-                <span>Support</span>
+                <span>Dukungan</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+                <span>Keluar</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -83,17 +83,17 @@ export default function DashboardPage() {
         <header className="flex h-16 items-center justify-between border-b bg-background px-4 sm:px-6">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="md:hidden" />
-            <h1 className="text-lg font-semibold md:text-xl">Dashboard</h1>
+            <h1 className="text-lg font-semibold md:text-xl">Dasbor</h1>
           </div>
         </header>
         <main className="flex flex-1 flex-col p-4 md:p-6">
             <div className="flex flex-1 items-center justify-center rounded-lg border-2 border-dashed bg-card/50 shadow-sm">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold tracking-tight">
-                        Welcome to DashZen
+                        Selamat Datang di DashZen
                     </h2>
                     <p className="text-muted-foreground">
-                        This is your blank canvas. Start building your amazing dashboard.
+                        Ini adalah kanvas kosong Anda. Mulailah membangun dasbor luar biasa Anda.
                     </p>
                 </div>
             </div>
