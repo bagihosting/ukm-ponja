@@ -3,6 +3,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,6 +31,33 @@ import { usePathname } from "next/navigation";
 
 export default function KegiatanUkmPage() {
   const pathname = usePathname();
+
+  const programs = [
+    "Promosi Kesehatan",
+    "Kesehatan Ibu",
+    "Kesehatan Anak",
+    "UKS",
+    "Kesehatan Remaja",
+    "Kesehatan Reproduksi",
+    "Kesehatan Lansia",
+    "Gizi",
+    "Kesehatan Lingkungan",
+    "TB",
+    "HIV",
+    "Kusta dan frambusia",
+    "Ispa",
+    "Hepatitis",
+    "Diare",
+    "Imunisasi",
+    "Surveilans",
+    "Penyakit tidak menular",
+    "Kesehatan Indera",
+    "Kesehatan Jiwa",
+    "Kanker",
+    "P2BB (Penyakit bersumber Binatang)",
+    "Perkesmas",
+    "PIS PK",
+  ];
 
   return (
     <SidebarProvider>
@@ -105,6 +133,15 @@ export default function KegiatanUkmPage() {
           <div className="flex items-center gap-2">
             <Star className="h-6 w-6" />
             <h1 className="text-lg font-semibold md:text-2xl">UKM Esensial</h1>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {programs.map((program, index) => (
+              <Card key={index}>
+                <CardHeader>
+                  <CardTitle className="text-base">{program}</CardTitle>
+                </CardHeader>
+              </Card>
+            ))}
           </div>
         </main>
       </SidebarInset>
