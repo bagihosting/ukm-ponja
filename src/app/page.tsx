@@ -23,7 +23,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity } from "lucide-react";
 
 export default function DashboardPage() {
   return (
@@ -41,6 +41,12 @@ export default function DashboardPage() {
               <SidebarMenuButton isActive tooltip="Dasbor">
                 <Home className="size-4" />
                 <span className="truncate">Dasbor</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip="Kegiatan UKM">
+                <Activity className="size-4" />
+                <span className="truncate">Kegiatan UKM</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
