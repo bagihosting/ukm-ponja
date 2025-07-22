@@ -29,7 +29,8 @@ import {
   Home, LogOut, Settings, LifeBuoy, Activity, Star, 
   HeartPulse, Baby, Stethoscope, School, Users, Venus, PersonStanding, 
   Utensils, Recycle, Shield, Bug, Syringe, Biohazard, Droplets, 
-  BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack, TrendingUp
+  BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack, TrendingUp,
+  Briefcase, Smile, Leaf, Ship, Route
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,7 +38,7 @@ import { usePathname } from "next/navigation";
 export default function KegiatanUkmPage() {
   const pathname = usePathname();
 
-  const programs = [
+  const essentialPrograms = [
     { name: "Promosi Kesehatan", icon: <HeartPulse className="h-6 w-6 text-primary" /> },
     { name: "Kesehatan Ibu", icon: <PersonStanding className="h-6 w-6 text-primary" /> },
     { name: "Kesehatan Anak", icon: <Baby className="h-6 w-6 text-primary" /> },
@@ -62,6 +63,14 @@ export default function KegiatanUkmPage() {
     { name: "P2BB (Penyakit bersumber Binatang)", icon: <Bug className="h-6 w-6 text-primary" /> },
     { name: "Perkesmas", icon: <Group className="h-6 w-6 text-primary" /> },
     { name: "PIS PK", icon: <FileText className="h-6 w-6 text-primary" /> },
+  ];
+
+  const developmentPrograms = [
+    { name: "Kesehatan kerja dan olahraga", icon: <Briefcase className="h-6 w-6 text-primary" /> },
+    { name: "UKGS UKGMD", icon: <Smile className="h-6 w-6 text-primary" /> },
+    { name: "Yankestrad", icon: <Leaf className="h-6 w-6 text-primary" /> },
+    { name: "Haji", icon: <Ship className="h-6 w-6 text-primary" /> },
+    { name: "Ngider sehat", icon: <Route className="h-6 w-6 text-primary" /> },
   ];
 
   return (
@@ -140,7 +149,7 @@ export default function KegiatanUkmPage() {
             <h1 className="text-lg font-semibold md:text-2xl">UKM Esensial</h1>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {programs.map((program, index) => (
+            {essentialPrograms.map((program, index) => (
               <Card key={index} className="flex flex-col justify-between">
                 <CardHeader>
                   <div className="flex items-center gap-4">
@@ -151,9 +160,21 @@ export default function KegiatanUkmPage() {
               </Card>
             ))}
           </div>
-          <div className="flex items-center gap-2 mt-8">
+          <div className="mt-8 flex items-center gap-2">
             <TrendingUp className="h-6 w-6" />
             <h1 className="text-lg font-semibold md:text-2xl">UKM Pengembangan</h1>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {developmentPrograms.map((program, index) => (
+              <Card key={index} className="flex flex-col justify-between">
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    {program.icon}
+                    <CardTitle className="text-base leading-tight">{program.name}</CardTitle>
+                  </div>
+                </CardHeader>
+              </Card>
+            ))}
           </div>
         </main>
       </SidebarInset>
