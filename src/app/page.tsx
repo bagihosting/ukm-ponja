@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,7 +24,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -54,6 +55,14 @@ export default function DashboardPage() {
                 <SidebarMenuButton isActive={pathname === "/kegiatan-ukm"} tooltip="Kegiatan UKM">
                   <Activity className="size-4" />
                   <span className="truncate">Kegiatan UKM</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <Link href="/laporan">
+                <SidebarMenuButton isActive={pathname === "/laporan"} tooltip="Laporan">
+                  <ClipboardList className="size-4" />
+                  <span className="truncate">Laporan</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
