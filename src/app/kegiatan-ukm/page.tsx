@@ -29,7 +29,7 @@ import {
   Home, LogOut, Settings, LifeBuoy, Activity, Star, 
   HeartPulse, Baby, Stethoscope, School, Users, Venus, PersonStanding, 
   Utensils, Recycle, Shield, Bug, Syringe, Biohazard, Droplets, 
-  BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack
+  BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack, TrendingUp
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -150,6 +150,10 @@ export default function KegiatanUkmPage() {
                 </CardHeader>
               </Card>
             ))}
+          </div>
+          <div className="flex items-center gap-2 mt-8">
+            <TrendingUp className="h-6 w-6" />
+            <h1 className="text-lg font-semibold md:text-2xl">UKM Pengembangan</h1>
           </div>
         </main>
       </SidebarInset>
