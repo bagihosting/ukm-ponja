@@ -66,11 +66,11 @@ export default function KegiatanUkmPage() {
   ];
 
   const developmentPrograms = [
-    { name: "Kesehatan kerja dan olahraga", icon: <Briefcase className="h-6 w-6 text-primary" /> },
-    { name: "UKGS UKGMD", icon: <Smile className="h-6 w-6 text-primary" /> },
-    { name: "Yankestrad", icon: <Leaf className="h-6 w-6 text-primary" /> },
-    { name: "Haji", icon: <Ship className="h-6 w-6 text-primary" /> },
-    { name: "Ngider sehat", icon: <Route className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan kerja dan olahraga", icon: <Briefcase className="h-6 w-6 text-primary" />, personInCharge: "Ahmad", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "UKGS UKGMD", icon: <Smile className="h-6 w-6 text-primary" />, personInCharge: "Bella", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Yankestrad", icon: <Leaf className="h-6 w-6 text-primary" />, personInCharge: "Chandra", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Haji", icon: <Ship className="h-6 w-6 text-primary" />, personInCharge: "Dina", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Ngider sehat", icon: <Route className="h-6 w-6 text-primary" />, personInCharge: "Edwin", personInChargePhoto: "https://placehold.co/100x100.png" },
   ];
 
   return (
@@ -183,6 +183,16 @@ export default function KegiatanUkmPage() {
                     <CardTitle className="text-base leading-tight">{program.name}</CardTitle>
                   </div>
                 </CardHeader>
+                <CardContent className="mt-auto flex items-center gap-3 pt-4">
+                    <Avatar className="size-10">
+                        <AvatarImage data-ai-hint="person face" src={program.personInChargePhoto} alt={program.personInCharge} />
+                        <AvatarFallback>{program.personInCharge.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <p className="text-sm font-medium">{program.personInCharge}</p>
+                        <p className="text-xs text-muted-foreground">Penanggung Jawab</p>
+                    </div>
+                </CardContent>
               </Card>
             ))}
           </div>
