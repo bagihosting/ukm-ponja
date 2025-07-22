@@ -37,7 +37,7 @@ export default function GaleriPage() {
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <Icons.logo className="size-8 text-primary" />
-            <h1 className="text-xl font-semibold">DashZen</h1>
+            <h1 className="text-xl font-semibold">UKM PONJA</h1>
           </div>
         </SidebarHeader>
         <SidebarContent>

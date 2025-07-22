@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'DashZen',
+  title: 'UKM PONJA',
   description: 'Dasbor yang minimalis dan intuitif.',
 };
 

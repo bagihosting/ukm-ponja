@@ -37,7 +37,7 @@ export default function DashboardPage() {
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <Icons.logo className="size-8 text-primary" />
-            <h1 className="text-xl font-semibold">DashZen</h1>
+            <h1 className="text-xl font-semibold">UKM PONJA</h1>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -137,7 +137,7 @@ export default function DashboardPage() {
             <div className="flex flex-1 items-center justify-center rounded-lg border-2 border-dashed bg-card/50 shadow-sm">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold tracking-tight">
-                        Selamat Datang di DashZen
+                        Selamat Datang di UKM PONJA
                     </h2>
                     <p className="text-muted-foreground">
                         Ini adalah kanvas kosong Anda. Mulailah membangun dasbor luar biasa Anda.
