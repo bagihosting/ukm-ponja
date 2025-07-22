@@ -25,7 +25,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, Star } from "lucide-react";
+import { 
+  Home, LogOut, Settings, LifeBuoy, Activity, Star, 
+  HeartPulse, Baby, Stethoscope, School, Users, Venus, PersonStanding, 
+  Utensils, Recycle, Lungs, Shield, Bug, Syringe, Biohazard, Droplets, 
+  BarChart, Thermometer, Brain, Microscope, Dna, FileText, Group 
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -33,30 +38,30 @@ export default function KegiatanUkmPage() {
   const pathname = usePathname();
 
   const programs = [
-    "Promosi Kesehatan",
-    "Kesehatan Ibu",
-    "Kesehatan Anak",
-    "UKS",
-    "Kesehatan Remaja",
-    "Kesehatan Reproduksi",
-    "Kesehatan Lansia",
-    "Gizi",
-    "Kesehatan Lingkungan",
-    "TB",
-    "HIV",
-    "Kusta dan frambusia",
-    "Ispa",
-    "Hepatitis",
-    "Diare",
-    "Imunisasi",
-    "Surveilans",
-    "Penyakit tidak menular",
-    "Kesehatan Indera",
-    "Kesehatan Jiwa",
-    "Kanker",
-    "P2BB (Penyakit bersumber Binatang)",
-    "Perkesmas",
-    "PIS PK",
+    { name: "Promosi Kesehatan", icon: <HeartPulse className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan Ibu", icon: <PersonStanding className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan Anak", icon: <Baby className="h-6 w-6 text-primary" /> },
+    { name: "UKS", icon: <School className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan Remaja", icon: <Users className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan Reproduksi", icon: <Venus className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan Lansia", icon: <PersonStanding className="h-6 w-6 text-primary" /> },
+    { name: "Gizi", icon: <Utensils className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan Lingkungan", icon: <Recycle className="h-6 w-6 text-primary" /> },
+    { name: "TB", icon: <Lungs className="h-6 w-6 text-primary" /> },
+    { name: "HIV", icon: <Shield className="h-6 w-6 text-primary" /> },
+    { name: "Kusta dan frambusia", icon: <Bug className="h-6 w-6 text-primary" /> },
+    { name: "Ispa", icon: <Thermometer className="h-6 w-6 text-primary" /> },
+    { name: "Hepatitis", icon: <Biohazard className="h-6 w-6 text-primary" /> },
+    { name: "Diare", icon: <Droplets className="h-6 w-6 text-primary" /> },
+    { name: "Imunisasi", icon: <Syringe className="h-6 w-6 text-primary" /> },
+    { name: "Surveilans", icon: <BarChart className="h-6 w-6 text-primary" /> },
+    { name: "Penyakit tidak menular", icon: <Stethoscope className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan Indera", icon: <Brain className="h-6 w-6 text-primary" /> },
+    { name: "Kesehatan Jiwa", icon: <Brain className="h-6 w-6 text-primary" /> },
+    { name: "Kanker", icon: <Dna className="h-6 w-6 text-primary" /> },
+    { name: "P2BB (Penyakit bersumber Binatang)", icon: <Bug className="h-6 w-6 text-primary" /> },
+    { name: "Perkesmas", icon: <Group className="h-6 w-6 text-primary" /> },
+    { name: "PIS PK", icon: <FileText className="h-6 w-6 text-primary" /> },
   ];
 
   return (
@@ -134,11 +139,14 @@ export default function KegiatanUkmPage() {
             <Star className="h-6 w-6" />
             <h1 className="text-lg font-semibold md:text-2xl">UKM Esensial</h1>
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {programs.map((program, index) => (
-              <Card key={index}>
+              <Card key={index} className="flex flex-col justify-between">
                 <CardHeader>
-                  <CardTitle className="text-base">{program}</CardTitle>
+                  <div className="flex items-center gap-4">
+                    {program.icon}
+                    <CardTitle className="text-base leading-tight">{program.name}</CardTitle>
+                  </div>
                 </CardHeader>
               </Card>
             ))}
