@@ -28,8 +28,8 @@ import {
 import { 
   Home, LogOut, Settings, LifeBuoy, Activity, Star, 
   HeartPulse, Baby, Stethoscope, School, Users, Venus, PersonStanding, 
-  Utensils, Recycle, Lungs, Shield, Bug, Syringe, Biohazard, Droplets, 
-  BarChart, Thermometer, Brain, Microscope, Dna, FileText, Group 
+  Utensils, Recycle, Shield, Bug, Syringe, Biohazard, Droplets, 
+  BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -47,7 +47,7 @@ export default function KegiatanUkmPage() {
     { name: "Kesehatan Lansia", icon: <PersonStanding className="h-6 w-6 text-primary" /> },
     { name: "Gizi", icon: <Utensils className="h-6 w-6 text-primary" /> },
     { name: "Kesehatan Lingkungan", icon: <Recycle className="h-6 w-6 text-primary" /> },
-    { name: "TB", icon: <Lungs className="h-6 w-6 text-primary" /> },
+    { name: "TB", icon: <HeartCrack className="h-6 w-6 text-primary" /> },
     { name: "HIV", icon: <Shield className="h-6 w-6 text-primary" /> },
     { name: "Kusta dan frambusia", icon: <Bug className="h-6 w-6 text-primary" /> },
     { name: "Ispa", icon: <Thermometer className="h-6 w-6 text-primary" /> },
