@@ -27,7 +27,7 @@ import { Home, LogOut, Settings, LifeBuoy, Activity } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function DashboardPage() {
+export default function KegiatanUkmPage() {
   const pathname = usePathname();
 
   return (
@@ -97,17 +97,17 @@ export default function DashboardPage() {
         <header className="flex h-16 items-center justify-between border-b bg-background px-4 sm:px-6">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="md:hidden" />
-            <h1 className="text-lg font-semibold md:text-xl">Dasbor</h1>
+            <h1 className="text-lg font-semibold md:text-xl">Kegiatan UKM</h1>
           </div>
         </header>
         <main className="flex flex-1 flex-col p-4 md:p-6">
             <div className="flex flex-1 items-center justify-center rounded-lg border-2 border-dashed bg-card/50 shadow-sm">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold tracking-tight">
-                        Selamat Datang di DashZen
+                        Halaman Kegiatan UKM
                     </h2>
                     <p className="text-muted-foreground">
-                        Ini adalah kanvas kosong Anda. Mulailah membangun dasbor luar biasa Anda.
+                        Kelola dan lihat semua kegiatan Unit Kegiatan Mahasiswa di sini.
                     </p>
                 </div>
             </div>
