@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,7 +24,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, Star } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -101,8 +102,9 @@ export default function KegiatanUkmPage() {
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-          <div className="flex items-center">
-            <h1 className="text-lg font-semibold md:text-2xl">Program Pertama "UKM Esensial"</h1>
+          <div className="flex items-center gap-2">
+            <Star className="h-6 w-6" />
+            <h1 className="text-lg font-semibold md:text-2xl">UKM Esensial</h1>
           </div>
         </main>
       </SidebarInset>
