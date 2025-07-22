@@ -3,7 +3,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,30 +39,30 @@ export default function KegiatanUkmPage() {
   const pathname = usePathname();
 
   const essentialPrograms = [
-    { name: "Promosi Kesehatan", icon: <HeartPulse className="h-6 w-6 text-primary" /> },
-    { name: "Kesehatan Ibu", icon: <PersonStanding className="h-6 w-6 text-primary" /> },
-    { name: "Kesehatan Anak", icon: <Baby className="h-6 w-6 text-primary" /> },
-    { name: "UKS", icon: <School className="h-6 w-6 text-primary" /> },
-    { name: "Kesehatan Remaja", icon: <Users className="h-6 w-6 text-primary" /> },
-    { name: "Kesehatan Reproduksi", icon: <Venus className="h-6 w-6 text-primary" /> },
-    { name: "Kesehatan Lansia", icon: <PersonStanding className="h-6 w-6 text-primary" /> },
-    { name: "Gizi", icon: <Utensils className="h-6 w-6 text-primary" /> },
-    { name: "Kesehatan Lingkungan", icon: <Recycle className="h-6 w-6 text-primary" /> },
-    { name: "TB", icon: <HeartCrack className="h-6 w-6 text-primary" /> },
-    { name: "HIV", icon: <Shield className="h-6 w-6 text-primary" /> },
-    { name: "Kusta dan frambusia", icon: <Bug className="h-6 w-6 text-primary" /> },
-    { name: "Ispa", icon: <Thermometer className="h-6 w-6 text-primary" /> },
-    { name: "Hepatitis", icon: <Biohazard className="h-6 w-6 text-primary" /> },
-    { name: "Diare", icon: <Droplets className="h-6 w-6 text-primary" /> },
-    { name: "Imunisasi", icon: <Syringe className="h-6 w-6 text-primary" /> },
-    { name: "Surveilans", icon: <BarChart className="h-6 w-6 text-primary" /> },
-    { name: "Penyakit tidak menular", icon: <Stethoscope className="h-6 w-6 text-primary" /> },
-    { name: "Kesehatan Indera", icon: <Brain className="h-6 w-6 text-primary" /> },
-    { name: "Kesehatan Jiwa", icon: <Brain className="h-6 w-6 text-primary" /> },
-    { name: "Kanker", icon: <Dna className="h-6 w-6 text-primary" /> },
-    { name: "P2BB (Penyakit bersumber Binatang)", icon: <Bug className="h-6 w-6 text-primary" /> },
-    { name: "Perkesmas", icon: <Group className="h-6 w-6 text-primary" /> },
-    { name: "PIS PK", icon: <FileText className="h-6 w-6 text-primary" /> },
+    { name: "Promosi Kesehatan", icon: <HeartPulse className="h-6 w-6 text-primary" />, personInCharge: "Budi Santoso", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kesehatan Ibu", icon: <PersonStanding className="h-6 w-6 text-primary" />, personInCharge: "Citra Lestari", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kesehatan Anak", icon: <Baby className="h-6 w-6 text-primary" />, personInCharge: "Dewi Anggraini", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "UKS", icon: <School className="h-6 w-6 text-primary" />, personInCharge: "Eko Prasetyo", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kesehatan Remaja", icon: <Users className="h-6 w-6 text-primary" />, personInCharge: "Fitriani", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kesehatan Reproduksi", icon: <Venus className="h-6 w-6 text-primary" />, personInCharge: "Gunawan", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kesehatan Lansia", icon: <PersonStanding className="h-6 w-6 text-primary" />, personInCharge: "Hasanah", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Gizi", icon: <Utensils className="h-6 w-6 text-primary" />, personInCharge: "Indra Wijaya", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kesehatan Lingkungan", icon: <Recycle className="h-6 w-6 text-primary" />, personInCharge: "Joko Susilo", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "TB", icon: <HeartCrack className="h-6 w-6 text-primary" />, personInCharge: "Kartika", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "HIV", icon: <Shield className="h-6 w-6 text-primary" />, personInCharge: "Lestari", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kusta dan frambusia", icon: <Bug className="h-6 w-6 text-primary" />, personInCharge: "Muhammad Ali", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Ispa", icon: <Thermometer className="h-6 w-6 text-primary" />, personInCharge: "Nadia", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Hepatitis", icon: <Biohazard className="h-6 w-6 text-primary" />, personInCharge: "Olivia", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Diare", icon: <Droplets className="h-6 w-6 text-primary" />, personInCharge: "Putra", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Imunisasi", icon: <Syringe className="h-6 w-6 text-primary" />, personInCharge: "Qurrota", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Surveilans", icon: <BarChart className="h-6 w-6 text-primary" />, personInCharge: "Rina", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Penyakit tidak menular", icon: <Stethoscope className="h-6 w-6 text-primary" />, personInCharge: "Sari", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kesehatan Indera", icon: <Brain className="h-6 w-6 text-primary" />, personInCharge: "Toni", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kesehatan Jiwa", icon: <Brain className="h-6 w-6 text-primary" />, personInCharge: "Utami", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Kanker", icon: <Dna className="h-6 w-6 text-primary" />, personInCharge: "Vina", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "P2BB (Penyakit bersumber Binatang)", icon: <Bug className="h-6 w-6 text-primary" />, personInCharge: "Wahyu", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "Perkesmas", icon: <Group className="h-6 w-6 text-primary" />, personInCharge: "Yanti", personInChargePhoto: "https://placehold.co/100x100.png" },
+    { name: "PIS PK", icon: <FileText className="h-6 w-6 text-primary" />, personInCharge: "Zainal", personInChargePhoto: "https://placehold.co/100x100.png" },
   ];
 
   const developmentPrograms = [
@@ -157,6 +157,16 @@ export default function KegiatanUkmPage() {
                     <CardTitle className="text-base leading-tight">{program.name}</CardTitle>
                   </div>
                 </CardHeader>
+                <CardContent className="mt-auto flex items-center gap-3 pt-4">
+                    <Avatar className="size-10">
+                        <AvatarImage data-ai-hint="person face" src={program.personInChargePhoto} alt={program.personInCharge} />
+                        <AvatarFallback>{program.personInCharge.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <p className="text-sm font-medium">{program.personInCharge}</p>
+                        <p className="text-xs text-muted-foreground">Penanggung Jawab</p>
+                    </div>
+                </CardContent>
               </Card>
             ))}
           </div>
