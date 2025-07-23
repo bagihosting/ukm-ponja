@@ -1,2 +1,37 @@
-
-{}
+{
+  "programs": {
+    "esensial": [
+      { "id": "es1", "name": "Promosi Kesehatan", "pic": "Ahmad Subagja", "avatar": "https://placehold.co/100x100.png", "position": "Koordinator", "description": "Program untuk meningkatkan kesadaran masyarakat akan pentingnya kesehatan." },
+      { "id": "es2", "name": "Kesehatan Ibu", "pic": "Siti Aminah", "avatar": "https://placehold.co/100x100.png", "position": "Spesialis", "description": "Program untuk kesehatan ibu hamil dan menyusui." },
+      { "id": "es3", "name": "Kesehatan Anak", "pic": "Budi Santoso", "avatar": "https://placehold.co/100x100.png", "position": "Koordinator", "description": "Memastikan tumbuh kembang anak yang optimal." },
+      { "id": "es4", "name": "UKS", "pic": "Dewi Lestari", "avatar": "https://placehold.co/100x100.png", "position": "Pembina", "description": "Usaha Kesehatan Sekolah di wilayah kerja." },
+      { "id": "es5", "name": "Kesehatan Remaja", "pic": "Eka Wijaya", "avatar": "https://placehold.co/100x100.png", "position": "Konselor", "description": "Edukasi dan layanan kesehatan untuk remaja." },
+      { "id": "es6", "name": "Kesehatan Reproduksi", "pic": "Fitri Handayani", "avatar": "https://placehold.co/100x100.png", "position": "Edukator", "description": "Program terkait kesehatan reproduksi dan keluarga berencana." },
+      { "id": "es7", "name": "Kesehatan Lansia", "pic": "Gunawan Prasetyo", "avatar": "https://placehold.co/100x100.png", "position": "Koordinator", "description": "Menjaga kualitas hidup para lansia." },
+      { "id": "es8", "name": "Gizi", "pic": "Herlina Sari", "avatar": "https://placehold.co/100x100.png", "position": "Ahli Gizi", "description": "Program perbaikan gizi masyarakat." },
+      { "id": "es9", "name": "Kesehatan Lingkungan", "pic": "Indra Permana", "avatar": "https://placehold.co/100x100.png", "position": "Sanitarian", "description": "Menciptakan lingkungan yang sehat dan bersih." },
+      { "id": "es10", "name": "TB", "pic": "Joko Susilo", "avatar": "https://placehold.co/100x100.png", "position": "Analis", "description": "Penanggulangan penyakit Tuberkulosis." },
+      { "id": "es11", "name": "HIV", "pic": "Kartika Putri", "avatar": "https://placehold.co/100x100.png", "position": "Konselor", "description": "Pencegahan dan penanggulangan HIV/AIDS." },
+      { "id": "es12", "name": "Kusta dan frambusia", "pic": "Lia Kurnia", "avatar": "https://placehold.co/100x100.png", "position": "Petugas Lapangan", "description": "Eliminasi penyakit kusta dan frambusia." },
+      { "id": "es13", "name": "Ispa", "pic": "Muhammad Iqbal", "avatar": "https://placehold.co/100x100.png", "position": "Dokter", "description": "Penanganan Infeksi Saluran Pernapasan Akut." },
+      { "id": "es14", "name": "Hepatitis", "pic": "Nina Agustina", "avatar": "https://placehold.co/100x100.png", "position": "Analis", "description": "Program pencegahan dan pengendalian Hepatitis." },
+      { "id": "es15", "name": "Diare", "pic": "Oscar Mahendra", "avatar": "https://placehold.co/100x100.png", "position": "Petugas Surveilans", "description": "Penanggulangan penyakit diare." },
+      { "id": "es16", "name": "Imunisasi", "pic": "Putri Wulandari", "avatar": "https://placehold.co/100x100.png", "position": "Koordinator Imunisasi", "description": "Cakupan imunisasi dasar lengkap untuk anak." },
+      { "id": "es17", "name": "Surveilans", "pic": "Qori Ramadhan", "avatar": "https://placehold.co/100x100.png", "position": "Epidemiolog", "description": "Sistem kewaspadaan dini terhadap penyakit." },
+      { "id": "es18", "name": "Penyakit tidak menular", "pic": "Rina Melati", "avatar": "https://placehold.co/100x100.png", "position": "Koordinator PTM", "description": "Pengendalian penyakit tidak menular seperti hipertensi dan diabetes." },
+      { "id": "es19", "name": "Kesehatan Indera", "pic": "Surya Wijaya", "avatar": "https://placehold.co/100x100.png", "position": "Spesialis", "description": "Program kesehatan mata dan telinga." },
+      { "id": "es20", "name": "Kesehatan Jiwa", "pic": "Tia Permata", "avatar": "https://placehold.co/100x100.png", "position": "Psikolog", "description": "Layanan kesehatan mental dan jiwa." },
+      { "id": "es21", "name": "Kanker", "pic": "Umar Abdullah", "avatar": "https://placehold.co/100x100.png", "position": "Koordinator", "description": "Deteksi dini kanker serviks dan payudara." },
+      { "id": "es22", "name": "P2BB (Penyakit bersumber Binatang)", "pic": "Vina Lestari", "avatar": "https://placehold.co/100x100.png", "position": "Entomolog", "description": "Pengendalian penyakit yang bersumber dari binatang." },
+      { "id": "es23", "name": "Perkesmas", "pic": "Wahyu Nugroho", "avatar": "https://placehold.co/100x100.png", "position": "Perawat Komunitas", "description": "Perawatan Kesehatan Masyarakat." },
+      { "id": "es24", "name": "PIS PK", "pic": "Yulia Citra", "avatar": "https://placehold.co/100x100.png", "position": "Koordinator", "description": "Program Indonesia Sehat dengan Pendekatan Keluarga." }
+    ],
+    "pengembangan": [
+      { "id": "pg1", "name": "Kesehatan kerja dan olahraga", "pic": "Zainal Abidin", "avatar": "https://placehold.co/100x100.png", "position": "Spesialis", "description": "Program kesehatan bagi pekerja dan promosi olahraga." },
+      { "id": "pg2", "name": "UKGS UKGMD", "pic": "Agus Salim", "avatar": "https://placehold.co/100x100.png", "position": "Dokter Gigi", "description": "Usaha Kesehatan Gigi Sekolah dan Masyarakat Desa." },
+      { "id": "pg3", "name": "Yankestrad", "pic": "Citra Kirana", "avatar": "https://placehold.co/100x100.png", "position": "Terapis", "description": "Pelayanan Kesehatan Tradisional." },
+      { "id": "pg4", "name": "Haji", "pic": "Dedi Mulyadi", "avatar": "https://placehold.co/100x100.png", "position": "Koordinator Haji", "description": "Pembinaan kesehatan bagi calon jamaah haji." },
+      { "id": "pg5", "name": "Ngider sehat", "pic": "Farah Quinn", "avatar": "https://placehold.co/100x100.png", "position": "Petugas Lapangan", "description": "Program layanan kesehatan keliling." }
+    ]
+  }
+}

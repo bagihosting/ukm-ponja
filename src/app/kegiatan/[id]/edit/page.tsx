@@ -3,6 +3,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
+import { get, ref, update } from "firebase/database";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { database, storage } from "@/lib/firebase";
 import DashboardLayout from "@/components/dashboard-layout";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,43 +16,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader, ArrowLeft, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-// --- Placeholder Data ---
-// Di aplikasi nyata, data ini akan diambil dari database
-const allPrograms = [
-    // UKM Esensial
-    { id: "es1", name: "Promosi Kesehatan", pic: "Ahmad Subagja", avatar: "https://placehold.co/100x100.png", description: "Program untuk meningkatkan kesadaran masyarakat akan pentingnya kesehatan.", position: "Koordinator" },
-    { id: "es2", name: "Kesehatan Ibu", pic: "Siti Aminah", avatar: "https://placehold.co/100x100.png", description: "Program untuk kesehatan ibu hamil dan menyusui.", position: "Spesialis" },
-    { id: "es3", name: "Kesehatan Anak", pic: "Budi Santoso", avatar: "https://placehold.co/100x100.png", description: "Memastikan tumbuh kembang anak yang optimal.", position: "Koordinator" },
-    { id: "es4", name: "UKS", pic: "Dewi Lestari", avatar: "https://placehold.co/100x100.png", description: "Usaha Kesehatan Sekolah di wilayah kerja.", position: "Pembina" },
-    { id: "es5", name: "Kesehatan Remaja", pic: "Eka Wijaya", avatar: "https://placehold.co/100x100.png", description: "Edukasi dan layanan kesehatan untuk remaja.", position: "Konselor" },
-    { id: "es6", name: "Kesehatan Reproduksi", pic: "Fitri Handayani", avatar: "https://placehold.co/100x100.png", description: "Program terkait kesehatan reproduksi dan keluarga berencana.", position: "Edukator" },
-    { id: "es7", name: "Kesehatan Lansia", pic: "Gunawan Prasetyo", avatar: "https://placehold.co/100x100.png", description: "Menjaga kualitas hidup para lansia.", position: "Koordinator" },
-    { id: "es8", name: "Gizi", pic: "Herlina Sari", avatar: "https://placehold.co/100x100.png", description: "Program perbaikan gizi masyarakat.", position: "Ahli Gizi" },
-    { id: "es9", name: "Kesehatan Lingkungan", pic: "Indra Permana", avatar: "https://placehold.co/100x100.png", description: "Menciptakan lingkungan yang sehat dan bersih.", position: "Sanitarian" },
-    { id: "es10", name: "TB", pic: "Joko Susilo", avatar: "https://placehold.co/100x100.png", description: "Penanggulangan penyakit Tuberkulosis.", position: "Analis" },
-    { id: "es11", name: "HIV", pic: "Kartika Putri", avatar: "https://placehold.co/100x100.png", description: "Pencegahan dan penanggulangan HIV/AIDS.", position: "Konselor" },
-    { id: "es12", name: "Kusta dan frambusia", pic: "Lia Kurnia", avatar: "https://placehold.co/100x100.png", description: "Eliminasi penyakit kusta dan frambusia.", position: "Petugas Lapangan" },
-    { id: "es13", name: "Ispa", pic: "Muhammad Iqbal", avatar: "https://placehold.co/100x100.png", description: "Penanganan Infeksi Saluran Pernapasan Akut.", position: "Dokter" },
-    { id: "es14", name: "Hepatitis", pic: "Nina Agustina", avatar: "https://placehold.co/100x100.png", description: "Program pencegahan dan pengendalian Hepatitis.", position: "Analis" },
-    { id: "es15", name: "Diare", pic: "Oscar Mahendra", avatar: "https://placehold.co/100x100.png", description: "Penanggulangan penyakit diare.", position: "Petugas Surveilans" },
-    { id: "es16", name: "Imunisasi", pic: "Putri Wulandari", avatar: "https://placehold.co/100x100.png", description: "Cakupan imunisasi dasar lengkap untuk anak.", position: "Koordinator Imunisasi" },
-    { id: "es17", name: "Surveilans", pic: "Qori Ramadhan", avatar: "https://placehold.co/100x100.png", description: "Sistem kewaspadaan dini terhadap penyakit.", position: "Epidemiolog" },
-    { id: "es18", name: "Penyakit tidak menular", pic: "Rina Melati", avatar: "https://placehold.co/100x100.png", description: "Pengendalian penyakit tidak menular seperti hipertensi dan diabetes.", position: "Koordinator PTM" },
-    { id: "es19", name: "Kesehatan Indera", pic: "Surya Wijaya", avatar: "https://placehold.co/100x100.png", description: "Program kesehatan mata dan telinga.", position: "Spesialis" },
-    { id: "es20", name: "Kesehatan Jiwa", pic: "Tia Permata", avatar: "https://placehold.co/100x100.png", description: "Layanan kesehatan mental dan jiwa.", position: "Psikolog" },
-    { id: "es21", name: "Kanker", pic: "Umar Abdullah", avatar: "https://placehold.co/100x100.png", description: "Deteksi dini kanker serviks dan payudara.", position: "Koordinator" },
-    { id: "es22", name: "P2BB (Penyakit bersumber Binatang)", pic: "Vina Lestari", avatar: "https://placehold.co/100x100.png", description: "Pengendalian penyakit yang bersumber dari binatang.", position: "Entomolog" },
-    { id: "es23", name: "Perkesmas", pic: "Wahyu Nugroho", avatar: "https://placehold.co/100x100.png", description: "Perawatan Kesehatan Masyarakat.", position: "Perawat Komunitas" },
-    { id: "es24", name: "PIS PK", pic: "Yulia Citra", avatar: "https://placehold.co/100x100.png", description: "Program Indonesia Sehat dengan Pendekatan Keluarga.", position: "Koordinator" },
-    // UKM Pengembangan
-    { id: "pg1", name: "Kesehatan kerja dan olahraga", pic: "Zainal Abidin", avatar: "https://placehold.co/100x100.png", description: "Program kesehatan bagi pekerja dan promosi olahraga.", position: "Spesialis" },
-    { id: "pg2", name: "UKGS UKGMD", pic: "Agus Salim", avatar: "https://placehold.co/100x100.png", description: "Usaha Kesehatan Gigi Sekolah dan Masyarakat Desa.", position: "Dokter Gigi" },
-    { id: "pg3", name: "Yankestrad", pic: "Citra Kirana", avatar: "https://placehold.co/100x100.png", description: "Pelayanan Kesehatan Tradisional.", position: "Terapis" },
-    { id: "pg4", name: "Haji", pic: "Dedi Mulyadi", avatar: "https://placehold.co/100x100.png", description: "Pembinaan kesehatan bagi calon jamaah haji.", position: "Koordinator Haji" },
-    { id: "pg5", name: "Ngider sehat", pic: "Farah Quinn", avatar: "https://placehold.co/100x100.png", description: "Program layanan kesehatan keliling.", position: "Petugas Lapangan" },
-];
-// --- End of Placeholder Data ---
-
 type Program = {
   id: string;
   name: string;
@@ -57,6 +23,8 @@ type Program = {
   avatar: string;
   description: string;
   position: string;
+  category: 'esensial' | 'pengembangan';
+  index: number;
 };
 
 export default function EditKegiatanPage() {
@@ -73,19 +41,40 @@ export default function EditKegiatanPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      const foundProgram = allPrograms.find(p => p.id === id) || null;
-      if (foundProgram) {
-        setProgram(foundProgram);
-        setFormData({
-          pic: foundProgram.pic,
-          position: foundProgram.position,
-          description: foundProgram.description
-        });
-        setAvatarPreview(foundProgram.avatar);
+    if (!id) return;
+    
+    const fetchProgram = async () => {
+      setLoading(true);
+      const programsRef = ref(database, 'programs');
+      const snapshot = await get(programsRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        let foundProgram: Program | null = null;
+        
+        const esensialIndex = data.esensial.findIndex((p: any) => p.id === id);
+        if (esensialIndex > -1) {
+          foundProgram = { ...data.esensial[esensialIndex], category: 'esensial', index: esensialIndex };
+        } else {
+          const pengembanganIndex = data.pengembangan.findIndex((p: any) => p.id === id);
+          if (pengembanganIndex > -1) {
+            foundProgram = { ...data.pengembangan[pengembanganIndex], category: 'pengembangan', index: pengembanganIndex };
+          }
+        }
+        
+        if (foundProgram) {
+          setProgram(foundProgram);
+          setFormData({
+            pic: foundProgram.pic,
+            position: foundProgram.position,
+            description: foundProgram.description
+          });
+          setAvatarPreview(foundProgram.avatar);
+        }
       }
       setLoading(false);
-    }
+    };
+
+    fetchProgram();
   }, [id]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -107,19 +96,39 @@ export default function EditKegiatanPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!program) return;
     setSaving(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    try {
+      let newAvatarUrl = program.avatar;
+      if (newAvatar) {
+        const imageRef = storageRef(storage, `avatars/${program.id}-${newAvatar.name}`);
+        const uploadResult = await uploadBytes(imageRef, newAvatar);
+        newAvatarUrl = await getDownloadURL(uploadResult.ref);
+      }
 
-    // Di aplikasi nyata, di sini Anda akan mengirim data (termasuk file gambar) ke server
-    console.log("Saving data:", { ...formData, newAvatar });
+      const programRef = ref(database, `programs/${program.category}/${program.index}`);
+      await update(programRef, {
+        ...formData,
+        avatar: newAvatarUrl
+      });
+      
+      toast({
+        title: "Sukses!",
+        description: `Data untuk program "${program?.name}" berhasil diperbarui.`,
+      });
+      router.push("/kegiatan");
 
-    setSaving(false);
-    toast({
-      title: "Sukses!",
-      description: `Data untuk program "${program?.name}" berhasil diperbarui.`,
-    });
-    router.push("/kegiatan");
+    } catch (error) {
+        console.error("Firebase update error:", error);
+        toast({
+            title: "Gagal menyimpan data",
+            description: "Terjadi kesalahan saat menyimpan perubahan ke server.",
+            variant: "destructive",
+        });
+    } finally {
+        setSaving(false);
+    }
   };
 
   if (loading) {

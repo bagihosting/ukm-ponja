@@ -1,7 +1,12 @@
-
 {
   "rules": {
-    ".read": "true",
-    ".write": "false"
+    "programs": {
+      ".read": "true",
+      "$category": {
+        "$index": {
+          ".write": "auth != null"
+        }
+      }
+    }
   }
 }
