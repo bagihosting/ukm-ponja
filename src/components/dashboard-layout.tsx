@@ -85,9 +85,9 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
             <SidebarSeparator />
             <SidebarMenuItem>
               <Link href="/kegiatan">
-                <SidebarMenuButton isActive={pathname.startsWith("/kegiatan")} tooltip="Kegiatan UKM">
+                <SidebarMenuButton isActive={pathname.startsWith("/kegiatan")} tooltip="Manajemen Kegiatan">
                   <Activity className="size-4" />
-                  <span className="truncate">Kegiatan UKM</span>
+                  <span className="truncate">Manajemen Kegiatan</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
