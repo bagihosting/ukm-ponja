@@ -4,22 +4,14 @@
 import { useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
-import { ArrowRight, Newspaper, Menu, Loader } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Sheet, SheetTrigger, SheetContent, SheetClose } from "@/components/ui/sheet";
-import { useAuth } from "@/hooks/use-auth";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-
-const navLinks = [
-  { name: "Kegiatan UKM", href: "/kegiatan" },
-  { name: "Laporan", href: "/laporan" },
-  { name: "Artikel", href: "/artikel" },
-  { name: "Galeri", href: "/galeri" },
-];
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 const galleryImages = [
   {
@@ -82,101 +74,13 @@ const topArticles = [
 
 
 export default function HomePage() {
-  const { user, loading } = useAuth();
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true })
   );
   
-  const AuthButton = () => {
-    if (loading) {
-      return (
-        <Button disabled className="w-full md:w-auto">
-          <Loader className="mr-2 size-4 animate-spin" />
-          Memuat...
-        </Button>
-      );
-    }
-
-    if (user) {
-      return (
-        <Button asChild className="w-full md:w-auto">
-          <Link href="/dasbor">
-            Dasbor <ArrowRight className="ml-2 size-4" />
-          </Link>
-        </Button>
-      );
-    }
-
-    return (
-      <Button asChild className="w-full md:w-auto">
-        <Link href="/login">
-          Masuk <ArrowRight className="ml-2 size-4" />
-        </Link>
-      </Button>
-    );
-  };
-  
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center">
-          <div className="mr-6 flex items-center">
-            <Link href="/" className="flex items-center gap-2">
-              <Icons.logo className="size-7 text-primary" />
-              <span className="text-lg font-bold">UKM PONJA</span>
-            </Link>
-          </div>
-          <nav className="hidden flex-1 items-center gap-4 text-sm font-medium md:flex">
-             {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </nav>
-          <div className="flex flex-1 items-center justify-end space-x-2 md:flex-initial">
-             <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon" className="md:hidden">
-                    <Menu className="size-5" />
-                    <span className="sr-only">Buka Menu</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left">
-                  <div className="grid gap-6 py-6">
-                    <Link href="/" className="mb-4 flex items-center gap-2">
-                        <Icons.logo className="size-7 text-primary" />
-                        <span className="text-lg font-bold">UKM PONJA</span>
-                    </Link>
-                    <div className="flex flex-col gap-4">
-                      {navLinks.map((link) => (
-                        <SheetClose asChild key={link.name}>
-                          <Link
-                              href={link.href}
-                              className="flex w-full items-center py-2 text-lg font-semibold"
-                          >
-                              {link.name}
-                          </Link>
-                        </SheetClose>
-                      ))}
-                    </div>
-                     <div className="pt-4">
-                      <SheetClose asChild>
-                        <AuthButton />
-                      </SheetClose>
-                    </div>
-                  </div>
-                </SheetContent>
-            </Sheet>
-            <div className="hidden md:inline-flex">
-              <AuthButton />
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
       <main className="flex-1">
         <section className="w-full py-6 md:py-12">
             <div className="container">
@@ -270,13 +174,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="w-full border-t">
-          <div className="container flex h-24 flex-col items-center justify-between gap-4 py-10 md:flex-row md:py-0">
-            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-              © {new Date().getFullYear()} UKM PONJA. Dibuat oleh <span className="font-medium">Rani Kirana</span>.
-            </p>
-          </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
