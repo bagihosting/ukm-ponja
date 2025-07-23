@@ -3,11 +3,19 @@
 
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow, ArrowRight } from "lucide-react";
+import { Activity, ClipboardList, Newspaper, Image, ArrowRight, BookOpen } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const features = [
+  {
+    name: "Artikel",
+    description: "Buat dan publikasikan artikel kesehatan untuk edukasi masyarakat.",
+    icon: <BookOpen className="size-8 text-primary" />,
+    href: "/artikel",
+  },
   {
     name: "Kegiatan UKM",
     description: "Lihat dan kelola semua program kerja UKM Esensial dan Pengembangan.",
@@ -20,25 +28,16 @@ const features = [
     icon: <ClipboardList className="size-8 text-primary" />,
     href: "/laporan",
   },
-  {
-    name: "Artikel",
-    description: "Buat dan publikasikan artikel kesehatan untuk edukasi masyarakat.",
-    icon: <Newspaper className="size-8 text-primary" />,
-    href: "/artikel",
-  },
-  {
-    name: "Galeri",
-    description: "Simpan dan bagikan dokumentasi foto kegiatan UKM Anda.",
-    icon: <Image className="size-8 text-primary" />,
-    href: "/galeri",
-  },
-  {
-    name: "Aplikasi AI",
-    description: "Buat thumbnail kesehatan menarik secara otomatis dengan bantuan AI.",
-    icon: <AppWindow className="size-8 text-primary" />,
-    href: "/aplikasi",
-  },
 ];
+
+const galleryImages = [
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 1", hint: "health activity" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 2", hint: "medical team" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 3", hint: "community health" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 4", hint: "health checkup" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 5", hint: "nutrition advice" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 6", hint: "vaccination drive" },
+]
 
 export default function HomePage() {
   return (
@@ -86,20 +85,68 @@ export default function HomePage() {
           </div>
           <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
             {features.map((feature, index) => (
-              <div key={index} className="relative overflow-hidden rounded-lg border bg-background p-2">
-                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-                    {feature.icon}
-                    <div className="space-y-2">
-                      <h3 className="font-bold">{feature.name}</h3>
-                      <p className="text-sm text-muted-foreground">{feature.description}</p>
-                    </div>
-                 </div>
-              </div>
+              <Link href={feature.href} key={index} className="group">
+                <Card className="relative overflow-hidden rounded-lg border bg-background p-2 h-full transition-all group-hover:shadow-lg group-hover:-translate-y-1">
+                  <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+                      {feature.icon}
+                      <div className="space-y-2">
+                        <h3 className="font-bold">{feature.name}</h3>
+                        <p className="text-sm text-muted-foreground">{feature.description}</p>
+                      </div>
+                  </div>
+                </Card>
+              </Link>
             ))}
           </div>
         </section>
+
+        <section id="gallery-slider" className="container py-12 md:py-24 lg:py-32">
+            <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center mb-12">
+                <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Galeri Kegiatan</h2>
+                <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+                    Dokumentasi visual dari berbagai program dan kegiatan yang telah kami laksanakan.
+                </p>
+            </div>
+            <Carousel
+                opts={{
+                    align: "start",
+                    loop: true,
+                }}
+                className="w-full max-w-5xl mx-auto"
+            >
+                <CarouselContent>
+                    {galleryImages.map((image, index) => (
+                        <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                            <div className="p-1">
+                                <Card className="overflow-hidden">
+                                    <CardContent className="flex aspect-video items-center justify-center p-0">
+                                      <NextImage
+                                        src={image.src}
+                                        alt={image.alt}
+                                        data-ai-hint={image.hint}
+                                        width={600}
+                                        height={400}
+                                        className="w-full h-full object-cover transition-transform hover:scale-105"
+                                      />
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden sm:flex" />
+                <CarouselNext className="hidden sm:flex" />
+            </Carousel>
+            <div className="text-center mt-8">
+              <Button asChild variant="outline">
+                <Link href="/galeri">
+                  Lihat Semua Galeri <ArrowRight className="ml-2 size-4" />
+                </Link>
+              </Button>
+            </div>
+        </section>
         
-        <section className="container py-12 md:py-24 lg:py-32 text-center">
+        <section className="container py-12 md:py-24 lg:py-32 text-center bg-slate-50/50 dark:bg-slate-800/20 rounded-lg">
             <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">
               Siap Meningkatkan Produktivitas?
             </h2>
@@ -116,7 +163,7 @@ export default function HomePage() {
         </section>
 
       </main>
-      <footer className="py-6 md:px-8 md:py-0 border-t">
+      <footer className="py-6 md:px-8 md:py-0 border-t mt-12">
           <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
             <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
               Dibuat oleh <span className="font-medium">Rani Kirana</span>.
