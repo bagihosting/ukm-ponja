@@ -59,10 +59,11 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchQuote();
-    const intervalId = setInterval(fetchQuote, 60 * 60 * 1000); // Fetch new quote every hour
+    // Fetch new quote every 24 hours
+    const intervalId = setInterval(fetchQuote, 24 * 60 * 60 * 1000); 
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, []);
+  }, [toast]);
 
 
   return (
