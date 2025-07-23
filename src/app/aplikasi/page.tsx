@@ -25,7 +25,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow, Loader } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow, Loader, Download } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
@@ -78,6 +78,33 @@ export default function AplikasiPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDownload = () => {
+    if (!generatedImage) return;
+
+    const image = new window.Image();
+    image.src = generatedImage;
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(image, 0, 0);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'thumbnail.webp';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+          }
+        }, 'image/webp');
+      }
+    };
   };
 
 
@@ -246,7 +273,7 @@ export default function AplikasiPage() {
                   Pratinjau thumbnail yang dihasilkan akan muncul di sini.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex-1 flex items-center justify-center">
+              <CardContent className="flex flex-1 flex-col items-center justify-center">
                 <div className="aspect-video w-full rounded-lg border-2 border-dashed bg-card/50 shadow-sm flex items-center justify-center">
                   {loading ? (
                     <div className="flex flex-col items-center gap-2 text-muted-foreground">
@@ -268,6 +295,14 @@ export default function AplikasiPage() {
                   )}
                 </div>
               </CardContent>
+              {generatedImage && !loading && (
+                <CardFooter>
+                  <Button onClick={handleDownload} className="w-full">
+                    <Download className="mr-2 h-4 w-4" />
+                    Unduh (WebP)
+                  </Button>
+                </CardFooter>
+              )}
             </Card>
           </div>
         </main>
