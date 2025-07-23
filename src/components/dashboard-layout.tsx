@@ -27,7 +27,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Newspaper, Image, AppWindow, Loader } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Newspaper, Image, AppWindow, Loader, Activity } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -78,6 +78,14 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
                 <SidebarMenuButton isActive={pathname === "/dasbor"} tooltip="Dasbor">
                   <Home className="size-4" />
                   <span className="truncate">Dasbor</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <Link href="/kegiatan">
+                <SidebarMenuButton isActive={pathname === "/kegiatan"} tooltip="Kegiatan UKM">
+                  <Activity className="size-4" />
+                  <span className="truncate">Kegiatan UKM</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
