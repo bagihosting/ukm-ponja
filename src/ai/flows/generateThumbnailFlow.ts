@@ -55,6 +55,7 @@ const generateThumbnailFlow = ai.defineFlow(
       prompt: `Generate a thumbnail image for ${input.platform} with a 3D animated cartoon style. The scene should be health-themed with a modern, bright, and visually appealing background.
       Feature a ${input.character} character with typical Indonesian facial features, wearing their respective uniform and using health-related accessories.
       The image must prominently display the following text in an attractive, modern, and easy-to-read font: "${input.prompt}".
+      Include a small, discreet copyright text "ukm ponja" in the bottom right corner.
       The overall tone should be friendly and informative. The aspect ratio must be ${aspectRatio}.`,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
