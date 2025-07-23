@@ -1,6 +1,8 @@
 
 "use client";
 
+import { useRef } from "react";
+import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { ArrowRight, Newspaper, Menu, Loader } from "lucide-react";
@@ -10,12 +12,37 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetTrigger, SheetContent, SheetClose } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/use-auth";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const navLinks = [
   { name: "Kegiatan UKM", href: "/dasbor" },
   { name: "Laporan", href: "/dasbor" },
   { name: "Artikel", href: "/artikel" },
   { name: "Galeri", href: "/galeri" },
+];
+
+const galleryImages = [
+  {
+    src: "https://placehold.co/1200x500.png",
+    alt: "Kegiatan penyuluhan kesehatan di masyarakat.",
+    hint: "community health education",
+    title: "Penyuluhan Kesehatan Masyarakat",
+    description: "Meningkatkan kesadaran akan pentingnya pola hidup sehat di lingkungan sekitar."
+  },
+  {
+    src: "https://placehold.co/1200x500.png",
+    alt: "Tim medis UKM PONJA sedang bertugas.",
+    hint: "medical team action",
+    title: "Bakti Sosial dan Pemeriksaan Gratis",
+    description: "Memberikan layanan pemeriksaan kesehatan dasar kepada masyarakat yang membutuhkan."
+  },
+  {
+    src: "https://placehold.co/1200x500.png",
+    alt: "Pelatihan pertolongan pertama pada kecelakaan.",
+    hint: "first aid training",
+    title: "Pelatihan Pertolongan Pertama",
+    description: "Membekali anggota dengan keterampilan pertolongan pertama yang krusial."
+  },
 ];
 
 const topArticles = [
@@ -56,6 +83,9 @@ const topArticles = [
 
 export default function HomePage() {
   const { user, loading } = useAuth();
+  const plugin = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true })
+  );
   
   const AuthButton = () => {
     if (loading) {
@@ -148,7 +178,40 @@ export default function HomePage() {
         </div>
       </header>
       <main className="flex-1">
-        <section id="articles" className="w-full bg-secondary/40 py-16 sm:py-20 md:py-24">
+        <section className="w-full py-6 md:py-12">
+            <div className="container">
+                <Carousel
+                  plugins={[plugin.current]}
+                  className="w-full"
+                  onMouseEnter={plugin.current.stop}
+                  onMouseLeave={plugin.current.reset}
+                >
+                    <CarouselContent>
+                        {galleryImages.map((image, index) => (
+                        <CarouselItem key={index}>
+                            <div className="relative h-[300px] w-full md:h-[500px]">
+                                <NextImage
+                                    src={image.src}
+                                    alt={image.alt}
+                                    data-ai-hint={image.hint}
+                                    fill
+                                    className="rounded-lg object-cover"
+                                />
+                                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-black/50 p-4 text-center">
+                                    <h2 className="text-2xl font-bold text-white md:text-4xl">{image.title}</h2>
+                                    <p className="mt-2 max-w-2xl text-base text-gray-200 md:text-lg">{image.description}</p>
+                                </div>
+                            </div>
+                        </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 text-white" />
+                    <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 text-white" />
+                </Carousel>
+            </div>
+        </section>
+
+        <section id="articles" className="w-full bg-secondary/40 py-16 sm:py-20">
           <div className="container">
             <div className="mb-12 flex items-center justify-between">
                 <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl">Artikel Terbaru</h2>
