@@ -261,7 +261,7 @@ export default function EditKegiatanPage() {
                     disabled={saving || uploading}
                 />
             </div>
-            <div className="flex items-start gap-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               <div className="relative flex flex-col items-center gap-2">
                  <Avatar className="h-24 w-24">
                     {formData.avatar && <AvatarImage data-ai-hint="person photo" src={formData.avatar} alt={formData.pic} />}
@@ -280,7 +280,7 @@ export default function EditKegiatanPage() {
                   </label>
                 </Button>
               </div>
-              <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex-1 grid w-full grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="pic">Nama Penanggung Jawab</Label>
                   <Input 
