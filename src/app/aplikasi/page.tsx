@@ -212,7 +212,7 @@ export default function AplikasiPage() {
           </div>
         </header>
         <main className="flex flex-1 flex-col p-4 md:p-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="grid flex-grow grid-cols-1 gap-6 lg:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Thumbnail Kesehatan</CardTitle>
@@ -330,10 +330,11 @@ export default function AplikasiPage() {
               )}
             </Card>
           </div>
+          <footer className="mt-8 text-center text-sm text-muted-foreground">
+            Dibuat oleh Rani Kirana
+          </footer>
         </main>
       </SidebarInset>
     </SidebarProvider>
   );
 }
-
-    
