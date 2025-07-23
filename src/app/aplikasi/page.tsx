@@ -215,7 +215,7 @@ export default function AplikasiPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>AI Text to Thumbnail</CardTitle>
+                <CardTitle>Thumbnail Kesehatan</CardTitle>
                 <CardDescription>
                   Buat thumbnail menarik bertema kesehatan dengan karakter animasi 3D. Cukup masukkan teks informatif Anda.
                 </CardDescription>
@@ -335,3 +335,5 @@ export default function AplikasiPage() {
     </SidebarProvider>
   );
 }
+
+    
