@@ -1,6 +1,7 @@
 
 "use client";
 
+import Link from "next/link";
 import DashboardLayout from "@/components/dashboard-layout";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -77,9 +78,11 @@ const ProgramTable = ({ programs }: { programs: Program[] }) => (
             </div>
           </TableCell>
           <TableCell className="text-right">
-            <Button variant="outline" size="sm">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit
+             <Button asChild variant="outline" size="sm">
+              <Link href={`/kegiatan/${program.id}/edit`}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit
+              </Link>
             </Button>
           </TableCell>
         </TableRow>
