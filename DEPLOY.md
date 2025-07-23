@@ -96,7 +96,7 @@ npm run build
 
 ## 3. Menjalankan Aplikasi dengan PM2
 
-Jalankan aplikasi Anda menggunakan PM2. Ini akan memulai aplikasi di latar belakang. Secara default, Next.js berjalan di port 3000.
+Jalankan aplikasi Anda menggunakan PM2. Ini akan memulai aplikasi di latar belakang. Sesuai konfigurasi `package.json`, aplikasi ini akan berjalan di port 3001.
 
 ```bash
 pm2 start npm --name "ukm-ponja-app" -- start
@@ -145,7 +145,7 @@ server {
     server_name domainanda.com www.domainanda.com;
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://localhost:3001;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
