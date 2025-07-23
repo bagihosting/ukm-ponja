@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,48 +31,84 @@ import {
   HeartPulse, Baby, Stethoscope, School, Users, Venus, PersonStanding, 
   Utensils, Recycle, Shield, Bug, Syringe, Biohazard, Droplets, 
   BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack, TrendingUp,
-  Briefcase, Smile, Leaf, Ship, Route, ClipboardList, Newspaper, Image, AppWindow
+  Briefcase, Smile, Leaf, Ship, Route, ClipboardList, Newspaper, Image, AppWindow, LucideProps
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { database } from "@/lib/firebase";
+import { ref, onValue } from "firebase/database";
+
+type Program = {
+  name: string;
+  icon: keyof typeof iconComponents;
+  personInCharge: string;
+  personInChargePhoto: string;
+};
+
+const iconComponents: { [key: string]: React.FC<LucideProps> } = {
+  HeartPulse, PersonStanding, Baby, School, Users, Venus, Utensils, Recycle, HeartCrack, Shield, Bug, Thermometer, Biohazard, Droplets, Syringe, BarChart, Stethoscope, Brain, Dna, FileText, Group, Briefcase, Smile, Leaf, Ship, Route
+};
+
 
 export default function KegiatanUkmPage() {
   const pathname = usePathname();
+  const [essentialPrograms, setEssentialPrograms] = useState<Program[]>([]);
+  const [developmentPrograms, setDevelopmentPrograms] = useState<Program[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const essentialPrograms = [
-    { name: "Promosi Kesehatan", icon: <HeartPulse className="h-6 w-6 text-primary" />, personInCharge: "Budi Santoso", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kesehatan Ibu", icon: <PersonStanding className="h-6 w-6 text-primary" />, personInCharge: "Citra Lestari", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kesehatan Anak", icon: <Baby className="h-6 w-6 text-primary" />, personInCharge: "Dewi Anggraini", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "UKS", icon: <School className="h-6 w-6 text-primary" />, personInCharge: "Eko Prasetyo", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kesehatan Remaja", icon: <Users className="h-6 w-6 text-primary" />, personInCharge: "Fitriani", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kesehatan Reproduksi", icon: <Venus className="h-6 w-6 text-primary" />, personInCharge: "Gunawan", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kesehatan Lansia", icon: <PersonStanding className="h-6 w-6 text-primary" />, personInCharge: "Hasanah", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Gizi", icon: <Utensils className="h-6 w-6 text-primary" />, personInCharge: "Indra Wijaya", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kesehatan Lingkungan", icon: <Recycle className="h-6 w-6 text-primary" />, personInCharge: "Joko Susilo", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "TB", icon: <HeartCrack className="h-6 w-6 text-primary" />, personInCharge: "Kartika", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "HIV", icon: <Shield className="h-6 w-6 text-primary" />, personInCharge: "Lestari", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kusta dan frambusia", icon: <Bug className="h-6 w-6 text-primary" />, personInCharge: "Muhammad Ali", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Ispa", icon: <Thermometer className="h-6 w-6 text-primary" />, personInCharge: "Nadia", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Hepatitis", icon: <Biohazard className="h-6 w-6 text-primary" />, personInCharge: "Olivia", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Diare", icon: <Droplets className="h-6 w-6 text-primary" />, personInCharge: "Putra", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Imunisasi", icon: <Syringe className="h-6 w-6 text-primary" />, personInCharge: "Qurrota", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Surveilans", icon: <BarChart className="h-6 w-6 text-primary" />, personInCharge: "Rina", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Penyakit tidak menular", icon: <Stethoscope className="h-6 w-6 text-primary" />, personInCharge: "Sari", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kesehatan Indera", icon: <Brain className="h-6 w-6 text-primary" />, personInCharge: "Toni", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kesehatan Jiwa", icon: <Brain className="h-6 w-6 text-primary" />, personInCharge: "Utami", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Kanker", icon: <Dna className="h-6 w-6 text-primary" />, personInCharge: "Vina", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "P2BB (Penyakit bersumber Binatang)", icon: <Bug className="h-6 w-6 text-primary" />, personInCharge: "Wahyu", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Perkesmas", icon: <Group className="h-6 w-6 text-primary" />, personInCharge: "Yanti", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "PIS PK", icon: <FileText className="h-6 w-6 text-primary" />, personInCharge: "Zainal", personInChargePhoto: "https://placehold.co/100x100.png" },
-  ];
+  useEffect(() => {
+    const essentialRef = ref(database, 'essentialPrograms');
+    const developmentRef = ref(database, 'developmentPrograms');
 
-  const developmentPrograms = [
-    { name: "Kesehatan kerja dan olahraga", icon: <Briefcase className="h-6 w-6 text-primary" />, personInCharge: "Ahmad", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "UKGS UKGMD", icon: <Smile className="h-6 w-6 text-primary" />, personInCharge: "Bella", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Yankestrad", icon: <Leaf className="h-6 w-6 text-primary" />, personInCharge: "Chandra", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Haji", icon: <Ship className="h-6 w-6 text-primary" />, personInCharge: "Dina", personInChargePhoto: "https://placehold.co/100x100.png" },
-    { name: "Ngider sehat", icon: <Route className="h-6 w-6 text-primary" />, personInCharge: "Edwin", personInChargePhoto: "https://placehold.co/100x100.png" },
-  ];
+    const unsubscribeEssential = onValue(essentialRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setEssentialPrograms(Object.values(data));
+      }
+      setLoading(false);
+    }, (error) => {
+      console.error("Firebase read failed: ", error);
+      setLoading(false);
+    });
+
+    const unsubscribeDevelopment = onValue(developmentRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setDevelopmentPrograms(Object.values(data));
+      }
+    }, (error) => {
+      console.error("Firebase read failed: ", error);
+    });
+
+    return () => {
+      unsubscribeEssential();
+      unsubscribeDevelopment();
+    };
+  }, []);
+
+  const ProgramCard = ({ program }: { program: Program }) => {
+    const IconComponent = iconComponents[program.icon];
+    return (
+      <Card className="flex flex-col justify-between">
+        <CardHeader>
+          <div className="flex items-center gap-4">
+            {IconComponent ? <IconComponent className="h-6 w-6 text-primary" /> : <Star className="h-6 w-6 text-primary" />}
+            <CardTitle className="text-base leading-tight">{program.name}</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="mt-auto flex items-center gap-3 pt-4">
+            <Avatar className="size-10">
+                <AvatarImage data-ai-hint="person face" src={program.personInChargePhoto} alt={program.personInCharge} />
+                <AvatarFallback>{program.personInCharge.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div>
+                <p className="text-sm font-medium">{program.personInCharge}</p>
+                <p className="text-xs text-muted-foreground">Penanggung Jawab</p>
+            </div>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <SidebarProvider>
@@ -176,58 +213,32 @@ export default function KegiatanUkmPage() {
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-          <div className="flex items-center gap-2">
-            <Star className="h-6 w-6" />
-            <h1 className="text-lg font-semibold md:text-2xl">UKM Esensial</h1>
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {essentialPrograms.map((program, index) => (
-              <Card key={index} className="flex flex-col justify-between">
-                <CardHeader>
-                  <div className="flex items-center gap-4">
-                    {program.icon}
-                    <CardTitle className="text-base leading-tight">{program.name}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="mt-auto flex items-center gap-3 pt-4">
-                    <Avatar className="size-10">
-                        <AvatarImage data-ai-hint="person face" src={program.personInChargePhoto} alt={program.personInCharge} />
-                        <AvatarFallback>{program.personInCharge.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <p className="text-sm font-medium">{program.personInCharge}</p>
-                        <p className="text-xs text-muted-foreground">Penanggung Jawab</p>
-                    </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <div className="mt-8 flex items-center gap-2">
-            <TrendingUp className="h-6 w-6" />
-            <h1 className="text-lg font-semibold md:text-2xl">UKM Pengembangan</h1>
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {developmentPrograms.map((program, index) => (
-              <Card key={index} className="flex flex-col justify-between">
-                <CardHeader>
-                  <div className="flex items-center gap-4">
-                    {program.icon}
-                    <CardTitle className="text-base leading-tight">{program.name}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="mt-auto flex items-center gap-3 pt-4">
-                    <Avatar className="size-10">
-                        <AvatarImage data-ai-hint="person face" src={program.personInChargePhoto} alt={program.personInCharge} />
-                        <AvatarFallback>{program.personInCharge.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <p className="text-sm font-medium">{program.personInCharge}</p>
-                        <p className="text-xs text-muted-foreground">Penanggung Jawab</p>
-                    </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {loading ? (
+             <div className="flex flex-1 items-center justify-center">
+                <p>Memuat data program...</p>
+             </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-2">
+                <Star className="h-6 w-6" />
+                <h1 className="text-lg font-semibold md:text-2xl">UKM Esensial</h1>
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {essentialPrograms.map((program, index) => (
+                  <ProgramCard key={index} program={program} />
+                ))}
+              </div>
+              <div className="mt-8 flex items-center gap-2">
+                <TrendingUp className="h-6 w-6" />
+                <h1 className="text-lg font-semibold md:text-2xl">UKM Pengembangan</h1>
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {developmentPrograms.map((program, index) => (
+                  <ProgramCard key={index} program={program} />
+                ))}
+              </div>
+            </>
+          )}
           <footer className="mt-8 border-t pt-6">
             <div className="text-center text-sm text-muted-foreground">
               <p>© {new Date().getFullYear()} UKM PONJA. All Rights Reserved.</p>
