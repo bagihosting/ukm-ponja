@@ -159,7 +159,7 @@ export default function HomePage() {
       <main className="flex-1">
         <section className="w-full py-12 sm:py-16 md:py-20">
           <div className="container">
-            <div className="grid gap-8 lg:grid-cols-3">
+            <div className="grid gap-6 lg:grid-cols-3">
               {/* Main Article */}
               <div className="lg:col-span-2">
                 <Link href={mainArticle.href} className="group block overflow-hidden rounded-lg">
@@ -212,7 +212,7 @@ export default function HomePage() {
                   </Link>
                 </Button>
             </div>
-            <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {topArticles.map((article, index) => (
                 <Link key={index} href={article.href} className="group">
                   <Card className="flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl">
