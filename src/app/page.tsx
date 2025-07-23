@@ -87,7 +87,7 @@ export default function HomePage() {
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
             <Button asChild>
-              <Link href="/dasbor">
+              <Link href="/login">
                 Masuk Dasbor <ArrowRight className="ml-2 size-4" />
               </Link>
             </Button>
@@ -106,7 +106,7 @@ export default function HomePage() {
               </p>
               <div className="mt-8">
                 <Button size="lg" asChild>
-                  <Link href="/dasbor">
+                  <Link href="/login">
                     Mulai Berkontribusi
                   </Link>
                 </Button>
@@ -247,7 +247,7 @@ export default function HomePage() {
             </p>
             <div className="mt-8">
               <Button size="lg" asChild>
-                  <Link href="/dasbor">
+                  <Link href="/login">
                     Akses Dasbor Manajemen
                   </Link>
               </Button>
@@ -269,5 +269,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    

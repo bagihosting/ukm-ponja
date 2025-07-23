@@ -123,10 +123,12 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
                 <span>Dukungan</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Keluar</span>
-              </DropdownMenuItem>
+              <Link href="/">
+                <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Keluar</span>
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarFooter>
