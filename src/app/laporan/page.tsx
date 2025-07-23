@@ -5,6 +5,7 @@ import DashboardLayout from "@/components/dashboard-layout";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart2, BookCopy, BookText, FolderKanban, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const reports = [
   {
@@ -19,21 +20,21 @@ const reports = [
     description: "Visualisasikan data kegiatan dan capaian program dalam bentuk grafik interaktif.",
     icon: <BarChart2 className="size-8 text-primary" />,
     actionText: "Lihat Grafik",
-    href: "/laporan/grafik",
+    href: "#", // Placeholder
   },
   {
     title: "Log Book UKM",
     description: "Catatan harian digital untuk semua kegiatan program UKM Esensial dan Pengembangan.",
     icon: <BookText className="size-8 text-primary" />,
     actionText: "Buka Log Book",
-    href: "/laporan/logbook",
+    href: "#", // Placeholder
   },
   {
     title: "Gdrive Data-data UKM",
     description: "Akses folder pusat berisi semua dokumen, materi, dan data pendukung kegiatan.",
     icon: <FolderKanban className="size-8 text-primary" />,
     actionText: "Buka Gdrive",
-    href: "/laporan/gdrive",
+    href: "#", // Placeholder
   },
 ];
 
@@ -55,9 +56,11 @@ export default function LaporanPage() {
                         <CardDescription>{report.description}</CardDescription>
                     </CardContent>
                     <CardFooter>
-                        <Button variant="outline" className="w-full">
-                            {report.actionText}
-                            <ArrowRight className="ml-2 size-4" />
+                        <Button asChild variant="outline" className="w-full">
+                           <Link href={report.href}>
+                             {report.actionText}
+                             <ArrowRight className="ml-2 size-4" />
+                           </Link>
                         </Button>
                     </CardFooter>
                 </Card>
