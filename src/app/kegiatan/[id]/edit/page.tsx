@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { get, ref, update } from "firebase/database";
+import { get, ref, update, child } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { database, storage } from "@/lib/firebase";
 import DashboardLayout from "@/components/dashboard-layout";
@@ -24,7 +24,7 @@ type Program = {
   description: string;
   position: string;
   category: 'esensial' | 'pengembangan';
-  index: number;
+  dbPath: string; // Full path to the item in DB
 };
 
 export default function EditKegiatanPage() {
@@ -34,36 +34,40 @@ export default function EditKegiatanPage() {
   const { toast } = useToast();
 
   const [program, setProgram] = useState<Program | null>(null);
-  const [formData, setFormData] = useState({ pic: '', position: '', description: '' });
+  const [formData, setFormData] = useState({ name: '', pic: '', position: '', description: '' });
   const [newAvatar, setNewAvatar] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || typeof id !== 'string') return;
     
     const fetchProgram = async () => {
       setLoading(true);
       const programsRef = ref(database, 'programs');
       const snapshot = await get(programsRef);
+
       if (snapshot.exists()) {
         const data = snapshot.val();
         let foundProgram: Program | null = null;
         
-        const esensialIndex = data.esensial.findIndex((p: any) => p.id === id);
-        if (esensialIndex > -1) {
-          foundProgram = { ...data.esensial[esensialIndex], category: 'esensial', index: esensialIndex };
-        } else {
-          const pengembanganIndex = data.pengembangan.findIndex((p: any) => p.id === id);
-          if (pengembanganIndex > -1) {
-            foundProgram = { ...data.pengembangan[pengembanganIndex], category: 'pengembangan', index: pengembanganIndex };
-          }
+        for (const category of ['esensial', 'pengembangan']) {
+            if (data[category] && data[category][id]) {
+                foundProgram = {
+                    id: id,
+                    ...data[category][id],
+                    category: category as 'esensial' | 'pengembangan',
+                    dbPath: `programs/${category}/${id}`
+                };
+                break;
+            }
         }
         
         if (foundProgram) {
           setProgram(foundProgram);
           setFormData({
+            name: foundProgram.name,
             pic: foundProgram.pic,
             position: foundProgram.position,
             description: foundProgram.description
@@ -107,7 +111,7 @@ export default function EditKegiatanPage() {
         newAvatarUrl = await getDownloadURL(uploadResult.ref);
       }
 
-      const programRef = ref(database, `programs/${program.category}/${program.index}`);
+      const programRef = ref(database, program.dbPath);
       await update(programRef, {
         ...formData,
         avatar: newAvatarUrl
@@ -115,7 +119,7 @@ export default function EditKegiatanPage() {
       
       toast({
         title: "Sukses!",
-        description: `Data untuk program "${program?.name}" berhasil diperbarui.`,
+        description: `Data untuk program "${formData.name}" berhasil diperbarui.`,
       });
       router.push("/kegiatan");
 
@@ -163,7 +167,7 @@ export default function EditKegiatanPage() {
   }
 
   return (
-    <DashboardLayout pageTitle={`Edit Program: ${program.name}`}>
+    <DashboardLayout pageTitle={`Edit Program: ${formData.name}`}>
       <form onSubmit={handleSubmit}>
         <Card>
           <CardHeader>
@@ -171,6 +175,16 @@ export default function EditKegiatanPage() {
             <CardDescription>Ubah informasi penanggung jawab dan detail lainnya untuk program ini.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            <div className="space-y-2">
+                <Label htmlFor="name">Nama Program</Label>
+                <Input 
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="Masukkan nama program"
+                />
+            </div>
             <div className="flex items-start gap-6">
               <div className="flex flex-col items-center gap-2">
                  <Avatar className="h-24 w-24">

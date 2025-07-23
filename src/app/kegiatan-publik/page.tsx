@@ -17,14 +17,17 @@ type Program = {
   name: string;
   pic: string;
   avatar: string;
+  position: string;
+  description: string;
 };
 
 const ProgramTable = ({ programs }: { programs: Program[] }) => (
   <Table>
     <TableHeader>
       <TableRow>
-        <TableHead className="w-[50%]">Program</TableHead>
-        <TableHead className="w-[50%]">Penanggung Jawab</TableHead>
+        <TableHead className="w-[30%]">Program</TableHead>
+        <TableHead className="w-[30%]">Penanggung Jawab</TableHead>
+        <TableHead className="w-[40%]">Deskripsi</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
@@ -39,10 +42,11 @@ const ProgramTable = ({ programs }: { programs: Program[] }) => (
               </Avatar>
               <div>
                 <div className="font-medium">{program.pic}</div>
-                <div className="text-sm text-muted-foreground">PIC</div>
+                <div className="text-sm text-muted-foreground">{program.position}</div>
               </div>
             </div>
           </TableCell>
+          <TableCell className="text-sm text-muted-foreground">{program.description}</TableCell>
         </TableRow>
       ))}
     </TableBody>
@@ -54,19 +58,22 @@ export default function KegiatanPublikPage() {
   const [ukmPengembangan, setUkmPengembangan] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
 
+   const fetchPrograms = async () => {
+    setLoading(true);
+    const programsRef = ref(database, 'programs');
+    const snapshot = await get(programsRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      const processData = (categoryData: any = []) => {
+        return Object.entries(categoryData).map(([id, value]) => ({ id, ...(value as Omit<Program, 'id'>) }));
+      };
+      setUkmEsensial(processData(data.esensial));
+      setUkmPengembangan(processData(data.pengembangan));
+    }
+    setLoading(false);
+  };
+  
   useEffect(() => {
-    const fetchPrograms = async () => {
-      setLoading(true);
-      const programsRef = ref(database, 'programs');
-      const snapshot = await get(programsRef);
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        setUkmEsensial(data.esensial || []);
-        setUkmPengembangan(data.pengembangan || []);
-      }
-      setLoading(false);
-    };
-
     fetchPrograms();
   }, []);
 
@@ -105,7 +112,7 @@ export default function KegiatanPublikPage() {
               <p className="ml-2">Memuat data program...</p>
             </div>
           ) : (
-            <Accordion type="single" collapsible className="w-full space-y-6">
+            <Accordion type="single" collapsible className="w-full space-y-6" defaultValue="item-1">
               {programCategories.map((program) => (
                 <AccordionItem value={program.value} key={program.title} className="border-b-0">
                    <Card className="group flex flex-col justify-between transition-all hover:shadow-xl">
