@@ -10,7 +10,7 @@ import { useAuth } from "@/hooks/use-auth";
 
 const navLinks = [
   { name: "Kegiatan UKM", href: "/kegiatan-publik" },
-  { name: "Laporan", href: "/laporan" },
+  { name: "Laporan", href: "/laporan-publik" },
   { name: "Artikel", href: "/artikel" },
   { name: "Galeri", href: "/galeri" },
 ];
