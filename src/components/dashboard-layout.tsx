@@ -67,10 +67,10 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Icons.logo className="size-8 text-primary" />
             <h1 className="text-xl font-semibold">UKM PONJA</h1>
-          </div>
+          </Link>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
