@@ -36,7 +36,7 @@ const generateThumbnailFlow = ai.defineFlow(
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
       prompt: `Generate a thumbnail image with a 3D animated cartoon style. The scene should be health-themed.
-      Feature a ${input.character} character wearing their respective uniform and using health-related accessories.
+      Feature a ${input.character} character with typical Indonesian facial features, wearing their respective uniform and using health-related accessories.
       The image must prominently display the following text in an attractive, modern, and easy-to-read font: "${input.prompt}".
       The overall tone should be friendly and informative. The aspect ratio should be 16:9.`,
       config: {
