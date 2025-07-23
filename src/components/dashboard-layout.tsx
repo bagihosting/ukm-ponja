@@ -2,7 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +27,10 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Newspaper, Image, AppWindow } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Newspaper, Image, AppWindow, Loader } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -35,6 +39,28 @@ type DashboardLayoutProps = {
 
 export default function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/");
+  };
+
+  if (loading || !user) {
+    return (
+        <div className="flex h-screen w-full items-center justify-center">
+            <Loader className="h-8 w-8 animate-spin" />
+        </div>
+    );
+  }
+
 
   return (
     <SidebarProvider>
@@ -86,12 +112,12 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-auto w-full justify-start gap-2 p-2">
                 <Avatar className="size-8">
-                  <AvatarImage data-ai-hint="profile avatar" src="https://placehold.co/100x100.png" alt="Pengguna" />
-                  <AvatarFallback>P</AvatarFallback>
+                  <AvatarImage data-ai-hint="profile avatar" src="https://placehold.co/100x100.png" alt="Admin" />
+                  <AvatarFallback>A</AvatarFallback>
                 </Avatar>
                 <div className="text-left group-data-[collapsible=icon]:hidden">
-                  <p className="truncate text-sm font-medium">Pengguna</p>
-                  <p className="truncate text-xs text-muted-foreground">pengguna@contoh.com</p>
+                  <p className="truncate text-sm font-medium">Admin</p>
+                  <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
                 </div>
               </Button>
             </DropdownMenuTrigger>
@@ -107,12 +133,10 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
                 <span>Dukungan</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <Link href="/">
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Keluar</span>
-                </DropdownMenuItem>
-              </Link>
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Keluar</span>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarFooter>

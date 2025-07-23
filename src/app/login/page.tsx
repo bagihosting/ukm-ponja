@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,16 +15,52 @@ import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { useAuth } from "@/hooks/use-auth";
+import { Loader } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
+  const { toast } = useToast();
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.push("/dasbor");
+    }
+  }, [user, authLoading, router]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement actual login logic here
-    // For now, we'll just redirect to the dashboard
-    router.push("/dasbor");
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/dasbor");
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        title: "Login Gagal",
+        description: "Email atau kata sandi salah. Silakan coba lagi.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (authLoading || user) {
+    return (
+        <div className="flex min-h-screen items-center justify-center">
+            <Loader className="h-8 w-8 animate-spin" />
+        </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
@@ -37,7 +74,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle className="text-2xl">Masuk</CardTitle>
           <CardDescription>
-            Masukkan email Anda di bawah ini untuk masuk ke akun Anda
+            Masukkan kredensial admin Anda untuk mengakses dasbor.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -47,29 +84,27 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="admin@ukmponja.com"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
             </div>
             <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Kata Sandi</Label>
-                <Link
-                  href="#"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Lupa kata sandi?
-                </Link>
-              </div>
-              <Input id="password" type="password" required />
+              <Label htmlFor="password">Kata Sandi</Label>
+              <Input 
+                id="password" 
+                type="password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+              />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
               Masuk
-            </Button>
-            <Button variant="outline" className="w-full" asChild>
-                <Link href="#">
-                    Masuk dengan Google
-                </Link>
             </Button>
           </form>
         </CardContent>
