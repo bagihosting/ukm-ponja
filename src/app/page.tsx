@@ -18,15 +18,6 @@ const navLinks = [
   { name: "Galeri", href: "/galeri" },
 ];
 
-const mainArticle = {
-  title: "Masa Depan Kesehatan Digital: Inovasi yang Mengubah Hidup",
-  category: "Teknologi Kesehatan",
-  excerpt: "Jelajahi bagaimana teknologi seperti AI, telemedicine, dan perangkat wearable merevolusi cara kita mengelola kesehatan dan memberikan perawatan yang lebih personal dan efektif.",
-  image: "https://placehold.co/1200x800.png",
-  hint: "digital health technology",
-  href: "/artikel/kesehatan-digital",
-};
-
 const topArticles = [
   {
     title: "5 Kebiasaan Sederhana untuk Jantung yang Lebih Sehat",
@@ -157,36 +148,6 @@ export default function HomePage() {
         </div>
       </header>
       <main className="flex-1">
-        <section className="w-full py-12 sm:py-16 md:py-20">
-          <div className="container">
-            <div className="grid gap-6 lg:grid-cols-3">
-              {/* Main Article */}
-              <div className="lg:col-span-3">
-                <Link href={mainArticle.href} className="group block overflow-hidden rounded-lg">
-                  <Card className="h-full border-0 shadow-none">
-                     <CardContent className="relative p-0">
-                      <NextImage
-                        src={mainArticle.image}
-                        alt={mainArticle.title}
-                        data-ai-hint={mainArticle.hint}
-                        width={1200}
-                        height={800}
-                        className="h-auto w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                    </CardContent>
-                    <div className="absolute bottom-0 p-6">
-                      <Badge variant="secondary" className="mb-2">{mainArticle.category}</Badge>
-                      <CardTitle className="text-2xl font-bold text-primary-foreground md:text-3xl lg:text-4xl">{mainArticle.title}</CardTitle>
-                      <p className="mt-2 text-sm text-primary-foreground/80 md:text-base">{mainArticle.excerpt}</p>
-                    </div>
-                  </Card>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section id="articles" className="w-full bg-secondary/40 py-16 sm:py-20 md:py-24">
           <div className="container">
             <div className="mb-12 flex items-center justify-between">
