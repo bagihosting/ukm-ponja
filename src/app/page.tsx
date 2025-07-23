@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Activity, ClipboardList, Image, ArrowRight } from "lucide-react";
+import { Activity, ClipboardList, Image, ArrowRight, Newspaper } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -28,6 +28,12 @@ const features = [
     description: "Visualisasikan berbagai program dan dampak positif yang telah kita ciptakan bersama di masyarakat.",
     icon: <Image className="size-8 text-primary" />,
     href: "/galeri",
+  },
+  {
+    name: "Artikel & Wawasan",
+    description: "Publikasikan artikel, berita, dan wawasan terkini untuk mengedukasi masyarakat luas.",
+    icon: <Newspaper className="size-8 text-primary" />,
+    href: "/artikel",
   }
 ];
 
@@ -96,7 +102,7 @@ export default function HomePage() {
                 Memajukan Kesehatan Masyarakat, Bersama UKM PONJA
               </h1>
               <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground md:text-xl">
-                Platform digital untuk memelihara, meningkatkan, serta menanggulangi masalah kesehatan dengan sasaran keluarga, kelompok, dan masyarakat secara terintegrasi.
+                Setiap kegiatan untuk memelihara dan meningkatkan kesehatan serta mencegah dan menanggulangi timbulnya masalah kesehatan dengan sasaran keluarga, kelompok, dan masyarakat.
               </p>
               <div className="mt-8">
                 <Button size="lg" asChild>
@@ -117,7 +123,7 @@ export default function HomePage() {
                 Alat bantu esensial yang dirancang untuk mendukung setiap aspek kegiatan kesehatan masyarakat.
               </p>
             </div>
-            <div className="mx-auto mt-12 grid max-w-6xl justify-center gap-4 sm:grid-cols-2 md:grid-cols-3">
+            <div className="mx-auto mt-12 grid max-w-5xl justify-center gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {features.map((feature, index) => (
                 <Link href={feature.href} key={index} className="group">
                   <Card className="relative h-full overflow-hidden rounded-lg border bg-background p-2 transition-all group-hover:-translate-y-1 group-hover:shadow-lg">
@@ -263,3 +269,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
