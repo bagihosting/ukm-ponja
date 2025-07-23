@@ -7,9 +7,8 @@ import { database } from "@/lib/firebase";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LayoutGrid, TrendingUp, Loader } from "lucide-react";
+import { LayoutGrid, TrendingUp, Loader, ChevronDown } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type Program = {
@@ -21,22 +20,17 @@ type Program = {
   description: string;
 };
 
-const ProgramTable = ({ programs }: { programs: Program[] }) => (
-  <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHead className="w-[30%]">Program</TableHead>
-        <TableHead className="w-[30%]">Penanggung Jawab</TableHead>
-        <TableHead className="w-[40%]">Deskripsi</TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      {programs.map((program) => (
-        <TableRow key={program.id}>
-          <TableCell className="font-medium">{program.name}</TableCell>
-          <TableCell>
-            <div className="flex items-center gap-3">
-              <Avatar className="h-9 w-9">
+const ProgramList = ({ programs }: { programs: Program[] }) => (
+  <Accordion type="multiple" className="w-full space-y-2">
+    {programs.map((program) => (
+      <AccordionItem value={program.id} key={program.id} className="rounded-md border bg-card/50 px-4 transition-all hover:bg-card">
+        <AccordionTrigger className="py-3 text-left font-medium hover:no-underline">
+          {program.name}
+        </AccordionTrigger>
+        <AccordionContent className="pt-2">
+          <p className="mb-4 text-sm text-muted-foreground">{program.description}</p>
+          <div className="flex items-center gap-3 rounded-md border p-3">
+             <Avatar className="h-10 w-10">
                 <AvatarImage data-ai-hint="person photo" src={program.avatar} alt={program.pic} />
                 <AvatarFallback>{program.pic ? program.pic.charAt(0) : '?'}</AvatarFallback>
               </Avatar>
@@ -44,13 +38,11 @@ const ProgramTable = ({ programs }: { programs: Program[] }) => (
                 <div className="font-medium">{program.pic}</div>
                 <div className="text-sm text-muted-foreground">{program.position}</div>
               </div>
-            </div>
-          </TableCell>
-          <TableCell className="text-sm text-muted-foreground">{program.description}</TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    ))}
+  </Accordion>
 );
 
 export default function KegiatanPublikPage() {
@@ -64,7 +56,7 @@ export default function KegiatanPublikPage() {
     const snapshot = await get(programsRef);
     if (snapshot.exists()) {
       const data = snapshot.val();
-      const processData = (categoryData: any = []) => {
+      const processData = (categoryData: any = {}) => {
         return Object.entries(categoryData).map(([id, value]) => ({ id, ...(value as Omit<Program, 'id'>) }));
       };
       setUkmEsensial(processData(data.esensial));
@@ -116,20 +108,21 @@ export default function KegiatanPublikPage() {
               {programCategories.map((program) => (
                 <AccordionItem value={program.value} key={program.title} className="border-b-0">
                    <Card className="group flex flex-col justify-between transition-all hover:shadow-xl">
-                      <AccordionTrigger className="hover:no-underline">
+                      <AccordionTrigger className="w-full p-0 hover:no-underline">
                         <CardHeader className="flex-row items-center gap-4 space-y-0 p-4 md:p-6 w-full">
                             <div className="rounded-lg bg-primary/10 p-4">
                               {program.icon}
                             </div>
-                            <div className="text-left">
+                            <div className="flex-1 text-left">
                                 <CardTitle>{program.title}</CardTitle>
                                 <CardDescription className="mt-1 leading-relaxed">{program.description}</CardDescription>
                             </div>
+                            <ChevronDown className="h-5 w-5 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                         </CardHeader>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <CardContent>
-                            <ProgramTable programs={program.programList} />
+                        <CardContent className="px-4 md:px-6 pb-4 md:pb-6">
+                            <ProgramList programs={program.programList} />
                         </CardContent>
                       </AccordionContent>
                     </Card>
