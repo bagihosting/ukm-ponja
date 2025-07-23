@@ -28,7 +28,7 @@ import {
   SidebarTrigger,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Newspaper, Image, AppWindow, Loader, Activity, FileText, LayoutGrid, TrendingUp } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Newspaper, Image, AppWindow, Loader, Activity, FileText } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -83,26 +83,9 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
               </Link>
             </SidebarMenuItem>
             <SidebarSeparator />
-             <SidebarMenuItem>
-                <Link href="/ukm-esensial">
-                    <SidebarMenuButton isActive={pathname === "/ukm-esensial"} tooltip="UKM Esensial">
-                    <LayoutGrid className="size-4" />
-                    <span className="truncate">UKM Esensial</span>
-                    </SidebarMenuButton>
-                </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-                <Link href="/ukm-pengembangan">
-                    <SidebarMenuButton isActive={pathname === "/ukm-pengembangan"} tooltip="UKM Pengembangan">
-                    <TrendingUp className="size-4" />
-                    <span className="truncate">UKM Pengembangan</span>
-                    </SidebarMenuButton>
-                </Link>
-            </SidebarMenuItem>
-            <SidebarSeparator />
             <SidebarMenuItem>
               <Link href="/kegiatan">
-                <SidebarMenuButton isActive={pathname === "/kegiatan"} tooltip="Kegiatan UKM">
+                <SidebarMenuButton isActive={pathname.startsWith("/kegiatan")} tooltip="Kegiatan UKM">
                   <Activity className="size-4" />
                   <span className="truncate">Kegiatan UKM</span>
                 </SidebarMenuButton>
