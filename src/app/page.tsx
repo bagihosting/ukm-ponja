@@ -185,20 +185,18 @@ export default function HomePage() {
               </div>
               
               {/* Top Articles List */}
-              <div>
+              <div className="flex flex-col">
                   <h2 className="mb-4 text-2xl font-bold">Terpopuler</h2>
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                      {topArticles.slice(0, 3).map((article, index) => (
-                          <Link key={index} href={article.href} className="group">
-                              <Card className="flex flex-col overflow-hidden transition-all hover:bg-secondary/50">
-                                  <CardHeader>
-                                      <Badge variant="secondary" className="w-fit">{article.category}</Badge>
-                                      <CardTitle className="mt-1 text-base font-semibold group-hover:text-primary">{article.title}</CardTitle>
-                                  </CardHeader>
-                              </Card>
+                   <div className="relative flex overflow-x-hidden rounded-lg border bg-secondary/30 py-4">
+                      <div className="animate-marquee whitespace-nowrap">
+                        {[...topArticles.slice(0, 3), ...topArticles.slice(0, 3)].map((article, index) => (
+                          <Link key={index} href={article.href} className="inline-flex items-center mx-4 text-sm font-semibold hover:text-primary transition-colors">
+                              <Newspaper className="mr-2 h-4 w-4 text-muted-foreground" />
+                              {article.title}
                           </Link>
-                      ))}
-                  </div>
+                        ))}
+                      </div>
+                   </div>
               </div>
             </div>
           </div>
@@ -273,7 +271,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    
-
-    
