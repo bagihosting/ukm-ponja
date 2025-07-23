@@ -44,6 +44,7 @@ export default function AplikasiPage() {
   const [prompt, setPrompt] = useState("");
   const [character, setCharacter] = useState("doctor");
   const [platform, setPlatform] = useState("youtube");
+  const [theme, setTheme] = useState("default");
   const [generatedImage, setGeneratedImage] = useState("");
 
   const handleGenerate = async () => {
@@ -58,7 +59,7 @@ export default function AplikasiPage() {
     setLoading(true);
     setGeneratedImage("");
     try {
-      const result = await generateThumbnail({ prompt, character, platform });
+      const result = await generateThumbnail({ prompt, character, platform, theme });
       if (result.imageUrl) {
         setGeneratedImage(result.imageUrl);
       } else {
@@ -230,7 +231,7 @@ export default function AplikasiPage() {
                     rows={3}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   <div className="space-y-2">
                     <Label htmlFor="character">Pilih Karakter</Label>
                      <Select value={character} onValueChange={setCharacter}>
@@ -249,6 +250,22 @@ export default function AplikasiPage() {
                         <SelectItem value="elderly_man">Lansia Pria</SelectItem>
                         <SelectItem value="elderly_woman">Lansia Wanita</SelectItem>
                       </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="theme">Tema Busana</Label>
+                    <Select value={theme} onValueChange={setTheme}>
+                        <SelectTrigger id="theme" className="w-full">
+                            <SelectValue placeholder="Pilih tema" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="default">Seragam (Default)</SelectItem>
+                            <SelectItem value="idul_fitri">Idul Fitri</SelectItem>
+                            <SelectItem value="idul_adha">Idul Adha</SelectItem>
+                            <SelectItem value="imlek">Imlek</SelectItem>
+                            <SelectItem value="ramadhan">Ramadhan</SelectItem>
+                            <SelectItem value="hari_batik">Hari Batik</SelectItem>
+                        </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">

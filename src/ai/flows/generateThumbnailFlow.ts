@@ -15,6 +15,7 @@ const GenerateThumbnailInputSchema = z.object({
   prompt: z.string().describe('The informational text to be included in the thumbnail.'),
   character: z.string().describe("The character to feature in the thumbnail (e.g., 'doctor', 'nurse', 'midwife', 'adult_man', 'adult_woman', 'boy', 'girl', 'baby', 'elderly_man', 'elderly_woman')."),
   platform: z.string().describe("The social media platform for which to generate the thumbnail (e.g., 'youtube', 'instagram', 'tiktok')."),
+  theme: z.string().describe("The clothing theme for the character (e.g., 'default', 'idul_fitri', 'idul_adha', 'imlek', 'ramadhan', 'hari_batik')."),
 });
 export type GenerateThumbnailInput = z.infer<typeof GenerateThumbnailInputSchema>;
 
@@ -40,6 +41,24 @@ const getAspectRatio = (platform: string): string => {
   }
 };
 
+const getClothingPrompt = (character: string, theme: string): string => {
+  const characterName = character.replace(/_/g, ' ');
+  switch (theme) {
+    case 'idul_fitri':
+      return `a ${characterName} character with typical Indonesian facial features, wearing festive Idul Fitri clothing (baju koko for male, gamis/kaftan for female) while still having some subtle health-related accessories.`;
+    case 'idul_adha':
+      return `a ${characterName} character with typical Indonesian facial features, wearing modest Idul Adha celebration attire, possibly with patterns related to the event, along with health-related accessories.`;
+    case 'imlek':
+      return `a ${characterName} character with typical Indonesian facial features, wearing a Cheongsam (for female) or Changshan (for male) in red or gold colors for Chinese New Year (Imlek), combined with health-related accessories.`;
+    case 'ramadhan':
+        return `a ${characterName} character with typical Indonesian facial features, wearing modest and neat Ramadhan-themed clothing like a gamis or koko, suitable for the holy month, along with health-related accessories.`;
+    case 'hari_batik':
+      return `a ${characterName} character with typical Indonesian facial features, wearing an elegant modern Batik shirt (for male) or dress (for female) to celebrate Batik Day, complemented by health-related accessories.`;
+    case 'default':
+    default:
+      return `a ${characterName} character with typical Indonesian facial features, wearing their respective uniform and using health-related accessories.`;
+  }
+};
 
 const generateThumbnailFlow = ai.defineFlow(
   {
@@ -49,11 +68,12 @@ const generateThumbnailFlow = ai.defineFlow(
   },
   async (input) => {
     const aspectRatio = getAspectRatio(input.platform);
+    const clothingPrompt = getClothingPrompt(input.character, input.theme);
     
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
       prompt: `Generate a thumbnail image for ${input.platform} with a 3D animated cartoon style. The scene must be health-themed with a modern, bright, and visually appealing background.
-      Feature a ${input.character.replace(/_/g, ' ')} character with typical Indonesian facial features, wearing their respective uniform and using health-related accessories.
+      Feature ${clothingPrompt}
       The image must prominently display the following text: "${input.prompt}". The text should be colorful, using a very attractive, modern, and easy-to-read font style that stands out.
       The image MUST include the copyright text "UKM PONJA" in the bottom right corner. Also include a small icon representing the ${input.platform} platform.
       The overall tone should be friendly and informative. The aspect ratio must be ${aspectRatio}.`,
