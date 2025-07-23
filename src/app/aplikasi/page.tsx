@@ -249,6 +249,8 @@ export default function AplikasiPage() {
                         <SelectItem value="baby">Bayi</SelectItem>
                         <SelectItem value="elderly_man">Lansia Pria</SelectItem>
                         <SelectItem value="elderly_woman">Lansia Wanita</SelectItem>
+                        <SelectItem value="bakteri">Bakteri</SelectItem>
+                        <SelectItem value="virus">Virus</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
