@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "programs": {
+      ".read": "true",
+      ".write": "auth != null"
+    }
+  }
+}
