@@ -15,7 +15,7 @@ const GenerateThumbnailInputSchema = z.object({
   prompt: z.string().describe('The informational text to be included in the thumbnail.'),
   character: z.string().describe("The character to feature in the thumbnail (e.g., 'doctor', 'nurse', 'midwife', 'adult_man', 'adult_woman', 'boy', 'girl', 'baby', 'elderly_man', 'elderly_woman')."),
   platform: z.string().describe("The social media platform for which to generate the thumbnail (e.g., 'youtube', 'instagram', 'tiktok')."),
-  theme: z.string().describe("The clothing theme for the character (e.g., 'default', 'idul_fitri', 'idul_adha', 'imlek', 'ramadhan', 'hari_batik')."),
+  theme: z.string().describe("The clothing theme for the character (e.g., 'default', 'idul_fitri', 'idul_adha', 'imlek', 'ramadhan', 'hari_batik', 'natal')."),
 });
 export type GenerateThumbnailInput = z.infer<typeof GenerateThumbnailInputSchema>;
 
@@ -54,6 +54,8 @@ const getClothingPrompt = (character: string, theme: string): string => {
         return `a ${characterName} character with typical Indonesian facial features, wearing modest and neat Ramadhan-themed clothing like a gamis or koko, suitable for the holy month, along with health-related accessories.`;
     case 'hari_batik':
       return `a ${characterName} character with typical Indonesian facial features, wearing an elegant modern Batik shirt (for male) or dress (for female) to celebrate Batik Day, complemented by health-related accessories.`;
+    case 'natal':
+      return `a ${characterName} character with typical Indonesian facial features, wearing Christmas-themed attire (e.g., a Santa hat, red and green colors) along with health-related accessories.`;
     case 'default':
     default:
       return `a ${characterName} character with typical Indonesian facial features, wearing their respective uniform and using health-related accessories.`;

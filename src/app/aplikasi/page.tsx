@@ -263,6 +263,7 @@ export default function AplikasiPage() {
                             <SelectItem value="idul_fitri">Idul Fitri</SelectItem>
                             <SelectItem value="idul_adha">Idul Adha</SelectItem>
                             <SelectItem value="imlek">Imlek</SelectItem>
+                            <SelectItem value="natal">Natal</SelectItem>
                             <SelectItem value="ramadhan">Ramadhan</SelectItem>
                             <SelectItem value="hari_batik">Hari Batik</SelectItem>
                         </SelectContent>
