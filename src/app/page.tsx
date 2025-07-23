@@ -63,7 +63,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     // Fetch quote only once on initial load.
-    fetchQuote(true);
+    if (!quoteData) {
+        fetchQuote(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // The empty dependency array ensures this runs only once on mount.
 
