@@ -17,6 +17,8 @@ import { Loader, ArrowLeft, Wand2, Image as ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import NextImage from "next/image";
 import { generateArticleImage } from "@/ai/flows/generateArticleImageFlow";
+import { generateArticleContent } from "@/ai/flows/generateArticleContentFlow";
+
 
 export default function BuatArtikelPage() {
   const router = useRouter();
@@ -28,6 +30,7 @@ export default function BuatArtikelPage() {
   const [excerpt, setExcerpt] = useState("");
   const [generatedImageDataUri, setGeneratedImageDataUri] = useState<string | null>(null);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [isGeneratingContent, setIsGeneratingContent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleGenerateImage = async () => {
@@ -61,6 +64,48 @@ export default function BuatArtikelPage() {
       });
     } finally {
       setIsGeneratingImage(false);
+    }
+  };
+
+  const handleGenerateContent = async () => {
+    if (!title || !category) {
+      toast({
+        title: "Judul dan Kategori harus diisi",
+        description: "Silakan masukkan judul dan pilih kategori untuk membuat konten.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsGeneratingContent(true);
+    setContent("AI sedang menulis artikel untuk Anda, mohon tunggu...");
+    try {
+      const result = await generateArticleContent({ title, category });
+      if (result.content) {
+        setContent(result.content);
+        // Auto-generate excerpt from the beginning of the content
+        setExcerpt(result.content.substring(0, 200));
+        toast({
+            title: "Konten berhasil dibuat!",
+            description: "Silakan periksa dan edit jika diperlukan."
+        })
+      } else {
+        toast({
+          title: "Gagal menghasilkan konten",
+          description: "AI tidak dapat membuat konten. Silakan coba lagi.",
+          variant: "destructive",
+        });
+        setContent("");
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Terjadi kesalahan",
+        description: "Gagal menghubungi layanan AI. Silakan coba lagi.",
+        variant: "destructive",
+      });
+       setContent("");
+    } finally {
+      setIsGeneratingContent(false);
     }
   };
 
@@ -102,6 +147,8 @@ export default function BuatArtikelPage() {
         setIsSubmitting(false);
     }
   };
+  
+  const isAiWorking = isGeneratingImage || isGeneratingContent || isSubmitting;
 
   return (
     <DashboardLayout pageTitle="Tulis Artikel Baru">
@@ -121,18 +168,34 @@ export default function BuatArtikelPage() {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 placeholder="Judul yang menarik dan informatif"
-                                disabled={isSubmitting || isGeneratingImage}
+                                disabled={isAiWorking}
                             />
                         </div>
                          <div className="space-y-2">
-                            <Label htmlFor="content">Isi Konten</Label>
+                            <div className="flex justify-between items-center">
+                                <Label htmlFor="content">Isi Konten</Label>
+                                <Button
+                                    type="button"
+                                    onClick={handleGenerateContent}
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={isAiWorking || !title || !category}
+                                >
+                                    {isGeneratingContent ? (
+                                        <Loader className="mr-2 h-4 w-4 animate-spin" />
+                                    ) : (
+                                        <Wand2 className="mr-2 h-4 w-4" />
+                                    )}
+                                    Buat Konten dengan AI
+                                </Button>
+                            </div>
                             <Textarea
                                 id="content"
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 rows={15}
-                                placeholder="Tulis konten artikel lengkap Anda di sini..."
-                                disabled={isSubmitting || isGeneratingImage}
+                                placeholder="Tulis konten artikel lengkap Anda di sini atau gunakan AI untuk membuatnya."
+                                disabled={isAiWorking}
                             />
                         </div>
                     </CardContent>
@@ -147,7 +210,7 @@ export default function BuatArtikelPage() {
                     <CardContent className="space-y-6">
                         <div className="space-y-2">
                            <Label htmlFor="category">Kategori</Label>
-                           <Select onValueChange={setCategory} value={category} disabled={isSubmitting || isGeneratingImage}>
+                           <Select onValueChange={setCategory} value={category} disabled={isAiWorking}>
                                 <SelectTrigger id="category">
                                     <SelectValue placeholder="Pilih kategori" />
                                 </SelectTrigger>
@@ -170,7 +233,7 @@ export default function BuatArtikelPage() {
                                 rows={4}
                                 placeholder="Ringkasan singkat artikel (maks 200 karakter)"
                                 maxLength={200}
-                                disabled={isSubmitting || isGeneratingImage}
+                                disabled={isAiWorking}
                             />
                         </div>
                     </CardContent>
@@ -202,7 +265,7 @@ export default function BuatArtikelPage() {
                             </div>
                         )}
                         </div>
-                        <Button type="button" onClick={handleGenerateImage} disabled={isGeneratingImage || isSubmitting || !title} className="w-full">
+                        <Button type="button" onClick={handleGenerateImage} disabled={isAiWorking || !title} className="w-full">
                             {isGeneratingImage ? (
                                 <Loader className="mr-2 h-4 w-4 animate-spin" />
                             ) : (
@@ -216,10 +279,10 @@ export default function BuatArtikelPage() {
         </div>
         <Card className="mt-6">
           <CardFooter className="justify-end gap-2 pt-6">
-            <Button type="button" variant="outline" onClick={() => router.push('/artikel')} disabled={isSubmitting || isGeneratingImage}>
+            <Button type="button" variant="outline" onClick={() => router.push('/artikel')} disabled={isAiWorking}>
               Batal
             </Button>
-            <Button type="submit" disabled={isSubmitting || isGeneratingImage}>
+            <Button type="submit" disabled={isAiWorking}>
               {isSubmitting && <Loader className="mr-2 h-4 w-4 animate-spin" />}
               {isSubmitting ? 'Menerbitkan...' : 'Terbitkan Artikel'}
             </Button>
