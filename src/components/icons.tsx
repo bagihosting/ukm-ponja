@@ -1,8 +1,8 @@
 import type { SVGProps } from "react";
-import { Caduceus } from "lucide-react";
+import { Stethoscope } from "lucide-react";
 
 export const Icons = {
   logo: (props: SVGProps<SVGSVGElement>) => (
-    <Caduceus {...props} />
+    <Stethoscope {...props} />
   ),
 };
