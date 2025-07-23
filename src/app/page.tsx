@@ -63,7 +63,7 @@ export default function DashboardPage() {
     const intervalId = setInterval(fetchQuote, 24 * 60 * 60 * 1000); 
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, [toast]);
+  }, []);
 
 
   return (
