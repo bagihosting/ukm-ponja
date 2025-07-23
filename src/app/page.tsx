@@ -3,12 +3,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Activity, ClipboardList, Newspaper, Image, ArrowRight, BookOpen } from "lucide-react";
+import { Activity, ClipboardList, Image, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const features = [
   {
@@ -29,15 +29,6 @@ const features = [
     icon: <Image className="size-8 text-primary" />,
     href: "/galeri",
   }
-];
-
-const galleryImages = [
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 1", hint: "health activity" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 2", hint: "medical team" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 3", hint: "community health" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 4", hint: "health checkup" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 5", hint: "nutrition advice" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 6", hint: "vaccination drive" },
 ];
 
 const articles = [
@@ -65,6 +56,15 @@ const articles = [
     hint: "mental health work",
     href: "/artikel/mengelola-stres",
   },
+];
+
+const galleryImages = [
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 1", hint: "health activity" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 2", hint: "medical team" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 3", hint: "community health" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 4", hint: "health checkup" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 5", hint: "nutrition advice" },
+  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 6", hint: "vaccination drive" },
 ];
 
 
