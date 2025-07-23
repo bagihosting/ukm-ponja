@@ -15,8 +15,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const navLinks = [
-  { name: "Kegiatan UKM", href: "/dasbor" },
-  { name: "Laporan", href: "/dasbor" },
+  { name: "Kegiatan UKM", href: "/kegiatan" },
+  { name: "Laporan", href: "/laporan" },
   { name: "Artikel", href: "/artikel" },
   { name: "Galeri", href: "/galeri" },
 ];
