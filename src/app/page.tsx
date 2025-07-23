@@ -144,6 +144,9 @@ export default function DashboardPage() {
                     </p>
                 </div>
             </div>
+            <footer className="mt-8 text-center text-sm text-muted-foreground">
+              Dibuat oleh Rani Kirana
+            </footer>
         </main>
       </SidebarInset>
     </SidebarProvider>

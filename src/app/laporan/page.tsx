@@ -158,6 +158,9 @@ export default function LaporanPage() {
               </Card>
             ))}
           </div>
+          <footer className="mt-8 text-center text-sm text-muted-foreground">
+            Dibuat oleh Rani Kirana
+          </footer>
         </main>
       </SidebarInset>
     </SidebarProvider>
