@@ -85,8 +85,8 @@ export default function KegiatanUkmPage() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <Link href="/">
-                <SidebarMenuButton isActive={pathname === "/"} tooltip="Dasbor">
+              <Link href="/dasbor">
+                <SidebarMenuButton isActive={pathname === "/dasbor"} tooltip="Dasbor">
                   <Home className="size-4" />
                   <span className="truncate">Dasbor</span>
                 </SidebarMenuButton>

@@ -1,154 +1,128 @@
 
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import NextImage from 'next/image';
 
-export default function DashboardPage() {
-  const pathname = usePathname();
+const features = [
+  {
+    name: "Kegiatan UKM",
+    description: "Lihat dan kelola semua program kerja UKM Esensial dan Pengembangan.",
+    icon: <Activity className="size-8 text-primary" />,
+    href: "/kegiatan-ukm",
+  },
+  {
+    name: "Laporan",
+    description: "Akses laporan ke dinas, grafik, log book, dan GDrive data UKM dengan mudah.",
+    icon: <ClipboardList className="size-8 text-primary" />,
+    href: "/laporan",
+  },
+  {
+    name: "Artikel",
+    description: "Buat dan publikasikan artikel kesehatan untuk edukasi masyarakat.",
+    icon: <Newspaper className="size-8 text-primary" />,
+    href: "/artikel",
+  },
+  {
+    name: "Galeri",
+    description: "Simpan dan bagikan dokumentasi foto kegiatan UKM Anda.",
+    icon: <Image className="size-8 text-primary" />,
+    href: "/galeri",
+  },
+  {
+    name: "Aplikasi AI",
+    description: "Buat thumbnail kesehatan menarik secara otomatis dengan bantuan AI.",
+    icon: <AppWindow className="size-8 text-primary" />,
+    href: "/aplikasi",
+  },
+];
 
+export default function HomePage() {
   return (
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <Icons.logo className="size-8 text-primary" />
-            <h1 className="text-xl font-semibold">UKM PONJA</h1>
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center">
+          <div className="mr-4 flex items-center">
+            <Link href="/" className="flex items-center gap-2">
+              <Icons.logo className="size-7 text-primary" />
+              <span className="text-lg font-bold">UKM PONJA</span>
+            </Link>
           </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <Link href="/">
-                <SidebarMenuButton isActive={pathname === "/"} tooltip="Dasbor">
-                  <Home className="size-4" />
-                  <span className="truncate">Dasbor</span>
-                </SidebarMenuButton>
+          <div className="flex flex-1 items-center justify-end space-x-2">
+            <Button asChild>
+              <Link href="/dasbor">
+                Masuk Dasbor <ArrowRight className="ml-2 size-4" />
               </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link href="/kegiatan-ukm">
-                <SidebarMenuButton isActive={pathname === "/kegiatan-ukm"} tooltip="Kegiatan UKM">
-                  <Activity className="size-4" />
-                  <span className="truncate">Kegiatan UKM</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link href="/laporan">
-                <SidebarMenuButton isActive={pathname === "/laporan"} tooltip="Laporan">
-                  <ClipboardList className="size-4" />
-                  <span className="truncate">Laporan</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link href="/artikel">
-                <SidebarMenuButton isActive={pathname === "/artikel"} tooltip="Artikel">
-                  <Newspaper className="size-4" />
-                  <span className="truncate">Artikel</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link href="/galeri">
-                <SidebarMenuButton isActive={pathname === "/galeri"} tooltip="Galeri">
-                  <Image className="size-4" />
-                  <span className="truncate">Galeri</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link href="/aplikasi">
-                <SidebarMenuButton isActive={pathname === "/aplikasi"} tooltip="Aplikasi">
-                  <AppWindow className="size-4" />
-                  <span className="truncate">Aplikasi</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-        <SidebarFooter>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-auto w-full justify-start gap-2 p-2">
-                <Avatar className="size-8">
-                  <AvatarImage data-ai-hint="profile avatar" src="https://placehold.co/100x100.png" alt="Pengguna" />
-                  <AvatarFallback>P</AvatarFallback>
-                </Avatar>
-                <div className="text-left group-data-[collapsible=icon]:hidden">
-                  <p className="truncate text-sm font-medium">Pengguna</p>
-                  <p className="truncate text-xs text-muted-foreground">pengguna@contoh.com</p>
-                </div>
+            </Button>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1">
+        <section className="container py-12 text-center md:py-24 lg:py-32">
+            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+              Platform Manajemen UKM Kesehatan Modern
+            </h1>
+            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-6">
+              Solusi terintegrasi untuk mengelola semua kegiatan, laporan, dan konten digital Unit Kegiatan Masyarakat (UKM) Anda dengan efisien.
+            </p>
+            <div className="mt-8">
+              <Button size="lg" asChild>
+                <Link href="/dasbor">
+                  Mulai Sekarang
+                </Link>
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" side="top" align="start">
-              <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Pengaturan</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <LifeBuoy className="mr-2 h-4 w-4" />
-                <span>Dukungan</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Keluar</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarFooter>
-      </Sidebar>
-      <SidebarInset>
-        <header className="flex h-16 items-center justify-between border-b bg-background px-4 sm:px-6">
-          <div className="flex items-center gap-4">
-            <SidebarTrigger className="md:hidden" />
-            <h1 className="text-lg font-semibold md:text-xl">Dasbor</h1>
-          </div>
-        </header>
-        <main className="flex flex-1 flex-col p-4 md:p-6">
-          <div className="flex flex-1 items-center justify-center rounded-lg border-2 border-dashed bg-card/50 shadow-sm">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold tracking-tight">
-                Selamat Datang di Dasbor UKM PONJA
-              </h2>
-              <p className="text-muted-foreground">
-                Pilih menu di samping untuk memulai.
-              </p>
             </div>
+        </section>
+
+        <section id="features" className="container space-y-6 bg-slate-50/50 dark:bg-slate-800/20 py-12 md:py-24 lg:py-32 rounded-lg">
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
+            <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Fitur Unggulan</h2>
+            <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+              Semua yang Anda butuhkan untuk membawa manajemen UKM ke level berikutnya.
+            </p>
           </div>
-          <footer className="mt-8 text-center text-sm text-muted-foreground">
-            Dibuat oleh Rani Kirana
-          </footer>
-        </main>
-      </SidebarInset>
-    </SidebarProvider>
+          <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+            {features.map((feature, index) => (
+              <div key={index} className="relative overflow-hidden rounded-lg border bg-background p-2">
+                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+                    {feature.icon}
+                    <div className="space-y-2">
+                      <h3 className="font-bold">{feature.name}</h3>
+                      <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    </div>
+                 </div>
+              </div>
+            ))}
+          </div>
+        </section>
+        
+        <section className="container py-12 md:py-24 lg:py-32 text-center">
+            <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">
+              Siap Meningkatkan Produktivitas?
+            </h2>
+            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-6">
+              Bergabunglah sekarang dan rasakan kemudahan mengelola UKM Anda.
+            </p>
+            <div className="mt-8">
+              <Button size="lg" asChild>
+                  <Link href="/dasbor">
+                    Masuk ke Dasbor Anda
+                  </Link>
+              </Button>
+            </div>
+        </section>
+
+      </main>
+      <footer className="py-6 md:px-8 md:py-0 border-t">
+          <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+              Dibuat oleh <span className="font-medium">Rani Kirana</span>.
+            </p>
+          </div>
+      </footer>
+    </div>
   );
 }
