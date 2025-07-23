@@ -159,9 +159,9 @@ export default function HomePage() {
       <main className="flex-1">
         <section className="w-full py-12 sm:py-16 md:py-20">
           <div className="container">
-            <div className="grid gap-8 md:grid-cols-3">
+            <div className="grid gap-8 lg:grid-cols-3">
               {/* Main Article */}
-              <div className="md:col-span-2">
+              <div className="lg:col-span-2">
                 <Link href={mainArticle.href} className="group block overflow-hidden rounded-lg">
                   <Card className="h-full border-0 shadow-none">
                      <CardContent className="relative p-0">
@@ -261,13 +261,10 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="w-full border-t py-6 md:px-8 md:py-0">
-          <div className="container flex flex-col items-center justify-center gap-2 text-center md:h-24">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} UKM PONJA. All Rights Reserved.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Dibuat oleh <span className="font-medium">Rani Kirana</span>.
+      <footer className="w-full border-t">
+          <div className="container flex h-24 flex-col items-center justify-between gap-4 py-10 md:flex-row md:py-0">
+            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+              © {new Date().getFullYear()} UKM PONJA. Dibuat oleh <span className="font-medium">Rani Kirana</span>.
             </p>
           </div>
       </footer>
