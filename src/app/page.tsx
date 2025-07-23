@@ -187,8 +187,18 @@ export default function HomePage() {
               {/* Top Articles List */}
               <div className="flex flex-col">
                   <h2 className="mb-4 text-2xl font-bold">Terpopuler</h2>
-                   <div className="relative flex overflow-x-hidden rounded-lg border bg-secondary/30 py-4">
-                      <div className="whitespace-nowrap animate-marquee lg:animate-[marquee_30s_linear_infinite]">
+                   <div className="relative overflow-x-hidden rounded-lg border bg-secondary/30 p-4">
+                      {/* Static list for mobile */}
+                      <div className="flex flex-col space-y-3 md:hidden">
+                        {topArticles.slice(0, 3).map((article, index) => (
+                          <Link key={index} href={article.href} className="inline-flex items-center text-sm font-semibold hover:text-primary transition-colors">
+                            <Newspaper className="mr-3 h-4 w-4 flex-shrink-0 text-muted-foreground" />
+                            <span className="truncate">{article.title}</span>
+                          </Link>
+                        ))}
+                      </div>
+                      {/* Marquee for tablet and larger */}
+                      <div className="hidden md:flex whitespace-nowrap md:animate-marquee lg:animate-[marquee_30s_linear_infinite]">
                         {[...topArticles.slice(0, 3), ...topArticles.slice(0, 3)].map((article, index) => (
                           <Link key={index} href={article.href} className="inline-flex items-center mx-4 text-sm font-semibold hover:text-primary transition-colors">
                               <Newspaper className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -271,3 +281,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
