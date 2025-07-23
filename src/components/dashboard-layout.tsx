@@ -93,7 +93,7 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
             </SidebarMenuItem>
              <SidebarMenuItem>
               <Link href="/laporan">
-                <SidebarMenuButton isActive={pathname === "/laporan"} tooltip="Laporan">
+                <SidebarMenuButton isActive={pathname.startsWith("/laporan")} tooltip="Laporan">
                   <FileText className="size-4" />
                   <span className="truncate">Laporan</span>
                 </SidebarMenuButton>
@@ -101,7 +101,7 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
             </SidebarMenuItem>
             <SidebarMenuItem>
               <Link href="/artikel">
-                <SidebarMenuButton isActive={pathname === "/artikel"} tooltip="Artikel">
+                <SidebarMenuButton isActive={pathname.startsWith("/artikel")} tooltip="Artikel">
                   <Newspaper className="size-4" />
                   <span className="truncate">Artikel</span>
                 </SidebarMenuButton>

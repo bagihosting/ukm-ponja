@@ -4,6 +4,10 @@
     "programs": {
       ".read": "true",
       ".write": "auth != null"
+    },
+    "articles": {
+      ".read": "true",
+      ".write": "auth != null"
     }
   }
 }
