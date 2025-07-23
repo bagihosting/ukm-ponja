@@ -46,7 +46,7 @@ export default function LoginPage() {
       console.error(error);
       toast({
         title: "Login Gagal",
-        description: "Email atau kata sandi salah. Silakan coba lagi.",
+        description: "Email atau kata sandi salah. Pastikan Anda telah membuat pengguna di Firebase Console.",
         variant: "destructive",
       });
     } finally {
@@ -74,7 +74,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle className="text-2xl">Masuk</CardTitle>
           <CardDescription>
-            Masukkan kredensial admin Anda untuk mengakses dasbor.
+            Masukkan kredensial admin untuk mengakses dasbor.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -96,6 +96,7 @@ export default function LoginPage() {
               <Input 
                 id="password" 
                 type="password" 
+                placeholder="••••••••"
                 required 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

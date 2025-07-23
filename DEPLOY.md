@@ -72,16 +72,16 @@ Buat file `.env.local` untuk menyimpan variabel lingkungan, seperti kredensial F
 nano .env.local
 ```
 
-Salin dan tempel konfigurasi Firebase Anda ke dalam file ini. Contohnya seperti ini (gunakan nilai Anda sendiri dari `src/lib/firebase.ts`):
+Salin dan tempel konfigurasi Firebase Anda ke dalam file ini. Gunakan nilai-nilai yang valid dari Firebase Console Anda, bukan placeholder.
 
 ```
-NEXT_PUBLIC_FIREBASE_API_KEY="API_KEY"
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="PROJECT_ID.firebaseapp.com"
-NEXT_PUBLIC_FIREBASE_DATABASE_URL="https://PROJECT_ID.firebaseio.com"
-NEXT_PUBLIC_FIREBASE_PROJECT_ID="PROJECT_ID"
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="PROJECT_ID.appspot.com"
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="SENDER_ID"
-NEXT_PUBLIC_FIREBASE_APP_ID="APP_ID"
+NEXT_PUBLIC_FIREBASE_API_KEY="AIza..."
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="proyek-anda.firebaseapp.com"
+NEXT_PUBLIC_FIREBASE_DATABASE_URL="https://proyek-anda.firebaseio.com"
+NEXT_PUBLIC_FIREBASE_PROJECT_ID="proyek-anda"
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="proyek-anda.appspot.com"
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="1234567890"
+NEXT_PUBLIC_FIREBASE_APP_ID="1:1234567890:web:abcdef123456"
 ```
 
 Simpan file dengan menekan `Ctrl+X`, lalu `Y`, dan `Enter`.
@@ -94,7 +94,20 @@ Buat versi produksi dari aplikasi Anda.
 npm run build
 ```
 
-## 3. Menjalankan Aplikasi dengan PM2
+## 3. Membuat Pengguna Admin (Penting!)
+
+Sebelum Anda dapat login, Anda harus membuat pengguna admin di Firebase.
+
+1.  Buka **Firebase Console** Anda.
+2.  Pilih proyek Anda.
+3.  Di menu sebelah kiri, buka **Build** > **Authentication**.
+4.  Klik tab **Users**, lalu klik tombol **Add user**.
+5.  Masukkan **Email** (contoh: `admin@ukmponja.com`) dan **Password**.
+6.  Klik **Add user**.
+
+Sekarang Anda dapat menggunakan email dan kata sandi ini untuk masuk ke dasbor aplikasi.
+
+## 4. Menjalankan Aplikasi dengan PM2
 
 Jalankan aplikasi Anda menggunakan PM2. Ini akan memulai aplikasi di latar belakang. Sesuai konfigurasi `package.json`, aplikasi ini akan berjalan di port 3001.
 
@@ -110,7 +123,7 @@ pm2 startup
 pm2 save
 ```
 
-## 4. Konfigurasi Nginx sebagai Reverse Proxy
+## 5. Konfigurasi Nginx sebagai Reverse Proxy
 
 Nginx akan bertindak sebagai "pintu depan" untuk aplikasi Anda.
 
