@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,12 +25,45 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow, Loader, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import NextImage from "next/image";
+import { generateQuote, GenerateQuoteOutput } from "@/ai/flows/generateQuoteFlow";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
 
 export default function DashboardPage() {
   const pathname = usePathname();
+  const { toast } = useToast();
+  const [quoteData, setQuoteData] = useState<GenerateQuoteOutput | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchQuote = async () => {
+    setLoading(true);
+    try {
+      const data = await generateQuote();
+      setQuoteData(data);
+    } catch (error) {
+      console.error("Failed to fetch quote:", error);
+      toast({
+        title: "Gagal Memuat Kata Mutiara",
+        description: "Terjadi kesalahan saat mengambil data baru. Silakan coba lagi.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuote();
+    const intervalId = setInterval(fetchQuote, 60 * 60 * 1000); // Fetch new quote every hour
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, []);
+
 
   return (
     <SidebarProvider>
@@ -134,15 +168,42 @@ export default function DashboardPage() {
           </div>
         </header>
         <main className="flex flex-1 flex-col p-4 md:p-6">
-            <div className="flex flex-1 items-center justify-center rounded-lg border-2 border-dashed bg-card/50 shadow-sm">
-                <div className="text-center">
-                    <h2 className="text-2xl font-bold tracking-tight">
-                        Selamat Datang di UKM PONJA
-                    </h2>
-                    <p className="text-muted-foreground">
-                        Ini adalah kanvas kosong Anda. Mulailah membangun dasbor luar biasa Anda.
-                    </p>
-                </div>
+            <div className="flex flex-1 items-center justify-center">
+              <Card className="w-full max-w-4xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
+                  {loading ? (
+                    <div className="p-6">
+                        <Skeleton className="h-96 w-full" />
+                        <Skeleton className="mt-4 h-6 w-3/4" />
+                    </div>
+                  ) : quoteData ? (
+                    <>
+                      <CardContent className="p-0">
+                        <div className="relative aspect-video w-full">
+                           <NextImage
+                              src={quoteData.imageUrl}
+                              alt={quoteData.quote}
+                              layout="fill"
+                              objectFit="cover"
+                              className="transition-transform duration-500 group-hover:scale-105"
+                            />
+                        </div>
+                      </CardContent>
+                       <CardFooter className="flex items-center justify-between bg-card/80 backdrop-blur-sm p-4 mt-auto">
+                        <p className="max-w-[85%] text-sm font-medium text-card-foreground italic">
+                            "{quoteData.quote}"
+                        </p>
+                        <Button variant="ghost" size="icon" onClick={fetchQuote} disabled={loading} aria-label="Muat Ulang">
+                            <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
+                        </Button>
+                      </CardFooter>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center p-10 text-center">
+                       <p className="text-muted-foreground">Tidak dapat memuat kata mutiara.</p>
+                       <Button onClick={fetchQuote} className="mt-4">Coba Lagi</Button>
+                    </div>
+                  )}
+              </Card>
             </div>
             <footer className="mt-8 text-center text-sm text-muted-foreground">
               Dibuat oleh Rani Kirana
