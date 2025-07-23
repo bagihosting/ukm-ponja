@@ -6,7 +6,7 @@ import { Icons } from "@/components/icons";
 import { Activity, ClipboardList, Newspaper, Image, ArrowRight, BookOpen } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
 
@@ -107,7 +107,7 @@ export default function HomePage() {
 
         <section id="features" className="container space-y-6 bg-slate-50/50 dark:bg-slate-800/20 py-12 md:py-24 lg:py-32 rounded-lg">
           <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-            <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Pilar Utama UKM Anda</h2>
+            <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Pilar Utama UKM PONJA</h2>
             <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
               Alat bantu esensial yang dirancang untuk mendukung setiap aspek kegiatan kesehatan masyarakat.
             </p>
@@ -157,11 +157,11 @@ export default function HomePage() {
                   <CardContent className="flex-grow">
                     <p className="text-sm text-muted-foreground">{article.excerpt}</p>
                   </CardContent>
-                  <CardContent>
+                  <CardFooter>
                     <div className="text-sm font-medium text-primary group-hover:underline">
                       Baca Selengkapnya <ArrowRight className="inline-block ml-1 size-4" />
                     </div>
-                  </CardContent>
+                  </CardFooter>
                 </Card>
               </Link>
             ))}
