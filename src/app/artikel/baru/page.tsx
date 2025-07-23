@@ -32,6 +32,7 @@ export default function BuatArtikelPage() {
   const [content, setContent] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [generatedImageDataUri, setGeneratedImageDataUri] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isGeneratingTitle, setIsGeneratingTitle] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [isGeneratingContent, setIsGeneratingContent] = useState(false);
@@ -86,10 +87,19 @@ export default function BuatArtikelPage() {
     }
     setIsGeneratingImage(true);
     setGeneratedImageDataUri(null);
+    setImageUrl(null);
     try {
       const result = await generateArticleImage({ title });
       if (result.imageUrl) {
         setGeneratedImageDataUri(result.imageUrl);
+        toast({ title: "Gambar AI berhasil dibuat!", description: "Mengunggah gambar ke penyimpanan..." });
+
+        // Upload image to storage in the background
+        const imageRef = storageRef(storage, `articles/${Date.now()}-${title.replace(/[^a-z0-9]/gi, '_')}.png`);
+        const uploadResult = await uploadString(imageRef, result.imageUrl, 'data_url');
+        const downloadUrl = await getDownloadURL(uploadResult.ref);
+        setImageUrl(downloadUrl);
+        toast({ title: "Sukses!", description: "Gambar berhasil diunggah dan siap digunakan." });
       } else {
         toast({
           title: "Gagal menghasilkan gambar",
@@ -101,7 +111,7 @@ export default function BuatArtikelPage() {
       console.error(error);
       toast({
         title: "Terjadi kesalahan",
-        description: "Gagal menghubungi layanan AI. Silakan coba lagi.",
+        description: "Gagal menghubungi layanan AI atau mengunggah gambar. Silakan coba lagi.",
         variant: "destructive",
       });
     } finally {
@@ -175,20 +185,14 @@ export default function BuatArtikelPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !category || !content || !excerpt || !generatedImageDataUri) {
-        toast({ title: "Formulir tidak lengkap", description: "Harap isi semua kolom dan buat gambar dengan AI.", variant: "destructive"});
+    if (!title || !category || !content || !excerpt || !imageUrl) {
+        toast({ title: "Formulir tidak lengkap", description: "Harap isi semua kolom dan pastikan gambar telah selesai diunggah (URL gambar tersedia).", variant: "destructive"});
         return;
     }
 
     setIsSubmitting(true);
     try {
-        // 1. Upload image to Firebase Storage from data URI
-        const imageRef = storageRef(storage, `articles/${Date.now()}-${title.replace(/[^a-z0-9]/gi, '_')}.png`);
-        // The data URI is expected to be 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...
-        const uploadResult = await uploadString(imageRef, generatedImageDataUri, 'data_url');
-        const imageUrl = await getDownloadURL(uploadResult.ref);
-
-        // 2. Save article data to Realtime Database
+        // Save article data to Realtime Database
         const articlesRef = ref(database, 'articles');
         const newArticleRef = push(articlesRef);
         await set(newArticleRef, {
@@ -196,7 +200,7 @@ export default function BuatArtikelPage() {
             category,
             content,
             excerpt,
-            imageUrl,
+            imageUrl, // Use the already uploaded image URL
             createdAt: new Date().toISOString(),
         });
         
@@ -324,14 +328,14 @@ export default function BuatArtikelPage() {
                  <Card>
                     <CardHeader>
                         <CardTitle>4. Gambar Utama</CardTitle>
-                        <CardDescription>Gunakan AI untuk membuat gambar yang relevan.</CardDescription>
+                        <CardDescription>Gunakan AI untuk membuat gambar dan mengunggahnya.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="w-full aspect-video rounded-md border-2 border-dashed bg-card/50 flex items-center justify-center">
                         {isGeneratingImage ? (
                             <div className="flex flex-col items-center gap-2 text-muted-foreground">
                                 <Loader className="h-8 w-8 animate-spin" />
-                                <p>AI sedang membuat gambar...</p>
+                                <p>AI sedang membuat & mengunggah...</p>
                              </div>
                         ) : generatedImageDataUri ? (
                             <NextImage
@@ -365,7 +369,7 @@ export default function BuatArtikelPage() {
             <Button type="button" variant="outline" onClick={() => router.push('/artikel')} disabled={isAiWorking}>
               Batal
             </Button>
-            <Button type="submit" disabled={isAiWorking}>
+            <Button type="submit" disabled={isAiWorking || !imageUrl}>
               {isSubmitting && <Loader className="mr-2 h-4 w-4 animate-spin" />}
               {isSubmitting ? 'Menerbitkan...' : 'Terbitkan Artikel'}
             </Button>
@@ -375,3 +379,5 @@ export default function BuatArtikelPage() {
     </DashboardLayout>
   );
 }
+
+    
