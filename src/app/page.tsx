@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Activity, ClipboardList, Image, ArrowRight, Newspaper } from "lucide-react";
+import { Image, ArrowRight, Newspaper } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -11,18 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const features = [
-  {
-    name: "Manajemen Kegiatan",
-    description: "Rencanakan, kelola, dan pantau seluruh program UKM Esensial dan Pengembangan dengan efisien.",
-    icon: <Activity className="size-8 text-primary" />,
-    href: "/kegiatan-ukm",
-  },
-  {
-    name: "Sistem Pelaporan",
-    description: "Hasilkan laporan yang akurat dan terstruktur untuk dinas kesehatan dan pemangku kepentingan.",
-    icon: <ClipboardList className="size-8 text-primary" />,
-    href: "/laporan",
-  },
   {
     name: "Galeri Aksi Nyata",
     description: "Visualisasikan berbagai program dan dampak positif yang telah kita ciptakan bersama di masyarakat.",
@@ -123,7 +111,7 @@ export default function HomePage() {
                 Alat bantu esensial yang dirancang untuk mendukung setiap aspek kegiatan kesehatan masyarakat.
               </p>
             </div>
-            <div className="mx-auto mt-12 grid max-w-5xl justify-center gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mx-auto mt-12 grid max-w-lg justify-center gap-6 sm:grid-cols-2">
               {features.map((feature, index) => (
                 <Link href={feature.href} key={index} className="group">
                   <Card className="relative h-full overflow-hidden rounded-lg border bg-background p-2 transition-all group-hover:-translate-y-1 group-hover:shadow-lg">

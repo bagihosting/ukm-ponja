@@ -26,7 +26,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Newspaper, Image, AppWindow } from "lucide-react";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -52,22 +52,6 @@ export default function DashboardLayout({ children, pageTitle }: DashboardLayout
                 <SidebarMenuButton isActive={pathname === "/dasbor"} tooltip="Dasbor">
                   <Home className="size-4" />
                   <span className="truncate">Dasbor</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link href="/kegiatan-ukm">
-                <SidebarMenuButton isActive={pathname === "/kegiatan-ukm"} tooltip="Kegiatan UKM">
-                  <Activity className="size-4" />
-                  <span className="truncate">Kegiatan UKM</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <Link href="/laporan">
-                <SidebarMenuButton isActive={pathname === "/laporan"} tooltip="Laporan">
-                  <ClipboardList className="size-4" />
-                  <span className="truncate">Laporan</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
