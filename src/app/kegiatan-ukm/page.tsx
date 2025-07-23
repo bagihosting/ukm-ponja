@@ -8,7 +8,7 @@ import {
   Star, HeartPulse, Baby, Stethoscope, School, Users, Venus, PersonStanding, 
   Utensils, Recycle, Shield, Bug, Syringe, Biohazard, Droplets, 
   BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack, TrendingUp,
-  Briefcase, Smile, Leaf, Ship, Route, LucideProps
+  Briefcase, Smile, Leaf, Ship, Route, LucideProps, PregnantWoman, UserRound
 } from "lucide-react";
 import { database } from "@/lib/firebase";
 import { ref, onValue } from "firebase/database";
@@ -23,7 +23,7 @@ type Program = {
 };
 
 const iconComponents: { [key: string]: React.FC<LucideProps> } = {
-  HeartPulse, PersonStanding, Baby, School, Users, Venus, Utensils, Recycle, HeartCrack, Shield, Bug, Thermometer, Biohazard, Droplets, Syringe, BarChart, Stethoscope, Brain, Dna, FileText, Group, Briefcase, Smile, Leaf, Ship, Route, TrendingUp
+  HeartPulse, PersonStanding, Baby, School, Users, Venus, Utensils, Recycle, HeartCrack, Shield, Bug, Thermometer, Biohazard, Droplets, Syringe, BarChart, Stethoscope, Brain, Dna, FileText, Group, Briefcase, Smile, Leaf, Ship, Route, TrendingUp, PregnantWoman, UserRound
 };
 
 
