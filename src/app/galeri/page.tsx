@@ -1,5 +1,8 @@
 
 import DashboardLayout from "@/components/dashboard-layout";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function GaleriPage() {
   return (
@@ -12,6 +15,12 @@ export default function GaleriPage() {
                 <p className="text-muted-foreground">
                     Konten untuk galeri akan ditampilkan di sini.
                 </p>
+                 <Button asChild variant="outline" className="mt-4">
+                  <Link href="/dasbor">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Kembali ke Dasbor
+                  </Link>
+                </Button>
             </div>
         </div>
     </DashboardLayout>
