@@ -13,7 +13,7 @@ import { z } from 'genkit';
 
 const GenerateThumbnailInputSchema = z.object({
   prompt: z.string().describe('The informational text to be included in the thumbnail.'),
-  character: z.string().describe("The character to feature in the thumbnail (e.g., 'doctor', 'nurse', 'midwife')."),
+  character: z.string().describe("The character to feature in the thumbnail (e.g., 'doctor', 'nurse', 'midwife', 'adult_man', 'adult_woman', 'boy', 'girl', 'baby', 'elderly_man', 'elderly_woman')."),
   platform: z.string().describe("The social media platform for which to generate the thumbnail (e.g., 'youtube', 'instagram', 'tiktok')."),
 });
 export type GenerateThumbnailInput = z.infer<typeof GenerateThumbnailInputSchema>;
@@ -53,7 +53,7 @@ const generateThumbnailFlow = ai.defineFlow(
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
       prompt: `Generate a thumbnail image for ${input.platform} with a 3D animated cartoon style. The scene must be health-themed with a modern, bright, and visually appealing background.
-      Feature a ${input.character} character with typical Indonesian facial features, wearing their respective uniform and using health-related accessories.
+      Feature a ${input.character.replace(/_/g, ' ')} character with typical Indonesian facial features, wearing their respective uniform and using health-related accessories.
       The image must prominently display the following text: "${input.prompt}". The text should be colorful, using a very attractive, modern, and easy-to-read font style that stands out.
       The image MUST include the copyright text "UKM PONJA" in the bottom right corner. Also include a small icon representing the ${input.platform} platform.
       The overall tone should be friendly and informative. The aspect ratio must be ${aspectRatio}.`,

@@ -241,6 +241,13 @@ export default function AplikasiPage() {
                         <SelectItem value="doctor">Dokter</SelectItem>
                         <SelectItem value="nurse">Perawat</SelectItem>
                         <SelectItem value="midwife">Bidan</SelectItem>
+                        <SelectItem value="adult_man">Pria Dewasa</SelectItem>
+                        <SelectItem value="adult_woman">Wanita Dewasa</SelectItem>
+                        <SelectItem value="boy">Anak Laki-laki</SelectItem>
+                        <SelectItem value="girl">Anak Perempuan</SelectItem>
+                        <SelectItem value="baby">Bayi</SelectItem>
+                        <SelectItem value="elderly_man">Lansia Pria</SelectItem>
+                        <SelectItem value="elderly_woman">Lansia Wanita</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
