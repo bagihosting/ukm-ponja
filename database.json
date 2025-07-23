@@ -2,7 +2,7 @@
 {
   "essentialPrograms": [
     { "name": "Promosi Kesehatan", "icon": "HeartPulse", "personInCharge": "Budi Santoso", "personInChargePhoto": "https://placehold.co/100x100.png" },
-    { "name": "Kesehatan Ibu", "icon": "PregnantWoman", "personInCharge": "Citra Lestari", "personInChargePhoto": "https://placehold.co/100x100.png" },
+    { "name": "Kesehatan Ibu", "icon": "HeartHandshake", "personInCharge": "Citra Lestari", "personInChargePhoto": "https://placehold.co/100x100.png" },
     { "name": "Kesehatan Anak", "icon": "Baby", "personInCharge": "Dewi Anggraini", "personInChargePhoto": "https://placehold.co/100x100.png" },
     { "name": "UKS", "icon": "School", "personInCharge": "Eko Prasetyo", "personInChargePhoto": "https://placehold.co/100x100.png" },
     { "name": "Kesehatan Remaja", "icon": "Users", "personInCharge": "Fitriani", "personInChargePhoto": "https://placehold.co/100x100.png" },

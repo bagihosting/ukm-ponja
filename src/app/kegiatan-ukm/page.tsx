@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
-  Star, HeartPulse, Baby, Stethoscope, School, Users, Venus, PersonStanding, 
+  Star, HeartPulse, Baby, Stethoscope, School, Users, Venus, UserRound, 
   Utensils, Recycle, Shield, Bug, Syringe, Biohazard, Droplets, 
   BarChart, Thermometer, Brain, Dna, FileText, Group, HeartCrack, TrendingUp,
-  Briefcase, Smile, Leaf, Ship, Route, LucideProps, PregnantWoman, UserRound
+  Briefcase, Smile, Leaf, Ship, Route, LucideProps, HeartHandshake
 } from "lucide-react";
 import { database } from "@/lib/firebase";
 import { ref, onValue } from "firebase/database";
@@ -23,7 +23,7 @@ type Program = {
 };
 
 const iconComponents: { [key: string]: React.FC<LucideProps> } = {
-  HeartPulse, PersonStanding, Baby, School, Users, Venus, Utensils, Recycle, HeartCrack, Shield, Bug, Thermometer, Biohazard, Droplets, Syringe, BarChart, Stethoscope, Brain, Dna, FileText, Group, Briefcase, Smile, Leaf, Ship, Route, TrendingUp, PregnantWoman, UserRound
+  HeartPulse, UserRound, Baby, School, Users, Venus, Utensils, Recycle, HeartCrack, Shield, Bug, Thermometer, Biohazard, Droplets, Syringe, BarChart, Stethoscope, Brain, Dna, FileText, Group, Briefcase, Smile, Leaf, Ship, Route, TrendingUp, HeartHandshake
 };
 
 
