@@ -3,12 +3,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Image, ArrowRight, Newspaper, Menu, Loader } from "lucide-react";
+import { ArrowRight, Newspaper, Menu, Loader } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Sheet, SheetTrigger, SheetContent, SheetClose } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -19,22 +18,16 @@ const navLinks = [
   { name: "Galeri", href: "/galeri" },
 ];
 
-const features = [
-  {
-    name: "Galeri Aksi Nyata",
-    description: "Visualisasikan berbagai program dan dampak positif yang telah kita ciptakan bersama di masyarakat.",
-    icon: <Image className="size-8 text-primary" />,
-    href: "/galeri",
-  },
-  {
-    name: "Artikel & Wawasan",
-    description: "Publikasikan artikel, berita, dan wawasan terkini untuk mengedukasi masyarakat luas.",
-    icon: <Newspaper className="size-8 text-primary" />,
-    href: "/artikel",
-  }
-];
+const mainArticle = {
+  title: "Masa Depan Kesehatan Digital: Inovasi yang Mengubah Hidup",
+  category: "Teknologi Kesehatan",
+  excerpt: "Jelajahi bagaimana teknologi seperti AI, telemedicine, dan perangkat wearable merevolusi cara kita mengelola kesehatan dan memberikan perawatan yang lebih personal dan efektif.",
+  image: "https://placehold.co/1200x800.png",
+  hint: "digital health technology",
+  href: "/artikel/kesehatan-digital",
+};
 
-const articles = [
+const topArticles = [
   {
     title: "5 Kebiasaan Sederhana untuk Jantung yang Lebih Sehat",
     category: "Gaya Hidup Sehat",
@@ -54,20 +47,19 @@ const articles = [
   {
     title: "Mengelola Stres di Tempat Kerja: Tips dan Trik",
     category: "Kesehatan Mental",
-    excerpt: "Stres kerja tidak bisa dihindari, tetapi bisa dikelola. Temukan cara efektif untuk menjaga kesehatan mental Anda di lingkungan kerja.",
+    excerpt: "Stres kerja tidak bisa dihindari, tetapi bisa dikelola. Temukan cara efektif untuk menjaga kesehatan mental Anda.",
     image: "https://placehold.co/600x400.png",
     hint: "mental health work",
     href: "/artikel/mengelola-stres",
   },
-];
-
-const galleryImages = [
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 1", hint: "health activity" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 2", hint: "medical team" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 3", hint: "community health" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 4", hint: "health checkup" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 5", hint: "nutrition advice" },
-  { src: "https://placehold.co/600x400.png", alt: "Kegiatan 6", hint: "vaccination drive" },
+   {
+    title: "Gizi Seimbang untuk Produktivitas Maksimal",
+    category: "Nutrisi",
+    excerpt: "Pola makan yang tepat adalah kunci energi dan fokus sepanjang hari. Temukan panduan praktis untuk gizi seimbang.",
+    image: "https://placehold.co/600x400.png",
+    hint: "balanced nutrition",
+    href: "/artikel/gizi-seimbang",
+  },
 ];
 
 
@@ -165,64 +157,65 @@ export default function HomePage() {
         </div>
       </header>
       <main className="flex-1">
-        <section className="w-full py-16 sm:py-20 md:py-28">
+        <section className="w-full py-12 sm:py-16 md:py-20">
           <div className="container">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                Memajukan Kesehatan Masyarakat, Bersama UKM PONJA
-              </h1>
-              <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground md:text-xl">
-                Setiap kegiatan untuk memelihara dan meningkatkan kesehatan serta mencegah dan menanggulangi timbulnya masalah kesehatan dengan sasaran keluarga, kelompok, dan masyarakat.
-              </p>
-              <div className="mt-8">
-                <Button size="lg" asChild>
-                  <Link href="/login">
-                    Mulai Berkontribusi
+            <div className="grid gap-8 md:grid-cols-3">
+              {/* Main Article */}
+              <div className="md:col-span-2">
+                <Link href={mainArticle.href} className="group block overflow-hidden rounded-lg">
+                  <Card className="h-full border-0 shadow-none">
+                     <CardContent className="relative p-0">
+                      <NextImage
+                        src={mainArticle.image}
+                        alt={mainArticle.title}
+                        data-ai-hint={mainArticle.hint}
+                        width={1200}
+                        height={800}
+                        className="h-auto w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    </CardContent>
+                    <div className="absolute bottom-0 p-6">
+                      <Badge variant="secondary" className="mb-2">{mainArticle.category}</Badge>
+                      <CardTitle className="text-2xl font-bold text-primary-foreground md:text-3xl lg:text-4xl">{mainArticle.title}</CardTitle>
+                      <p className="mt-2 text-sm text-primary-foreground/80 md:text-base">{mainArticle.excerpt}</p>
+                    </div>
+                  </Card>
+                </Link>
+              </div>
+              
+              {/* Top Articles List */}
+              <div className="flex flex-col gap-4">
+                <h2 className="text-2xl font-bold">Terpopuler</h2>
+                {topArticles.slice(0, 3).map((article, index) => (
+                  <Link key={index} href={article.href} className="group">
+                    <Card className="flex flex-col overflow-hidden transition-all hover:bg-secondary/50">
+                      <CardHeader>
+                        <Badge variant="secondary" className="w-fit">{article.category}</Badge>
+                        <CardTitle className="mt-1 text-base font-semibold group-hover:text-primary">{article.title}</CardTitle>
+                      </CardHeader>
+                    </Card>
                   </Link>
-                </Button>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        <section id="features" className="w-full bg-gradient-to-b from-background to-secondary/40 py-16 dark:bg-gradient-to-b dark:from-background dark:to-slate-900/40 sm:py-20 md:py-24">
+        <section id="articles" className="w-full bg-secondary/40 py-16 sm:py-20 md:py-24">
           <div className="container">
-            <div className="mx-auto flex max-w-2xl flex-col items-center space-y-4 text-center">
-              <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Pilar Utama UKM PONJA</h2>
-              <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-                Alat bantu esensial yang dirancang untuk mendukung setiap aspek kegiatan kesehatan masyarakat.
-              </p>
+            <div className="mb-12 flex items-center justify-between">
+                <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl">Artikel Terbaru</h2>
+                <Button asChild variant="outline">
+                  <Link href="/artikel">
+                    Lihat Semua <ArrowRight className="ml-2 size-4" />
+                  </Link>
+                </Button>
             </div>
-            <div className="mx-auto mt-12 grid max-w-lg justify-center gap-6 sm:grid-cols-2">
-              {features.map((feature, index) => (
-                <Link href={feature.href} key={index} className="group">
-                  <Card className="relative h-full overflow-hidden rounded-lg border bg-background p-2 transition-all group-hover:-translate-y-1 group-hover:shadow-lg">
-                    <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-                        {feature.icon}
-                        <div className="space-y-2">
-                          <h3 className="font-bold">{feature.name}</h3>
-                          <p className="text-sm text-muted-foreground">{feature.description}</p>
-                        </div>
-                    </div>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        <section id="articles" className="w-full py-16 sm:py-20 md:py-24">
-          <div className="container">
-            <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center space-y-4 text-center">
-                <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Artikel & Wawasan Terkini</h2>
-                <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-                    Dapatkan informasi, tips, dan wawasan terbaru seputar kesehatan untuk Anda, keluarga, dan masyarakat.
-                </p>
-            </div>
-            <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {articles.map((article, index) => (
+            <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {topArticles.map((article, index) => (
                 <Link key={index} href={article.href} className="group">
-                  <Card className="flex h-full flex-col overflow-hidden transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
+                  <Card className="flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl">
                     <CardContent className="p-0">
                       <NextImage
                         src={article.image}
@@ -230,81 +223,23 @@ export default function HomePage() {
                         data-ai-hint={article.hint}
                         width={600}
                         height={400}
-                        className="h-48 w-full object-cover"
+                        className="h-40 w-full object-cover"
                       />
                     </CardContent>
                     <CardHeader>
                       <Badge variant="secondary" className="w-fit">{article.category}</Badge>
-                      <CardTitle className="mt-2 text-lg">{article.title}</CardTitle>
+                      <CardTitle className="mt-2 text-base">{article.title}</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p className="text-sm text-muted-foreground">{article.excerpt}</p>
-                    </CardContent>
                     <CardFooter>
                       <div className="text-sm font-medium text-primary group-hover:underline">
-                        Baca Selengkapnya <ArrowRight className="ml-1 inline-block size-4" />
+                        Baca Selengkapnya
                       </div>
                     </CardFooter>
                   </Card>
                 </Link>
               ))}
             </div>
-             <div className="mt-12 text-center">
-                <Button asChild variant="outline">
-                  <Link href="/artikel">
-                    Lihat Semua Artikel <ArrowRight className="ml-2 size-4" />
-                  </Link>
-                </Button>
-              </div>
           </div>
-        </section>
-
-        <section id="gallery-slider" className="w-full bg-gradient-to-b from-background to-secondary/40 py-16 dark:bg-gradient-to-b dark:from-background dark:to-slate-900/40 sm:py-20 md:py-24">
-            <div className="container">
-              <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center space-y-4 text-center">
-                  <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Galeri Aksi Nyata</h2>
-                  <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-                      Visualisasi dari berbagai program dan dampak positif yang telah kita ciptakan bersama di tengah masyarakat.
-                  </p>
-              </div>
-              <Carousel
-                  opts={{
-                      align: "start",
-                      loop: true,
-                  }}
-                  className="mx-auto w-full max-w-6xl"
-              >
-                  <CarouselContent>
-                      {galleryImages.map((image, index) => (
-                          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                              <div className="p-1">
-                                  <Card className="overflow-hidden">
-                                      <CardContent className="flex aspect-video items-center justify-center p-0">
-                                        <NextImage
-                                          src={image.src}
-                                          alt={image.alt}
-                                          data-ai-hint={image.hint}
-                                          width={600}
-                                          height={400}
-                                          className="h-full w-full object-cover transition-transform hover:scale-105"
-                                        />
-                                      </CardContent>
-                                  </Card>
-                              </div>
-                          </CarouselItem>
-                      ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="hidden sm:flex" />
-                  <CarouselNext className="hidden sm:flex" />
-              </Carousel>
-              <div className="mt-12 text-center">
-                <Button asChild variant="outline">
-                  <Link href="/galeri">
-                    Jelajahi Semua Galeri <ArrowRight className="ml-2 size-4" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
         </section>
         
         <section className="w-full py-16 text-center sm:py-20 md:py-24">
@@ -324,8 +259,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
       </main>
+
       <footer className="w-full border-t py-6 md:px-8 md:py-0">
           <div className="container flex flex-col items-center justify-center gap-2 text-center md:h-24">
             <p className="text-sm text-muted-foreground">
