@@ -11,20 +11,20 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 const features = [
   {
-    name: "Artikel",
-    description: "Buat dan publikasikan artikel kesehatan untuk edukasi masyarakat.",
+    name: "Artikel Edukasi",
+    description: "Publikasikan artikel untuk menyebarkan informasi dan meningkatkan kesadaran kesehatan di masyarakat.",
     icon: <BookOpen className="size-8 text-primary" />,
     href: "/artikel",
   },
   {
-    name: "Kegiatan UKM",
-    description: "Lihat dan kelola semua program kerja UKM Esensial dan Pengembangan.",
+    name: "Manajemen Kegiatan",
+    description: "Rencanakan, kelola, dan pantau seluruh program UKM Esensial dan Pengembangan dengan efisien.",
     icon: <Activity className="size-8 text-primary" />,
     href: "/kegiatan-ukm",
   },
   {
-    name: "Laporan",
-    description: "Akses laporan ke dinas, grafik, log book, dan GDrive data UKM dengan mudah.",
+    name: "Sistem Pelaporan",
+    description: "Hasilkan laporan yang akurat dan terstruktur untuk dinas kesehatan dan pemangku kepentingan.",
     icon: <ClipboardList className="size-8 text-primary" />,
     href: "/laporan",
   },
@@ -62,15 +62,15 @@ export default function HomePage() {
       <main className="flex-1">
         <section className="container py-12 text-center md:py-24 lg:py-32">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-              Platform Manajemen UKM Kesehatan Modern
+              Memajukan Kesehatan Masyarakat, Bersama UKM PONJA
             </h1>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-6">
-              Solusi terintegrasi untuk mengelola semua kegiatan, laporan, dan konten digital Unit Kegiatan Masyarakat (UKM) Anda dengan efisien.
+              Platform digital untuk memelihara, meningkatkan, serta menanggulangi masalah kesehatan dengan sasaran keluarga, kelompok, dan masyarakat secara terintegrasi.
             </p>
             <div className="mt-8">
               <Button size="lg" asChild>
                 <Link href="/dasbor">
-                  Mulai Sekarang
+                  Mulai Berkontribusi
                 </Link>
               </Button>
             </div>
@@ -78,9 +78,9 @@ export default function HomePage() {
 
         <section id="features" className="container space-y-6 bg-slate-50/50 dark:bg-slate-800/20 py-12 md:py-24 lg:py-32 rounded-lg">
           <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-            <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Fitur Unggulan</h2>
+            <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Pilar Utama UKM Anda</h2>
             <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-              Semua yang Anda butuhkan untuk membawa manajemen UKM ke level berikutnya.
+              Alat bantu esensial yang dirancang untuk mendukung setiap aspek kegiatan kesehatan masyarakat.
             </p>
           </div>
           <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
@@ -102,9 +102,9 @@ export default function HomePage() {
 
         <section id="gallery-slider" className="container py-12 md:py-24 lg:py-32">
             <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center mb-12">
-                <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Galeri Kegiatan</h2>
+                <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Galeri Aksi Nyata</h2>
                 <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-                    Dokumentasi visual dari berbagai program dan kegiatan yang telah kami laksanakan.
+                    Visualisasi dari berbagai program dan dampak positif yang telah kita ciptakan bersama di tengah masyarakat.
                 </p>
             </div>
             <Carousel
@@ -140,7 +140,7 @@ export default function HomePage() {
             <div className="text-center mt-8">
               <Button asChild variant="outline">
                 <Link href="/galeri">
-                  Lihat Semua Galeri <ArrowRight className="ml-2 size-4" />
+                  Jelajahi Semua Galeri <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>
             </div>
@@ -148,15 +148,15 @@ export default function HomePage() {
         
         <section className="container py-12 md:py-24 lg:py-32 text-center bg-slate-50/50 dark:bg-slate-800/20 rounded-lg">
             <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">
-              Siap Meningkatkan Produktivitas?
+              Siap Menjadi Garda Terdepan?
             </h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-6">
-              Bergabunglah sekarang dan rasakan kemudahan mengelola UKM Anda.
+              Mari bersama-sama wujudkan masyarakat yang lebih sehat. Masuk ke dasbor untuk memulai aksi Anda.
             </p>
             <div className="mt-8">
               <Button size="lg" asChild>
                   <Link href="/dasbor">
-                    Masuk ke Dasbor Anda
+                    Akses Dasbor Manajemen
                   </Link>
               </Button>
             </div>
