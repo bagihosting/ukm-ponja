@@ -43,6 +43,7 @@ export default function AplikasiPage() {
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [character, setCharacter] = useState("doctor");
+  const [platform, setPlatform] = useState("youtube");
   const [generatedImage, setGeneratedImage] = useState("");
 
   const handleGenerate = async () => {
@@ -57,7 +58,7 @@ export default function AplikasiPage() {
     setLoading(true);
     setGeneratedImage("");
     try {
-      const result = await generateThumbnail({ prompt, character });
+      const result = await generateThumbnail({ prompt, character, platform });
       if (result.imageUrl) {
         setGeneratedImage(result.imageUrl);
       } else {
@@ -202,18 +203,33 @@ export default function AplikasiPage() {
                     rows={3}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="character">Pilih Karakter</Label>
-                   <Select value={character} onValueChange={setCharacter}>
-                    <SelectTrigger id="character" className="w-full">
-                      <SelectValue placeholder="Pilih karakter" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="doctor">Dokter</SelectItem>
-                      <SelectItem value="nurse">Perawat</SelectItem>
-                      <SelectItem value="midwife">Bidan</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="character">Pilih Karakter</Label>
+                     <Select value={character} onValueChange={setCharacter}>
+                      <SelectTrigger id="character" className="w-full">
+                        <SelectValue placeholder="Pilih karakter" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="doctor">Dokter</SelectItem>
+                        <SelectItem value="nurse">Perawat</SelectItem>
+                        <SelectItem value="midwife">Bidan</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="platform">Pilih Platform</Label>
+                    <Select value={platform} onValueChange={setPlatform}>
+                      <SelectTrigger id="platform" className="w-full">
+                        <SelectValue placeholder="Pilih platform" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="youtube">YouTube</SelectItem>
+                        <SelectItem value="instagram">Instagram / Facebook</SelectItem>
+                        <SelectItem value="tiktok">TikTok / X</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </CardContent>
               <CardFooter>
