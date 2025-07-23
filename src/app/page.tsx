@@ -52,6 +52,7 @@ export default function DashboardPage() {
         description: "Terjadi kesalahan saat mengambil data baru. Silakan coba lagi.",
         variant: "destructive",
       });
+      setQuoteData(null); // Clear previous data on error
     } finally {
       setLoading(false);
     }
@@ -59,10 +60,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchQuote();
-    // Fetch new quote every 24 hours
-    const intervalId = setInterval(fetchQuote, 24 * 60 * 60 * 1000); 
-
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
 
 
@@ -183,8 +180,8 @@ export default function DashboardPage() {
                            <NextImage
                               src={quoteData.imageUrl}
                               alt={quoteData.quote}
-                              layout="fill"
-                              objectFit="cover"
+                              fill
+                              style={{ objectFit: 'cover' }}
                               className="transition-transform duration-500 group-hover:scale-105"
                             />
                         </div>
@@ -201,7 +198,10 @@ export default function DashboardPage() {
                   ) : (
                     <div className="flex flex-col items-center justify-center p-10 text-center">
                        <p className="text-muted-foreground">Tidak dapat memuat kata mutiara.</p>
-                       <Button onClick={fetchQuote} className="mt-4">Coba Lagi</Button>
+                       <Button onClick={fetchQuote} className="mt-4" disabled={loading}>
+                        {loading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+                        Coba Lagi
+                       </Button>
                     </div>
                   )}
               </Card>
