@@ -332,8 +332,11 @@ export default function AplikasiPage() {
               )}
             </Card>
           </div>
-          <footer className="mt-8 text-center text-sm text-muted-foreground">
-            Dibuat oleh Rani Kirana
+          <footer className="mt-8 border-t pt-6">
+            <div className="text-center text-sm text-muted-foreground">
+              <p>© {new Date().getFullYear()} UKM PONJA. All Rights Reserved.</p>
+              <p className="mt-1">Dibuat oleh <span className="font-medium">Rani Kirana</span></p>
+            </div>
           </footer>
         </main>
       </SidebarInset>
