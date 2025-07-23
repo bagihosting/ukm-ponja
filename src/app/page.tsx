@@ -89,139 +89,150 @@ export default function HomePage() {
         </div>
       </header>
       <main className="flex-1">
-        <section className="container py-16 text-center sm:py-20 md:py-28">
-            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-              Memajukan Kesehatan Masyarakat, Bersama UKM PONJA
-            </h1>
-            <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground md:text-xl">
-              Platform digital untuk memelihara, meningkatkan, serta menanggulangi masalah kesehatan dengan sasaran keluarga, kelompok, dan masyarakat secara terintegrasi.
-            </p>
-            <div className="mt-8">
-              <Button size="lg" asChild>
-                <Link href="/dasbor">
-                  Mulai Berkontribusi
-                </Link>
-              </Button>
+        <section className="w-full py-16 sm:py-20 md:py-28">
+          <div className="container">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                Memajukan Kesehatan Masyarakat, Bersama UKM PONJA
+              </h1>
+              <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground md:text-xl">
+                Platform digital untuk memelihara, meningkatkan, serta menanggulangi masalah kesehatan dengan sasaran keluarga, kelompok, dan masyarakat secara terintegrasi.
+              </p>
+              <div className="mt-8">
+                <Button size="lg" asChild>
+                  <Link href="/dasbor">
+                    Mulai Berkontribusi
+                  </Link>
+                </Button>
+              </div>
             </div>
+          </div>
         </section>
 
-        <section id="features" className="container space-y-6 rounded-lg bg-gradient-to-b from-background to-secondary/40 py-16 dark:bg-gradient-to-b dark:from-background dark:to-slate-900/40 sm:py-20 md:py-24">
-          <div className="mx-auto flex max-w-2xl flex-col items-center space-y-4 text-center">
-            <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Pilar Utama UKM PONJA</h2>
-            <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-              Alat bantu esensial yang dirancang untuk mendukung setiap aspek kegiatan kesehatan masyarakat.
-            </p>
-          </div>
-          <div className="mx-auto grid max-w-6xl justify-center gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {features.map((feature, index) => (
-              <Link href={feature.href} key={index} className="group">
-                <Card className="relative h-full overflow-hidden rounded-lg border bg-background p-2 transition-all group-hover:-translate-y-1 group-hover:shadow-lg">
-                  <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-                      {feature.icon}
-                      <div className="space-y-2">
-                        <h3 className="font-bold">{feature.name}</h3>
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                      </div>
-                  </div>
-                </Card>
-              </Link>
-            ))}
+        <section id="features" className="w-full bg-gradient-to-b from-background to-secondary/40 py-16 dark:bg-gradient-to-b dark:from-background dark:to-slate-900/40 sm:py-20 md:py-24">
+          <div className="container">
+            <div className="mx-auto flex max-w-2xl flex-col items-center space-y-4 text-center">
+              <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Pilar Utama UKM PONJA</h2>
+              <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+                Alat bantu esensial yang dirancang untuk mendukung setiap aspek kegiatan kesehatan masyarakat.
+              </p>
+            </div>
+            <div className="mx-auto mt-12 grid max-w-6xl justify-center gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {features.map((feature, index) => (
+                <Link href={feature.href} key={index} className="group">
+                  <Card className="relative h-full overflow-hidden rounded-lg border bg-background p-2 transition-all group-hover:-translate-y-1 group-hover:shadow-lg">
+                    <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+                        {feature.icon}
+                        <div className="space-y-2">
+                          <h3 className="font-bold">{feature.name}</h3>
+                          <p className="text-sm text-muted-foreground">{feature.description}</p>
+                        </div>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
         
-        <section id="articles" className="container py-16 sm:py-20 md:py-24">
-          <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center space-y-4 text-center">
-              <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Artikel & Wawasan Terkini</h2>
-              <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-                  Dapatkan informasi, tips, dan wawasan terbaru seputar kesehatan untuk Anda, keluarga, dan masyarakat.
-              </p>
-          </div>
-          <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {articles.map((article, index) => (
-              <Link key={index} href={article.href} className="group">
-                <Card className="flex h-full flex-col overflow-hidden transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
-                  <CardContent className="p-0">
-                    <NextImage
-                      src={article.image}
-                      alt={article.title}
-                      data-ai-hint={article.hint}
-                      width={600}
-                      height={400}
-                      className="h-48 w-full object-cover"
-                    />
-                  </CardContent>
-                  <CardHeader>
-                    <Badge variant="secondary" className="w-fit">{article.category}</Badge>
-                    <CardTitle className="mt-2 text-lg">{article.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <p className="text-sm text-muted-foreground">{article.excerpt}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <div className="text-sm font-medium text-primary group-hover:underline">
-                      Baca Selengkapnya <ArrowRight className="ml-1 inline-block size-4" />
-                    </div>
-                  </CardFooter>
-                </Card>
-              </Link>
-            ))}
-          </div>
-           <div className="mt-12 text-center">
-              <Button asChild variant="outline">
-                <Link href="/artikel">
-                  Lihat Semua Artikel <ArrowRight className="ml-2 size-4" />
-                </Link>
-              </Button>
-            </div>
-        </section>
-
-        <section id="gallery-slider" className="container rounded-lg bg-gradient-to-b from-background to-secondary/40 py-16 dark:bg-gradient-to-b dark:from-background dark:to-slate-900/40 sm:py-20 md:py-24">
+        <section id="articles" className="w-full py-16 sm:py-20 md:py-24">
+          <div className="container">
             <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center space-y-4 text-center">
-                <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Galeri Aksi Nyata</h2>
+                <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Artikel & Wawasan Terkini</h2>
                 <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-                    Visualisasi dari berbagai program dan dampak positif yang telah kita ciptakan bersama di tengah masyarakat.
+                    Dapatkan informasi, tips, dan wawasan terbaru seputar kesehatan untuk Anda, keluarga, dan masyarakat.
                 </p>
             </div>
-            <Carousel
-                opts={{
-                    align: "start",
-                    loop: true,
-                }}
-                className="mx-auto w-full max-w-5xl"
-            >
-                <CarouselContent>
-                    {galleryImages.map((image, index) => (
-                        <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                            <div className="p-1">
-                                <Card className="overflow-hidden">
-                                    <CardContent className="flex aspect-video items-center justify-center p-0">
-                                      <NextImage
-                                        src={image.src}
-                                        alt={image.alt}
-                                        data-ai-hint={image.hint}
-                                        width={600}
-                                        height={400}
-                                        className="h-full w-full object-cover transition-transform hover:scale-105"
-                                      />
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
-                <CarouselPrevious className="hidden sm:flex" />
-                <CarouselNext className="hidden sm:flex" />
-            </Carousel>
-            <div className="mt-12 text-center">
-              <Button asChild variant="outline">
-                <Link href="/galeri">
-                  Jelajahi Semua Galeri <ArrowRight className="ml-2 size-4" />
+            <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {articles.map((article, index) => (
+                <Link key={index} href={article.href} className="group">
+                  <Card className="flex h-full flex-col overflow-hidden transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
+                    <CardContent className="p-0">
+                      <NextImage
+                        src={article.image}
+                        alt={article.title}
+                        data-ai-hint={article.hint}
+                        width={600}
+                        height={400}
+                        className="h-48 w-full object-cover"
+                      />
+                    </CardContent>
+                    <CardHeader>
+                      <Badge variant="secondary" className="w-fit">{article.category}</Badge>
+                      <CardTitle className="mt-2 text-lg">{article.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                      <p className="text-sm text-muted-foreground">{article.excerpt}</p>
+                    </CardContent>
+                    <CardFooter>
+                      <div className="text-sm font-medium text-primary group-hover:underline">
+                        Baca Selengkapnya <ArrowRight className="ml-1 inline-block size-4" />
+                      </div>
+                    </CardFooter>
+                  </Card>
                 </Link>
-              </Button>
+              ))}
+            </div>
+             <div className="mt-12 text-center">
+                <Button asChild variant="outline">
+                  <Link href="/artikel">
+                    Lihat Semua Artikel <ArrowRight className="ml-2 size-4" />
+                  </Link>
+                </Button>
+              </div>
+          </div>
+        </section>
+
+        <section id="gallery-slider" className="w-full bg-gradient-to-b from-background to-secondary/40 py-16 dark:bg-gradient-to-b dark:from-background dark:to-slate-900/40 sm:py-20 md:py-24">
+            <div className="container">
+              <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center space-y-4 text-center">
+                  <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Galeri Aksi Nyata</h2>
+                  <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+                      Visualisasi dari berbagai program dan dampak positif yang telah kita ciptakan bersama di tengah masyarakat.
+                  </p>
+              </div>
+              <Carousel
+                  opts={{
+                      align: "start",
+                      loop: true,
+                  }}
+                  className="mx-auto w-full max-w-6xl"
+              >
+                  <CarouselContent>
+                      {galleryImages.map((image, index) => (
+                          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                              <div className="p-1">
+                                  <Card className="overflow-hidden">
+                                      <CardContent className="flex aspect-video items-center justify-center p-0">
+                                        <NextImage
+                                          src={image.src}
+                                          alt={image.alt}
+                                          data-ai-hint={image.hint}
+                                          width={600}
+                                          height={400}
+                                          className="h-full w-full object-cover transition-transform hover:scale-105"
+                                        />
+                                      </CardContent>
+                                  </Card>
+                              </div>
+                          </CarouselItem>
+                      ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="hidden sm:flex" />
+                  <CarouselNext className="hidden sm:flex" />
+              </Carousel>
+              <div className="mt-12 text-center">
+                <Button asChild variant="outline">
+                  <Link href="/galeri">
+                    Jelajahi Semua Galeri <ArrowRight className="ml-2 size-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
         </section>
         
-        <section className="container py-16 text-center sm:py-20 md:py-24">
+        <section className="w-full py-16 text-center sm:py-20 md:py-24">
+          <div className="container">
             <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">
               Siap Menjadi Garda Terdepan?
             </h2>
@@ -235,10 +246,11 @@ export default function HomePage() {
                   </Link>
               </Button>
             </div>
+          </div>
         </section>
 
       </main>
-      <footer className="mt-12 border-t py-6 md:px-8 md:py-0">
+      <footer className="w-full border-t py-6 md:px-8 md:py-0">
           <div className="container flex flex-col items-center justify-center gap-2 text-center md:h-24">
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} UKM PONJA. All Rights Reserved.
