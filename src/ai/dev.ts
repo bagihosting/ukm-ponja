@@ -4,3 +4,5 @@ import './flows/generateThumbnailFlow';
 import './flows/generateArticleImageFlow';
 import './flows/generateArticleContentFlow';
 import './flows/generateArticleExcerptFlow';
+import './flows/generateArticleTitleFlow';
+

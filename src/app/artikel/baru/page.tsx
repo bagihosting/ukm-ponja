@@ -19,26 +19,67 @@ import NextImage from "next/image";
 import { generateArticleImage } from "@/ai/flows/generateArticleImageFlow";
 import { generateArticleContent } from "@/ai/flows/generateArticleContentFlow";
 import { generateArticleExcerpt } from "@/ai/flows/generateArticleExcerptFlow";
+import { generateArticleTitle } from "@/ai/flows/generateArticleTitleFlow";
 
 
 export default function BuatArtikelPage() {
   const router = useRouter();
   const { toast } = useToast();
 
+  const [keyword, setKeyword] = useState("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [generatedImageDataUri, setGeneratedImageDataUri] = useState<string | null>(null);
+  const [isGeneratingTitle, setIsGeneratingTitle] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [isGeneratingContent, setIsGeneratingContent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const handleGenerateTitle = async () => {
+    if (!keyword || !category) {
+      toast({
+        title: "Kata Kunci dan Kategori harus diisi",
+        description: "Silakan masukkan kata kunci dan pilih kategori untuk membuat judul.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsGeneratingTitle(true);
+    setTitle("");
+    try {
+      const result = await generateArticleTitle({ keyword, category });
+      if (result.title) {
+        setTitle(result.title);
+        toast({
+          title: "Judul berhasil dibuat!",
+          description: "Anda sekarang dapat membuat konten dan gambar."
+        });
+      } else {
+        toast({
+          title: "Gagal menghasilkan judul",
+          description: "AI tidak dapat membuat judul. Silakan coba lagi.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+       toast({
+        title: "Terjadi kesalahan",
+        description: "Gagal menghubungi layanan AI. Silakan coba lagi.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingTitle(false);
+    }
+  };
 
   const handleGenerateImage = async () => {
     if (!title) {
       toast({
         title: "Judul tidak boleh kosong",
-        description: "Silakan masukkan judul artikel untuk membuat gambar.",
+        description: "Silakan buat judul artikel terlebih dahulu untuk membuat gambar.",
         variant: "destructive",
       });
       return;
@@ -72,7 +113,7 @@ export default function BuatArtikelPage() {
     if (!title || !category) {
       toast({
         title: "Judul dan Kategori harus diisi",
-        description: "Silakan masukkan judul dan pilih kategori untuk membuat konten.",
+        description: "Silakan buat judul dan pilih kategori untuk membuat konten.",
         variant: "destructive",
       });
       return;
@@ -170,7 +211,7 @@ export default function BuatArtikelPage() {
     }
   };
   
-  const isAiWorking = isGeneratingImage || isGeneratingContent || isSubmitting;
+  const isAiWorking = isGeneratingImage || isGeneratingContent || isSubmitting || isGeneratingTitle;
 
   return (
     <DashboardLayout pageTitle="Tulis Artikel Baru">
@@ -180,28 +221,64 @@ export default function BuatArtikelPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Konten Artikel</CardTitle>
-                        <CardDescription>Isi detail utama artikel Anda di sini.</CardDescription>
+                        <CardDescription>Mulai dengan kata kunci, lalu biarkan AI membantu Anda membuat judul, konten, dan gambar.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-2">
-                            <Label htmlFor="title">Judul Artikel</Label>
-                            <Input 
-                                id="title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="Judul yang menarik dan informatif"
-                                disabled={isAiWorking}
-                            />
+                           <Label htmlFor="category">1. Pilih Kategori Terlebih Dahulu</Label>
+                           <Select onValueChange={setCategory} value={category} disabled={isAiWorking}>
+                                <SelectTrigger id="category">
+                                    <SelectValue placeholder="Pilih kategori artikel" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Gaya Hidup Sehat">Gaya Hidup Sehat</SelectItem>
+                                    <SelectItem value="Kesehatan Anak">Kesehatan Anak</SelectItem>
+                                    <SelectItem value="Kesehatan Mental">Kesehatan Mental</SelectItem>
+                                    <SelectItem value="Nutrisi">Nutrisi</SelectItem>
+                                    <SelectItem value="Penyakit">Penyakit</SelectItem>
+                                    <SelectItem value="Info Terkini">Info Terkini</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
-                         <div className="space-y-2">
+                        <div className="space-y-2">
+                            <Label htmlFor="keyword">2. Masukkan Kata Kunci</Label>
+                            <div className="flex items-center gap-2">
+                                <Input 
+                                    id="keyword"
+                                    value={keyword}
+                                    onChange={(e) => setKeyword(e.target.value)}
+                                    placeholder="Contoh: 'jantung sehat' atau 'kesehatan mental remaja'"
+                                    disabled={isAiWorking || !category}
+                                />
+                                <Button
+                                  type="button"
+                                  onClick={handleGenerateTitle}
+                                  variant="outline"
+                                  size="icon"
+                                  title="Buat Judul dengan AI"
+                                  disabled={isAiWorking || !keyword || !category}
+                                >
+                                  {isGeneratingTitle ? <Loader className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
+                                </Button>
+                            </div>
+                        </div>
+
+                         {title && (
+                            <div className="space-y-2 rounded-md border bg-muted/50 p-4">
+                               <p className="text-sm font-medium text-muted-foreground">Judul yang Dihasilkan AI:</p>
+                               <p className="text-lg font-semibold">{title}</p>
+                            </div>
+                        )}
+
+                        <div className="space-y-2">
                             <div className="flex justify-between items-center">
-                                <Label htmlFor="content">Isi Konten</Label>
+                                <Label htmlFor="content">3. Buat Isi Konten</Label>
                                 <Button
                                     type="button"
                                     onClick={handleGenerateContent}
                                     variant="outline"
                                     size="sm"
-                                    disabled={isAiWorking || !title || !category}
+                                    disabled={isAiWorking || !title}
                                 >
                                     {isGeneratingContent ? (
                                         <Loader className="mr-2 h-4 w-4 animate-spin" />
@@ -216,7 +293,7 @@ export default function BuatArtikelPage() {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 rows={15}
-                                placeholder="Tulis konten artikel lengkap Anda di sini atau gunakan AI untuk membuatnya."
+                                placeholder="Konten artikel akan muncul di sini setelah dibuat oleh AI."
                                 disabled={isAiWorking}
                             />
                         </div>
@@ -227,33 +304,17 @@ export default function BuatArtikelPage() {
                 <Card>
                      <CardHeader>
                         <CardTitle>Metadata</CardTitle>
-                        <CardDescription>Pengaturan tambahan untuk artikel.</CardDescription>
+                        <CardDescription>Kutipan singkat dibuat otomatis oleh AI setelah konten selesai dibuat.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                        <div className="space-y-2">
-                           <Label htmlFor="category">Kategori</Label>
-                           <Select onValueChange={setCategory} value={category} disabled={isAiWorking}>
-                                <SelectTrigger id="category">
-                                    <SelectValue placeholder="Pilih kategori" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Gaya Hidup Sehat">Gaya Hidup Sehat</SelectItem>
-                                    <SelectItem value="Kesehatan Anak">Kesehatan Anak</SelectItem>
-                                    <SelectItem value="Kesehatan Mental">Kesehatan Mental</SelectItem>
-                                    <SelectItem value="Nutrisi">Nutrisi</SelectItem>
-                                    <SelectItem value="Penyakit">Penyakit</SelectItem>
-                                    <SelectItem value="Info Terkini">Info Terkini</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
+                         <div className="space-y-2">
                             <Label htmlFor="excerpt">Kutipan Singkat (Excerpt)</Label>
                             <Textarea
                                 id="excerpt"
                                 value={excerpt}
                                 onChange={(e) => setExcerpt(e.target.value)}
                                 rows={4}
-                                placeholder="Ringkasan singkat artikel (maks 200 karakter). Dibuat otomatis oleh AI setelah konten dibuat."
+                                placeholder="Ringkasan singkat artikel (maks 250 karakter)."
                                 maxLength={250}
                                 disabled={isAiWorking}
                             />
@@ -262,8 +323,8 @@ export default function BuatArtikelPage() {
                 </Card>
                  <Card>
                     <CardHeader>
-                        <CardTitle>Gambar Utama</CardTitle>
-                        <CardDescription>Gunakan AI untuk membuat gambar berdasarkan judul artikel Anda.</CardDescription>
+                        <CardTitle>4. Gambar Utama</CardTitle>
+                        <CardDescription>Gunakan AI untuk membuat gambar yang relevan.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="w-full aspect-video rounded-md border-2 border-dashed bg-card/50 flex items-center justify-center">
