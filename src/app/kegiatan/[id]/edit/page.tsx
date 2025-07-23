@@ -52,16 +52,21 @@ export default function EditKegiatanPage() {
         const data = snapshot.val();
         let foundProgram: Program | null = null;
         
+        // Check both categories to find the program by its key (id)
         for (const category of ['esensial', 'pengembangan']) {
-            if (data[category] && data[category][id]) {
-                foundProgram = {
-                    id: id,
-                    ...data[category][id],
-                    category: category as 'esensial' | 'pengembangan',
-                    dbPath: `programs/${category}/${id}`
-                };
-                break;
+          if (data[category]) {
+            const programData = Object.entries(data[category]).find(([key]) => key === id);
+            if (programData) {
+              const [key, value] = programData;
+              foundProgram = {
+                id: key,
+                ...(value as any),
+                category: category as 'esensial' | 'pengembangan',
+                dbPath: `programs/${category}/${key}`
+              };
+              break;
             }
+          }
         }
         
         if (foundProgram) {
@@ -73,30 +78,91 @@ export default function EditKegiatanPage() {
             description: foundProgram.description
           });
           setAvatarPreview(foundProgram.avatar);
+        } else {
+           console.error(`Program with ID "${id}" not found.`);
+           toast({
+            title: "Program Tidak Ditemukan",
+            description: `Program dengan ID "${id}" tidak dapat ditemukan di database.`,
+            variant: "destructive",
+          });
         }
       }
       setLoading(false);
     };
 
     fetchProgram();
-  }, [id]);
+  }, [id, toast]);
 
+  const compressImage = (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 800; // Max width for compressed image
+          const scaleSize = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
+          
+          canvas.width = img.width * scaleSize;
+          canvas.height = img.height * scaleSize;
+          
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            return reject(new Error('Could not get canvas context.'));
+          }
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const compressedFile = new File([blob], file.name, {
+                type: 'image/jpeg',
+                lastModified: Date.now(),
+              });
+              resolve(compressedFile);
+            } else {
+              reject(new Error('Canvas to Blob conversion failed'));
+            }
+          }, 'image/jpeg', 0.7); // Compress to 70% quality JPEG
+        };
+        img.onerror = (err) => reject(err);
+      };
+      reader.onerror = (err) => reject(err);
+    });
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      try {
+        setSaving(true);
+        const compressedFile = await compressImage(file);
+        setNewAvatar(compressedFile);
+        
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setAvatarPreview(reader.result as string);
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error("Image compression error:", error);
+        toast({
+            title: "Gagal memproses gambar",
+            description: "Terjadi kesalahan saat mengompres gambar. Silakan coba gambar lain.",
+            variant: "destructive",
+        });
+      } finally {
+        setSaving(false);
+      }
+    }
+  };
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setNewAvatar(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,7 +172,8 @@ export default function EditKegiatanPage() {
     try {
       let newAvatarUrl = program.avatar;
       if (newAvatar) {
-        const imageRef = storageRef(storage, `avatars/${program.id}-${newAvatar.name}`);
+        toast({ title: "Mengunggah foto...", description: "Mohon tunggu sebentar." });
+        const imageRef = storageRef(storage, `avatars/${program.id}-${Date.now()}-${newAvatar.name}`);
         const uploadResult = await uploadBytes(imageRef, newAvatar);
         newAvatarUrl = await getDownloadURL(uploadResult.ref);
       }
@@ -183,6 +250,7 @@ export default function EditKegiatanPage() {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Masukkan nama program"
+                    disabled={saving}
                 />
             </div>
             <div className="flex items-start gap-6">
@@ -195,7 +263,7 @@ export default function EditKegiatanPage() {
                   <label htmlFor="avatar-upload" className="cursor-pointer">
                     <Upload className="mr-2 h-4 w-4"/>
                     Ganti Foto
-                    <input id="avatar-upload" type="file" className="sr-only" accept="image/*" onChange={handleAvatarChange} />
+                    <input id="avatar-upload" type="file" className="sr-only" accept="image/*" onChange={handleAvatarChange} disabled={saving} />
                   </label>
                 </Button>
               </div>
@@ -208,6 +276,7 @@ export default function EditKegiatanPage() {
                     value={formData.pic}
                     onChange={handleInputChange}
                     placeholder="Masukkan nama lengkap"
+                    disabled={saving}
                   />
                 </div>
                 <div className="space-y-2">
@@ -218,6 +287,7 @@ export default function EditKegiatanPage() {
                     value={formData.position}
                     onChange={handleInputChange}
                     placeholder="Contoh: Koordinator, Spesialis"
+                    disabled={saving}
                   />
                 </div>
               </div>
@@ -231,6 +301,7 @@ export default function EditKegiatanPage() {
                 onChange={handleInputChange}
                 rows={5}
                 placeholder="Jelaskan secara singkat tentang program ini..."
+                disabled={saving}
               />
             </div>
           </CardContent>
