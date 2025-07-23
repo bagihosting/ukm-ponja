@@ -105,7 +105,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section id="features" className="container space-y-6 rounded-lg bg-slate-50/50 py-16 dark:bg-slate-800/20 sm:py-20 md:py-24">
+        <section id="features" className="container space-y-6 rounded-lg bg-gradient-to-b from-background to-secondary/40 py-16 dark:bg-gradient-to-b dark:from-background dark:to-slate-900/40 sm:py-20 md:py-24">
           <div className="mx-auto flex max-w-2xl flex-col items-center space-y-4 text-center">
             <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Pilar Utama UKM PONJA</h2>
             <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
@@ -175,7 +175,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section id="gallery-slider" className="container rounded-lg bg-slate-50/50 py-16 dark:bg-slate-800/20 sm:py-20 md:py-24">
+        <section id="gallery-slider" className="container rounded-lg bg-gradient-to-b from-background to-secondary/40 py-16 dark:bg-gradient-to-b dark:from-background dark:to-slate-900/40 sm:py-20 md:py-24">
             <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center space-y-4 text-center">
                 <h2 className="text-3xl font-bold leading-[1.1] sm:text-4xl md:text-5xl">Galeri Aksi Nyata</h2>
                 <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
