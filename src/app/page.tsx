@@ -3,13 +3,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Image, ArrowRight, Newspaper, Menu } from "lucide-react";
+import { Image, ArrowRight, Newspaper, Menu, Loader } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Sheet, SheetTrigger, SheetContent, SheetClose } from "@/components/ui/sheet";
+import { useAuth } from "@/hooks/use-auth";
 
 const navLinks = [
   { name: "Kegiatan UKM", href: "/dasbor" },
@@ -71,6 +72,37 @@ const galleryImages = [
 
 
 export default function HomePage() {
+  const { user, loading } = useAuth();
+  
+  const AuthButton = () => {
+    if (loading) {
+      return (
+        <Button disabled className="w-full md:w-auto">
+          <Loader className="mr-2 size-4 animate-spin" />
+          Memuat...
+        </Button>
+      );
+    }
+
+    if (user) {
+      return (
+        <Button asChild className="w-full md:w-auto">
+          <Link href="/dasbor">
+            Dasbor <ArrowRight className="ml-2 size-4" />
+          </Link>
+        </Button>
+      );
+    }
+
+    return (
+      <Button asChild className="w-full md:w-auto">
+        <Link href="/login">
+          Masuk <ArrowRight className="ml-2 size-4" />
+        </Link>
+      </Button>
+    );
+  };
+  
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -101,29 +133,34 @@ export default function HomePage() {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left">
-                  <div className="grid gap-4 py-6">
+                  <div className="grid gap-6 py-6">
                     <Link href="/" className="mb-4 flex items-center gap-2">
                         <Icons.logo className="size-7 text-primary" />
                         <span className="text-lg font-bold">UKM PONJA</span>
                     </Link>
-                    {navLinks.map((link) => (
-                      <SheetClose asChild key={link.name}>
-                        <Link
-                            href={link.href}
-                            className="flex w-full items-center py-2 text-lg font-semibold"
-                        >
-                            {link.name}
-                        </Link>
+                    <div className="flex flex-col gap-4">
+                      {navLinks.map((link) => (
+                        <SheetClose asChild key={link.name}>
+                          <Link
+                              href={link.href}
+                              className="flex w-full items-center py-2 text-lg font-semibold"
+                          >
+                              {link.name}
+                          </Link>
+                        </SheetClose>
+                      ))}
+                    </div>
+                     <div className="pt-4">
+                      <SheetClose asChild>
+                        <AuthButton />
                       </SheetClose>
-                    ))}
+                    </div>
                   </div>
                 </SheetContent>
             </Sheet>
-            <Button asChild className="hidden md:inline-flex">
-              <Link href="/login">
-                Masuk Dasbor <ArrowRight className="ml-2 size-4" />
-              </Link>
-            </Button>
+            <div className="hidden md:inline-flex">
+              <AuthButton />
+            </div>
           </div>
         </div>
       </header>
@@ -302,3 +339,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
