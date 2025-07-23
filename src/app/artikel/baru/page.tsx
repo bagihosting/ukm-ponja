@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import NextImage from "next/image";
 import { generateArticleImage } from "@/ai/flows/generateArticleImageFlow";
 import { generateArticleContent } from "@/ai/flows/generateArticleContentFlow";
+import { generateArticleExcerpt } from "@/ai/flows/generateArticleExcerptFlow";
 
 
 export default function BuatArtikelPage() {
@@ -78,16 +79,37 @@ export default function BuatArtikelPage() {
     }
     setIsGeneratingContent(true);
     setContent("AI sedang menulis artikel untuk Anda, mohon tunggu...");
+    setExcerpt("");
     try {
-      const result = await generateArticleContent({ title, category });
-      if (result.content) {
-        setContent(result.content);
-        // Auto-generate excerpt from the beginning of the content
-        setExcerpt(result.content.substring(0, 200));
+      const contentResult = await generateArticleContent({ title, category });
+      if (contentResult.content) {
+        setContent(contentResult.content);
         toast({
             title: "Konten berhasil dibuat!",
-            description: "Silakan periksa dan edit jika diperlukan."
-        })
+            description: "Membuat kutipan singkat..."
+        });
+
+        // Auto-generate excerpt from the generated content
+        const excerptResult = await generateArticleExcerpt({
+          title,
+          content: contentResult.content
+        });
+
+        if (excerptResult.excerpt) {
+            setExcerpt(excerptResult.excerpt);
+            toast({
+                title: "Kutipan berhasil dibuat!",
+                description: "Silakan periksa dan edit jika diperlukan."
+            });
+        } else {
+            setExcerpt(contentResult.content.substring(0, 200));
+            toast({
+                title: "Gagal membuat kutipan AI",
+                description: "Menggunakan 200 karakter pertama sebagai kutipan.",
+                variant: "destructive"
+            });
+        }
+
       } else {
         toast({
           title: "Gagal menghasilkan konten",
@@ -231,8 +253,8 @@ export default function BuatArtikelPage() {
                                 value={excerpt}
                                 onChange={(e) => setExcerpt(e.target.value)}
                                 rows={4}
-                                placeholder="Ringkasan singkat artikel (maks 200 karakter)"
-                                maxLength={200}
+                                placeholder="Ringkasan singkat artikel (maks 200 karakter). Dibuat otomatis oleh AI setelah konten dibuat."
+                                maxLength={250}
                                 disabled={isAiWorking}
                             />
                         </div>
