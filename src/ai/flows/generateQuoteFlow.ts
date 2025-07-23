@@ -17,8 +17,8 @@ const GenerateQuoteOutputSchema = z.object({
 });
 export type GenerateQuoteOutput = z.infer<typeof GenerateQuoteOutputSchema>;
 
-export async function generateQuote(): Promise<GenerateQuoteOutput> {
-  return generateQuoteFlow();
+export async function generateQuote(character?: string): Promise<GenerateQuoteOutput> {
+  return generateQuoteFlow({ character });
 }
 
 const characterList = [
@@ -29,9 +29,12 @@ const characterList = [
 const generateQuoteFlow = ai.defineFlow(
   {
     name: 'generateQuoteFlow',
+    inputSchema: z.object({
+        character: z.string().optional(),
+    }),
     outputSchema: GenerateQuoteOutputSchema,
   },
-  async () => {
+  async ({ character: inputCharacter }) => {
     // Step 1: Generate a health quote and suggest a character
     const { output: quoteAndCharacter } = await ai.generate({
         prompt: `Generate a short, inspiring, and unique health or wellness quote in Indonesian. Also, suggest the most relevant character from the following list to be featured in an image with the quote: ${characterList.join(', ')}.`,
@@ -48,7 +51,8 @@ const generateQuoteFlow = ai.defineFlow(
         throw new Error('Failed to generate quote and character.');
     }
     
-    const { quote, character } = quoteAndCharacter;
+    const { quote } = quoteAndCharacter;
+    const character = inputCharacter || quoteAndCharacter.character;
     const characterPrompt = `a 3D animated cartoon style ${character.replace(/_/g, ' ')} character with typical Indonesian facial features, looking friendly and inspiring.`;
 
     // Step 2: Generate an image based on the quote and character

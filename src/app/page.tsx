@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,10 +40,13 @@ export default function DashboardPage() {
   const [quoteData, setQuoteData] = useState<GenerateQuoteOutput | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchQuote = async () => {
+  const fetchQuote = useCallback(async (regenerateImage = false) => {
     setLoading(true);
     try {
-      const data = await generateQuote();
+      // If we aren't regenerating the image, we can pass the existing character
+      // to avoid creating a new image, which might have a different character.
+      const character = regenerateImage || !quoteData?.character ? undefined : quoteData.character;
+      const data = await generateQuote(character);
       setQuoteData(data);
     } catch (error) {
       console.error("Failed to fetch quote:", error);
@@ -52,15 +55,17 @@ export default function DashboardPage() {
         description: "Terjadi kesalahan saat mengambil data baru. Silakan coba lagi.",
         variant: "destructive",
       });
-      setQuoteData(null); // Clear previous data on error
+      // Don't clear previous data on error, so the user can still see it.
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast, quoteData?.character]);
 
   useEffect(() => {
-    fetchQuote();
-  }, []);
+    // Fetch quote only once on initial load.
+    fetchQuote(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // The empty dependency array ensures this runs only once on mount.
 
 
   return (
@@ -168,7 +173,7 @@ export default function DashboardPage() {
         <main className="flex flex-1 flex-col p-4 md:p-6">
             <div className="flex flex-1 items-center justify-center">
               <Card className="w-full max-w-4xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
-                  {loading ? (
+                  {loading && !quoteData ? (
                     <div className="p-6">
                         <Skeleton className="h-96 w-full" />
                         <Skeleton className="mt-4 h-6 w-3/4" />
@@ -190,7 +195,7 @@ export default function DashboardPage() {
                         <p className="max-w-[85%] text-sm font-medium text-card-foreground italic">
                             "{quoteData.quote}"
                         </p>
-                        <Button variant="ghost" size="icon" onClick={fetchQuote} disabled={loading} aria-label="Muat Ulang">
+                        <Button variant="ghost" size="icon" onClick={() => fetchQuote(false)} disabled={loading} aria-label="Muat Ulang Kutipan">
                             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
                         </Button>
                       </CardFooter>
@@ -198,7 +203,7 @@ export default function DashboardPage() {
                   ) : (
                     <div className="flex flex-col items-center justify-center p-10 text-center">
                        <p className="text-muted-foreground">Tidak dapat memuat kata mutiara.</p>
-                       <Button onClick={fetchQuote} className="mt-4" disabled={loading}>
+                       <Button onClick={() => fetchQuote(true)} className="mt-4" disabled={loading}>
                         {loading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
                         Coba Lagi
                        </Button>
