@@ -83,29 +83,14 @@ export default function AplikasiPage() {
 
   const handleDownload = () => {
     if (!generatedImage) return;
-
-    const image = new window.Image();
-    image.src = generatedImage;
-    image.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = image.width;
-      canvas.height = image.height;
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(image, 0, 0);
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'thumbnail.webp';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-          }
-        }, 'image/webp');
-      }
-    };
+    const link = document.createElement('a');
+    link.href = generatedImage;
+    // Sanitize prompt to create a valid filename
+    const fileName = prompt.replace(/[^a-z0-9]/gi, '_').toLowerCase().slice(0, 50) || 'thumbnail';
+    link.download = `${fileName}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
 
@@ -326,7 +311,7 @@ export default function AplikasiPage() {
                 <CardFooter>
                   <Button onClick={handleDownload} className="w-full">
                     <Download className="mr-2 h-4 w-4" />
-                    Unduh (WebP)
+                    Unduh (PNG)
                   </Button>
                 </CardFooter>
               )}

@@ -3,7 +3,6 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,19 +24,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, FileText, BarChart2, BookOpen, FolderKanban, Newspaper, Image, AppWindow } from "lucide-react";
+import { Home, LogOut, Settings, LifeBuoy, Activity, ClipboardList, Newspaper, Image, AppWindow } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function LaporanPage() {
   const pathname = usePathname();
-
-  const reportItems = [
-    { name: "Laporan ke Dinas", icon: <FileText className="h-8 w-8 text-primary" /> },
-    { name: "Laporan Grafik", icon: <BarChart2 className="h-8 w-8 text-primary" /> },
-    { name: "Log Book UKM", icon: <BookOpen className="h-8 w-8 text-primary" /> },
-    { name: "GDrive Data UKM", icon: <FolderKanban className="h-8 w-8 text-primary" /> },
-  ];
 
   return (
     <SidebarProvider>
@@ -141,29 +133,23 @@ export default function LaporanPage() {
             <h1 className="text-lg font-semibold md:text-xl">Laporan</h1>
           </div>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {reportItems.map((item, index) => (
-              <Card key={index} className="cursor-pointer hover:shadow-lg transition-shadow">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-lg font-medium">
-                    {item.name}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-center p-6">
-                    {item.icon}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <footer className="mt-8 border-t pt-6">
-            <div className="text-center text-sm text-muted-foreground">
-              <p>© {new Date().getFullYear()} UKM PONJA. All Rights Reserved.</p>
-              <p className="mt-1">Dibuat oleh <span className="font-medium">Rani Kirana</span></p>
+        <main className="flex flex-1 flex-col p-4 md:p-6">
+            <div className="flex flex-1 items-center justify-center rounded-lg border-2 border-dashed bg-card/50 shadow-sm">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold tracking-tight">
+                        Halaman Laporan
+                    </h2>
+                    <p className="text-muted-foreground">
+                        Konten untuk laporan akan ditampilkan di sini.
+                    </p>
+                </div>
             </div>
-          </footer>
+            <footer className="mt-8 border-t pt-6">
+              <div className="text-center text-sm text-muted-foreground">
+                <p>© {new Date().getFullYear()} UKM PONJA. All Rights Reserved.</p>
+                <p className="mt-1">Dibuat oleh <span className="font-medium">Rani Kirana</span></p>
+              </div>
+            </footer>
         </main>
       </SidebarInset>
     </SidebarProvider>

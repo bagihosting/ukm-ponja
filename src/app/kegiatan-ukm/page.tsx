@@ -37,6 +37,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { database } from "@/lib/firebase";
 import { ref, onValue } from "firebase/database";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Program = {
   name: string;
@@ -55,6 +56,7 @@ export default function KegiatanUkmPage() {
   const [essentialPrograms, setEssentialPrograms] = useState<Program[]>([]);
   const [developmentPrograms, setDevelopmentPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const essentialRef = ref(database, 'essentialPrograms');
@@ -64,10 +66,13 @@ export default function KegiatanUkmPage() {
       const data = snapshot.val();
       if (data) {
         setEssentialPrograms(Object.values(data));
+      } else {
+        setEssentialPrograms([]);
       }
       setLoading(false);
-    }, (error) => {
-      console.error("Firebase read failed: ", error);
+    }, (err) => {
+      console.error("Firebase read failed (essential): ", err);
+      setError("Gagal memuat data program esensial.");
       setLoading(false);
     });
 
@@ -75,9 +80,12 @@ export default function KegiatanUkmPage() {
       const data = snapshot.val();
       if (data) {
         setDevelopmentPrograms(Object.values(data));
+      } else {
+        setDevelopmentPrograms([]);
       }
-    }, (error) => {
-      console.error("Firebase read failed: ", error);
+    }, (err) => {
+      console.error("Firebase read failed (development): ", err);
+      setError("Gagal memuat data program pengembangan.");
     });
 
     return () => {
@@ -87,13 +95,13 @@ export default function KegiatanUkmPage() {
   }, []);
 
   const ProgramCard = ({ program }: { program: Program }) => {
-    const IconComponent = iconComponents[program.icon];
+    const IconComponent = iconComponents[program.icon] || Star;
     return (
-      <Card className="flex flex-col justify-between">
+      <Card className="flex flex-col justify-between transition-all hover:shadow-lg hover:-translate-y-1">
         <CardHeader>
-          <div className="flex items-center gap-4">
-            {IconComponent ? <IconComponent className="h-6 w-6 text-primary" /> : <Star className="h-6 w-6 text-primary" />}
-            <CardTitle className="text-base leading-tight">{program.name}</CardTitle>
+          <div className="flex items-start gap-4">
+            <IconComponent className="h-7 w-7 text-primary flex-shrink-0" />
+            <CardTitle className="text-base font-semibold leading-tight">{program.name}</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="mt-auto flex items-center gap-3 pt-4">
@@ -109,6 +117,27 @@ export default function KegiatanUkmPage() {
       </Card>
     )
   }
+
+  const ProgramSkeleton = () => (
+    <Card className="flex flex-col justify-between">
+      <CardHeader>
+        <div className="flex items-start gap-4">
+          <Skeleton className="h-7 w-7 rounded-md" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[200px]" />
+            <Skeleton className="h-4 w-[150px]" />
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="mt-auto flex items-center gap-3 pt-4">
+        <Skeleton className="h-10 w-10 rounded-full" />
+        <div className="space-y-1">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-3 w-[80px]" />
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <SidebarProvider>
@@ -213,32 +242,40 @@ export default function KegiatanUkmPage() {
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+          {error && <div className="text-red-500 text-center p-4 bg-red-100 rounded-md">{error}</div>}
+          
+          <div className="flex items-center gap-2">
+            <Star className="h-6 w-6" />
+            <h1 className="text-lg font-semibold md:text-2xl">UKM Esensial</h1>
+          </div>
           {loading ? (
-             <div className="flex flex-1 items-center justify-center">
-                <p>Memuat data program...</p>
-             </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {Array.from({ length: 10 }).map((_, index) => <ProgramSkeleton key={index} />)}
+            </div>
           ) : (
-            <>
-              <div className="flex items-center gap-2">
-                <Star className="h-6 w-6" />
-                <h1 className="text-lg font-semibold md:text-2xl">UKM Esensial</h1>
-              </div>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                {essentialPrograms.map((program, index) => (
-                  <ProgramCard key={index} program={program} />
-                ))}
-              </div>
-              <div className="mt-8 flex items-center gap-2">
-                <TrendingUp className="h-6 w-6" />
-                <h1 className="text-lg font-semibold md:text-2xl">UKM Pengembangan</h1>
-              </div>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                {developmentPrograms.map((program, index) => (
-                  <ProgramCard key={index} program={program} />
-                ))}
-              </div>
-            </>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {essentialPrograms.map((program, index) => (
+                <ProgramCard key={index} program={program} />
+              ))}
+            </div>
           )}
+
+          <div className="mt-8 flex items-center gap-2">
+            <TrendingUp className="h-6 w-6" />
+            <h1 className="text-lg font-semibold md:text-2xl">UKM Pengembangan</h1>
+          </div>
+           {loading ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {Array.from({ length: 5 }).map((_, index) => <ProgramSkeleton key={index} />)}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {developmentPrograms.map((program, index) => (
+                <ProgramCard key={index} program={program} />
+              ))}
+            </div>
+           )}
+
           <footer className="mt-8 border-t pt-6">
             <div className="text-center text-sm text-muted-foreground">
               <p>© {new Date().getFullYear()} UKM PONJA. All Rights Reserved.</p>
