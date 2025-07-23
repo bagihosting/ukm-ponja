@@ -34,12 +34,11 @@ export default function EditKegiatanPage() {
   const { toast } = useToast();
 
   const [program, setProgram] = useState<Program | null>(null);
-  const [formData, setFormData] = useState({ name: '', pic: '', position: '', description: '' });
-  const [newAvatar, setNewAvatar] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [formData, setFormData] = useState({ name: '', pic: '', position: '', description: '', avatar: '' });
+  const [newAvatarFile, setNewAvatarFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [compressing, setCompressing] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!id || typeof id !== 'string') return;
@@ -75,9 +74,9 @@ export default function EditKegiatanPage() {
             name: foundProgram.name,
             pic: foundProgram.pic,
             position: foundProgram.position,
-            description: foundProgram.description
+            description: foundProgram.description,
+            avatar: foundProgram.avatar
           });
-          setAvatarPreview(foundProgram.avatar);
         } else {
            console.error(`Program with ID "${id}" not found.`);
            toast({
@@ -131,30 +130,42 @@ export default function EditKegiatanPage() {
       reader.onerror = (err) => reject(err);
     });
   };
-
+  
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files && e.target.files[0] && program) {
       const file = e.target.files[0];
-      setCompressing(true);
-      setNewAvatar(null);
+      setUploading(true);
       try {
         const compressedFile = await compressImage(file);
-        setNewAvatar(compressedFile);
         
+        // Show local preview immediately
         const reader = new FileReader();
         reader.onloadend = () => {
-          setAvatarPreview(reader.result as string);
+          setFormData(prev => ({...prev, avatar: reader.result as string}));
         };
         reader.readAsDataURL(compressedFile);
+
+        // Upload to storage in the background
+        toast({ title: "Mengunggah foto...", description: "Mohon tunggu sebentar, proses berjalan di latar belakang." });
+        const imageRef = storageRef(storage, `avatars/${program.id}-${Date.now()}-${compressedFile.name}`);
+        const uploadResult = await uploadBytes(imageRef, compressedFile);
+        const newAvatarUrl = await getDownloadURL(uploadResult.ref);
+        
+        // Once uploaded, update the form data with the actual URL
+        setFormData(prev => ({ ...prev, avatar: newAvatarUrl }));
+        toast({ title: "Sukses!", description: "Foto berhasil diunggah. Jangan lupa simpan perubahan." });
+
       } catch (error) {
-        console.error("Image compression error:", error);
+        console.error("Image processing/upload error:", error);
         toast({
-            title: "Gagal memproses gambar",
-            description: "Terjadi kesalahan saat mengompres gambar. Silakan coba gambar lain.",
+            title: "Gagal memproses/mengunggah gambar",
+            description: "Terjadi kesalahan. Silakan coba gambar lain.",
             variant: "destructive",
         });
+         // Revert to original avatar if upload fails
+        setFormData(prev => ({ ...prev, avatar: program.avatar }));
       } finally {
-        setCompressing(false);
+        setUploading(false);
       }
     }
   };
@@ -171,18 +182,14 @@ export default function EditKegiatanPage() {
     setSaving(true);
     
     try {
-      let newAvatarUrl = program.avatar;
-      if (newAvatar) {
-        toast({ title: "Mengunggah foto...", description: "Mohon tunggu sebentar." });
-        const imageRef = storageRef(storage, `avatars/${program.id}-${Date.now()}-${newAvatar.name}`);
-        const uploadResult = await uploadBytes(imageRef, newAvatar);
-        newAvatarUrl = await getDownloadURL(uploadResult.ref);
-      }
-
       const programRef = ref(database, program.dbPath);
+      // The formData.avatar already contains the new URL if a new image was uploaded
       await update(programRef, {
-        ...formData,
-        avatar: newAvatarUrl
+        name: formData.name,
+        pic: formData.pic,
+        position: formData.position,
+        description: formData.description,
+        avatar: formData.avatar
       });
       
       toast({
@@ -251,25 +258,25 @@ export default function EditKegiatanPage() {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Masukkan nama program"
-                    disabled={saving || compressing}
+                    disabled={saving || uploading}
                 />
             </div>
             <div className="flex items-start gap-6">
               <div className="relative flex flex-col items-center gap-2">
                  <Avatar className="h-24 w-24">
-                    {avatarPreview && <AvatarImage data-ai-hint="person photo" src={avatarPreview} alt={formData.pic} />}
+                    {formData.avatar && <AvatarImage data-ai-hint="person photo" src={formData.avatar} alt={formData.pic} />}
                     <AvatarFallback>{formData.pic.charAt(0)}</AvatarFallback>
                 </Avatar>
-                {compressing && (
+                {uploading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
                     <Loader className="h-8 w-8 animate-spin text-white" />
                   </div>
                 )}
-                <Button asChild variant="outline" size="sm" disabled={compressing || saving}>
+                <Button asChild variant="outline" size="sm" disabled={uploading || saving}>
                   <label htmlFor="avatar-upload" className="cursor-pointer">
                     <Upload className="mr-2 h-4 w-4"/>
                     Ganti Foto
-                    <input id="avatar-upload" type="file" className="sr-only" accept="image/*" onChange={handleAvatarChange} disabled={compressing || saving} />
+                    <input id="avatar-upload" type="file" className="sr-only" accept="image/*" onChange={handleAvatarChange} disabled={uploading || saving} />
                   </label>
                 </Button>
               </div>
@@ -282,7 +289,7 @@ export default function EditKegiatanPage() {
                     value={formData.pic}
                     onChange={handleInputChange}
                     placeholder="Masukkan nama lengkap"
-                    disabled={saving || compressing}
+                    disabled={saving || uploading}
                   />
                 </div>
                 <div className="space-y-2">
@@ -293,7 +300,7 @@ export default function EditKegiatanPage() {
                     value={formData.position}
                     onChange={handleInputChange}
                     placeholder="Contoh: Koordinator, Spesialis"
-                    disabled={saving || compressing}
+                    disabled={saving || uploading}
                   />
                 </div>
               </div>
@@ -307,17 +314,17 @@ export default function EditKegiatanPage() {
                 onChange={handleInputChange}
                 rows={5}
                 placeholder="Jelaskan secara singkat tentang program ini..."
-                disabled={saving || compressing}
+                disabled={saving || uploading}
               />
             </div>
           </CardContent>
           <CardFooter className="justify-end gap-2">
-            <Button type="button" variant="outline" onClick={() => router.push('/kegiatan')} disabled={saving || compressing}>
+            <Button type="button" variant="outline" onClick={() => router.push('/kegiatan')} disabled={saving || uploading}>
               Batal
             </Button>
-            <Button type="submit" disabled={saving || compressing}>
-              {(saving || compressing) && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-              {saving ? 'Menyimpan...' : (compressing ? 'Memproses...' : 'Simpan Perubahan')}
+            <Button type="submit" disabled={saving || uploading}>
+              {(saving || uploading) && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+              {saving ? 'Menyimpan...' : (uploading ? 'Mengunggah...' : 'Simpan Perubahan')}
             </Button>
           </CardFooter>
         </Card>
@@ -325,5 +332,3 @@ export default function EditKegiatanPage() {
     </DashboardLayout>
   );
 }
-
-    
