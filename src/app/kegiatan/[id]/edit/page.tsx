@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { get, ref, update, child } from "firebase/database";
+import { get, ref, update } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { database, storage } from "@/lib/firebase";
 import DashboardLayout from "@/components/dashboard-layout";
@@ -39,6 +39,7 @@ export default function EditKegiatanPage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [compressing, setCompressing] = useState(false);
 
   useEffect(() => {
     if (!id || typeof id !== 'string') return;
@@ -52,7 +53,6 @@ export default function EditKegiatanPage() {
         const data = snapshot.val();
         let foundProgram: Program | null = null;
         
-        // Check both categories to find the program by its key (id)
         for (const category of ['esensial', 'pengembangan']) {
           if (data[category]) {
             const programData = Object.entries(data[category]).find(([key]) => key === id);
@@ -102,7 +102,7 @@ export default function EditKegiatanPage() {
         img.src = event.target?.result as string;
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 800; // Max width for compressed image
+          const MAX_WIDTH = 800;
           const scaleSize = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
           
           canvas.width = img.width * scaleSize;
@@ -124,7 +124,7 @@ export default function EditKegiatanPage() {
             } else {
               reject(new Error('Canvas to Blob conversion failed'));
             }
-          }, 'image/jpeg', 0.7); // Compress to 70% quality JPEG
+          }, 'image/jpeg', 0.7);
         };
         img.onerror = (err) => reject(err);
       };
@@ -135,8 +135,9 @@ export default function EditKegiatanPage() {
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setCompressing(true);
+      setNewAvatar(null);
       try {
-        setSaving(true);
         const compressedFile = await compressImage(file);
         setNewAvatar(compressedFile);
         
@@ -153,7 +154,7 @@ export default function EditKegiatanPage() {
             variant: "destructive",
         });
       } finally {
-        setSaving(false);
+        setCompressing(false);
       }
     }
   };
@@ -250,20 +251,25 @@ export default function EditKegiatanPage() {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Masukkan nama program"
-                    disabled={saving}
+                    disabled={saving || compressing}
                 />
             </div>
             <div className="flex items-start gap-6">
-              <div className="flex flex-col items-center gap-2">
+              <div className="relative flex flex-col items-center gap-2">
                  <Avatar className="h-24 w-24">
                     {avatarPreview && <AvatarImage data-ai-hint="person photo" src={avatarPreview} alt={formData.pic} />}
                     <AvatarFallback>{formData.pic.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <Button asChild variant="outline" size="sm">
+                {compressing && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
+                    <Loader className="h-8 w-8 animate-spin text-white" />
+                  </div>
+                )}
+                <Button asChild variant="outline" size="sm" disabled={compressing || saving}>
                   <label htmlFor="avatar-upload" className="cursor-pointer">
                     <Upload className="mr-2 h-4 w-4"/>
                     Ganti Foto
-                    <input id="avatar-upload" type="file" className="sr-only" accept="image/*" onChange={handleAvatarChange} disabled={saving} />
+                    <input id="avatar-upload" type="file" className="sr-only" accept="image/*" onChange={handleAvatarChange} disabled={compressing || saving} />
                   </label>
                 </Button>
               </div>
@@ -276,7 +282,7 @@ export default function EditKegiatanPage() {
                     value={formData.pic}
                     onChange={handleInputChange}
                     placeholder="Masukkan nama lengkap"
-                    disabled={saving}
+                    disabled={saving || compressing}
                   />
                 </div>
                 <div className="space-y-2">
@@ -287,7 +293,7 @@ export default function EditKegiatanPage() {
                     value={formData.position}
                     onChange={handleInputChange}
                     placeholder="Contoh: Koordinator, Spesialis"
-                    disabled={saving}
+                    disabled={saving || compressing}
                   />
                 </div>
               </div>
@@ -301,17 +307,17 @@ export default function EditKegiatanPage() {
                 onChange={handleInputChange}
                 rows={5}
                 placeholder="Jelaskan secara singkat tentang program ini..."
-                disabled={saving}
+                disabled={saving || compressing}
               />
             </div>
           </CardContent>
           <CardFooter className="justify-end gap-2">
-            <Button type="button" variant="outline" onClick={() => router.push('/kegiatan')} disabled={saving}>
+            <Button type="button" variant="outline" onClick={() => router.push('/kegiatan')} disabled={saving || compressing}>
               Batal
             </Button>
-            <Button type="submit" disabled={saving}>
-              {saving && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-              Simpan Perubahan
+            <Button type="submit" disabled={saving || compressing}>
+              {(saving || compressing) && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+              {saving ? 'Menyimpan...' : (compressing ? 'Memproses...' : 'Simpan Perubahan')}
             </Button>
           </CardFooter>
         </Card>
@@ -319,3 +325,5 @@ export default function EditKegiatanPage() {
     </DashboardLayout>
   );
 }
+
+    
