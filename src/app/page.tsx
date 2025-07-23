@@ -8,14 +8,9 @@ import Link from "next/link";
 import NextImage from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Badge } from "@/components/ui/badge";
 
 const features = [
-  {
-    name: "Artikel Edukasi",
-    description: "Publikasikan artikel untuk menyebarkan informasi dan meningkatkan kesadaran kesehatan di masyarakat.",
-    icon: <BookOpen className="size-8 text-primary" />,
-    href: "/artikel",
-  },
   {
     name: "Manajemen Kegiatan",
     description: "Rencanakan, kelola, dan pantau seluruh program UKM Esensial dan Pengembangan dengan efisien.",
@@ -28,6 +23,12 @@ const features = [
     icon: <ClipboardList className="size-8 text-primary" />,
     href: "/laporan",
   },
+  {
+    name: "Galeri Aksi Nyata",
+    description: "Visualisasikan berbagai program dan dampak positif yang telah kita ciptakan bersama di masyarakat.",
+    icon: <Image className="size-8 text-primary" />,
+    href: "/galeri",
+  }
 ];
 
 const galleryImages = [
@@ -37,7 +38,35 @@ const galleryImages = [
   { src: "https://placehold.co/600x400.png", alt: "Kegiatan 4", hint: "health checkup" },
   { src: "https://placehold.co/600x400.png", alt: "Kegiatan 5", hint: "nutrition advice" },
   { src: "https://placehold.co/600x400.png", alt: "Kegiatan 6", hint: "vaccination drive" },
-]
+];
+
+const articles = [
+  {
+    title: "5 Kebiasaan Sederhana untuk Jantung yang Lebih Sehat",
+    category: "Gaya Hidup Sehat",
+    excerpt: "Pelajari lima kebiasaan mudah yang dapat Anda terapkan setiap hari untuk meningkatkan kesehatan jantung secara signifikan.",
+    image: "https://placehold.co/600x400.png",
+    hint: "healthy heart",
+    href: "/artikel/jantung-sehat",
+  },
+  {
+    title: "Pentingnya Imunisasi Lengkap pada Anak Usia Dini",
+    category: "Kesehatan Anak",
+    excerpt: "Memahami mengapa imunisasi lengkap sangat krusial untuk melindungi anak Anda dari berbagai penyakit berbahaya.",
+    image: "https://placehold.co/600x400.png",
+    hint: "child vaccination",
+    href: "/artikel/imunisasi-anak",
+  },
+  {
+    title: "Mengelola Stres di Tempat Kerja: Tips dan Trik",
+    category: "Kesehatan Mental",
+    excerpt: "Stres kerja tidak bisa dihindari, tetapi bisa dikelola. Temukan cara efektif untuk menjaga kesehatan mental Anda di lingkungan kerja.",
+    image: "https://placehold.co/600x400.png",
+    hint: "mental health work",
+    href: "/artikel/mengelola-stres",
+  },
+];
+
 
 export default function HomePage() {
   return (
@@ -99,8 +128,54 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+        
+        <section id="articles" className="container py-12 md:py-24 lg:py-32">
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center mb-12">
+              <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Artikel & Wawasan Terkini</h2>
+              <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+                  Dapatkan informasi, tips, dan wawasan terbaru seputar kesehatan untuk Anda, keluarga, dan masyarakat.
+              </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {articles.map((article, index) => (
+              <Link key={index} href={article.href} className="group">
+                <Card className="overflow-hidden h-full flex flex-col transition-all group-hover:shadow-xl group-hover:-translate-y-1">
+                  <CardContent className="p-0">
+                    <NextImage
+                      src={article.image}
+                      alt={article.title}
+                      data-ai-hint={article.hint}
+                      width={600}
+                      height={400}
+                      className="w-full h-48 object-cover"
+                    />
+                  </CardContent>
+                  <CardHeader>
+                    <Badge variant="secondary" className="w-fit">{article.category}</Badge>
+                    <CardTitle className="text-lg mt-2">{article.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-sm text-muted-foreground">{article.excerpt}</p>
+                  </CardContent>
+                  <CardContent>
+                    <div className="text-sm font-medium text-primary group-hover:underline">
+                      Baca Selengkapnya <ArrowRight className="inline-block ml-1 size-4" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+           <div className="text-center mt-12">
+              <Button asChild variant="outline">
+                <Link href="/artikel">
+                  Lihat Semua Artikel <ArrowRight className="ml-2 size-4" />
+                </Link>
+              </Button>
+            </div>
+        </section>
 
-        <section id="gallery-slider" className="container py-12 md:py-24 lg:py-32">
+        <section id="gallery-slider" className="container py-12 md:py-24 lg:py-32 bg-slate-50/50 dark:bg-slate-800/20 rounded-lg">
             <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center mb-12">
                 <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Galeri Aksi Nyata</h2>
                 <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
@@ -146,7 +221,7 @@ export default function HomePage() {
             </div>
         </section>
         
-        <section className="container py-12 md:py-24 lg:py-32 text-center bg-slate-50/50 dark:bg-slate-800/20 rounded-lg">
+        <section className="container py-12 md:py-24 lg:py-32 text-center">
             <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">
               Siap Menjadi Garda Terdepan?
             </h2>
@@ -173,3 +248,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
