@@ -3,12 +3,20 @@
 
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Image, ArrowRight, Newspaper } from "lucide-react";
+import { Image, ArrowRight, Newspaper, Menu } from "lucide-react";
 import Link from "next/link";
 import NextImage from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Sheet, SheetTrigger, SheetContent, SheetClose } from "@/components/ui/sheet";
+
+const navLinks = [
+  { name: "Kegiatan UKM", href: "/dasbor" },
+  { name: "Laporan", href: "/dasbor" },
+  { name: "Artikel", href: "/artikel" },
+  { name: "Galeri", href: "/galeri" },
+];
 
 const features = [
   {
@@ -67,14 +75,51 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center">
-          <div className="mr-4 flex items-center">
+          <div className="mr-6 flex items-center">
             <Link href="/" className="flex items-center gap-2">
               <Icons.logo className="size-7 text-primary" />
               <span className="text-lg font-bold">UKM PONJA</span>
             </Link>
           </div>
-          <div className="flex flex-1 items-center justify-end space-x-2">
-            <Button asChild>
+          <nav className="hidden flex-1 items-center gap-4 text-sm font-medium md:flex">
+             {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+          <div className="flex flex-1 items-center justify-end space-x-2 md:flex-initial">
+             <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" className="md:hidden">
+                    <Menu className="size-5" />
+                    <span className="sr-only">Buka Menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                  <div className="grid gap-4 py-6">
+                    <Link href="/" className="mb-4 flex items-center gap-2">
+                        <Icons.logo className="size-7 text-primary" />
+                        <span className="text-lg font-bold">UKM PONJA</span>
+                    </Link>
+                    {navLinks.map((link) => (
+                      <SheetClose asChild key={link.name}>
+                        <Link
+                            href={link.href}
+                            className="flex w-full items-center py-2 text-lg font-semibold"
+                        >
+                            {link.name}
+                        </Link>
+                      </SheetClose>
+                    ))}
+                  </div>
+                </SheetContent>
+            </Sheet>
+            <Button asChild className="hidden md:inline-flex">
               <Link href="/login">
                 Masuk Dasbor <ArrowRight className="ml-2 size-4" />
               </Link>
