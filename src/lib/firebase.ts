@@ -7,13 +7,14 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "API_KEY",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://PROJECT_ID.firebaseio.com",
-  projectId: "PROJECT_ID",
-  storageBucket: "PROJECT_ID.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID",
+  apiKey: "AIzaSyDuEAakwjosnFS3FPl-qzDwZkqabnZ1RMo",
+  authDomain: "ahadedigital.firebaseapp.com",
+  databaseURL: "https://ahadedigital-default-rtdb.firebaseio.com",
+  projectId: "ahadedigital",
+  storageBucket: "ahadedigital.appspot.com",
+  messagingSenderId: "367198720376",
+  appId: "1:367198720376:web:1b1e608e317454f323b88d",
+  measurementId: "G-1K1L94HHCJ"
 };
 
 // Initialize Firebase
